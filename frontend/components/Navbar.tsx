@@ -10,10 +10,13 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="text-2xl font-bold text-blue-600">
-              Uni-Lend
+          {/* Logo & Slogan brief */}
+          <div className="flex items-center space-x-3">
+            <Link href="/" className="text-2xl font-black text-blue-600 tracking-tight flex items-center gap-2">
+              <span>Uni-Lend</span>
+              <span className="text-xs font-normal px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full border border-blue-200 hidden sm:inline-block">
+                Sinh viên
+              </span>
             </Link>
           </div>
 
@@ -33,23 +36,29 @@ export default function Navbar() {
                 pathname === '/market' ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-blue-600'
               }`}
             >
-              Khám phá
+              Khám phá đồ
             </Link>
             <Link
-              href="/about"
+              href="/rules"
               className={`text-sm font-medium transition-colors ${
-                pathname === '/about' ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-blue-600'
+                pathname === '/rules' ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-blue-600'
               }`}
             >
-              Giới thiệu
+              Quy chế mượn đồ
             </Link>
           </nav>
 
-          {/* Auth Buttons */}
-          <div className="flex items-center space-x-4">
+          {/* Action Buttons: Đăng đồ + Auth */}
+          <div className="flex items-center space-x-3">
+            <Link
+              href="/items/create"
+              className="hidden sm:inline-flex items-center px-3.5 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+            >
+              + Đăng cho mượn
+            </Link>
             <Link
               href="/login"
-              className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+              className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
             >
               Đăng nhập
             </Link>
