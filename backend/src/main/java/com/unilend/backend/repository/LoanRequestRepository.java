@@ -17,28 +17,23 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
     @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
     Optional<LoanRequest> findWithDetailsById(Long id);
 
-    // Các yêu cầu mượn của một người mượn
     @EntityGraph(attributePaths = {"item", "item.owner"})
     Page<LoanRequest> findByBorrowerId(Long borrowerId, Pageable pageable);
 
     @EntityGraph(attributePaths = {"item", "item.owner"})
     Page<LoanRequest> findByBorrowerIdAndStatus(Long borrowerId, LoanStatus status, Pageable pageable);
 
-    // Các yêu cầu gửi đến chủ đồ (owner)
     @EntityGraph(attributePaths = {"item", "borrower"})
     Page<LoanRequest> findByItemOwnerId(Long ownerId, Pageable pageable);
 
     @EntityGraph(attributePaths = {"item", "borrower"})
     Page<LoanRequest> findByItemOwnerIdAndStatus(Long ownerId, LoanStatus status, Pageable pageable);
 
-    // Các yêu cầu của một món đồ
     @EntityGraph(attributePaths = {"borrower"})
     Page<LoanRequest> findByItemId(Long itemId, Pageable pageable);
 
-    // Người dùng đã có yêu cầu PENDING cho món đồ này chưa (tránh gửi trùng)
     boolean existsByItemIdAndBorrowerIdAndStatus(Long itemId, Long borrowerId, LoanStatus status);
 
-    // Kiểm tra trùng lịch với các yêu cầu đã được duyệt
     @Query("""
             SELECT COUNT(l) > 0 FROM LoanRequest l
             WHERE l.item.id = :itemId
@@ -50,7 +45,6 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
                                       @Param("from") LocalDate from,
                                       @Param("to") LocalDate to);
 
-    // Các khoản mượn quá hạn
     @EntityGraph(attributePaths = {"item", "borrower"})
     @Query("""
             SELECT l FROM LoanRequest l
