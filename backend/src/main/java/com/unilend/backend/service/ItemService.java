@@ -101,8 +101,6 @@ public class ItemService {
                 ItemResponse::from);
     }
 
-    // ---- helpers ----
-
     private Pageable pageable(int page, int size) {
         int safePage = Math.max(page, 0);
         int safeSize = Math.min(Math.max(size, 1), MAX_PAGE_SIZE);

@@ -62,7 +62,6 @@ public class CategoryService {
     @Transactional
     public void delete(Long id) {
         Category category = getOrThrow(id);
-        // Nếu còn món đồ thuộc danh mục, FK ở DB sẽ báo lỗi -> GlobalExceptionHandler trả 409.
         categoryRepository.delete(category);
         categoryRepository.flush();
     }

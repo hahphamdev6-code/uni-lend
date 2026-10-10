@@ -4,12 +4,6 @@ import com.unilend.backend.entity.Item.ItemStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-/**
- * Dùng cho cả tạo và sửa món đồ.
- * - categoryId: tuỳ chọn.
- * - status: tuỳ chọn; khi tạo mới bị bỏ qua (luôn AVAILABLE),
- *   khi sửa chỉ cho phép AVAILABLE / UNAVAILABLE.
- */
 public record ItemRequest(
         @NotBlank(message = "Tên món đồ không được để trống")
         @Size(max = 150, message = "Tên món đồ tối đa 150 ký tự")

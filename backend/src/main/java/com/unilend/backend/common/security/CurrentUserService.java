@@ -10,11 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-/**
- * Lấy người dùng đang đăng nhập từ SecurityContext.
- * Giả định: authentication.getName() là email của user
- * (JWT filter của phần auth cần set principal theo quy ước này).
- */
 @Service
 @RequiredArgsConstructor
 public class CurrentUserService {
@@ -26,8 +21,16 @@ public class CurrentUserService {
         if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
             throw new BusinessException(ErrorCode.UNAUTHORIZED);
         }
-        return userRepository.findByEmail(auth.getName())
+        String email = auth.getName();
+        if (email == null || email.isBlank()) {
+            throw new BusinessException(ErrorCode.UNAUTHORIZED);
+        }
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessException(ErrorCode.UNAUTHORIZED));
+        if (!user.isEnabled()) {
+            throw new BusinessException(ErrorCode.UNAUTHORIZED);
+        }
+        return user;
     }
 
     public boolean isAdmin(User user) {

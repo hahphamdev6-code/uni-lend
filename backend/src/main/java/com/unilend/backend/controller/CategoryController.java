@@ -21,7 +21,6 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final CurrentUserService currentUserService;
 
-    // Ai cũng xem được
     @GetMapping
     public ApiResponse<List<CategoryResponse>> list() {
         return ApiResponse.ok(categoryService.findAll());
@@ -32,7 +31,6 @@ public class CategoryController {
         return ApiResponse.ok(categoryService.findById(id));
     }
 
-    // Chỉ ADMIN
     @PostMapping
     public ResponseEntity<ApiResponse<CategoryResponse>> create(@Valid @RequestBody CategoryRequest req) {
         currentUserService.requireAdmin();
