@@ -2,10 +2,12 @@ package com.unilend.backend.repository;
 
 import com.unilend.backend.entity.LoanRequest;
 import com.unilend.backend.entity.LoanRequest.LoanStatus;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -16,6 +18,11 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
 
     @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
     Optional<LoanRequest> findWithDetailsById(Long id);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
+    @Query("SELECT l FROM LoanRequest l WHERE l.id = :id")
+    Optional<LoanRequest> findWithDetailsByIdForUpdate(@Param("id") Long id);
 
     @EntityGraph(attributePaths = {"item", "item.owner"})
     Page<LoanRequest> findByBorrowerId(Long borrowerId, Pageable pageable);

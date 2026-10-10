@@ -134,6 +134,7 @@ class LoanRequestServiceTest {
         assertEquals(LoanStatus.APPROVED, response.status());
         assertNotNull(loan.getRespondedAt());
         assertEquals(ItemStatus.LENT_OUT, item.getStatus());
+        verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
         verify(entityManager).refresh(item, LockModeType.PESSIMISTIC_WRITE);
     }
 
@@ -176,6 +177,7 @@ class LoanRequestServiceTest {
         assertEquals(LoanStatus.REJECTED, response.status());
         assertNotNull(loan.getRespondedAt());
         assertEquals(ItemStatus.AVAILABLE, item.getStatus());
+        verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
     }
 
     @Test
@@ -192,6 +194,7 @@ class LoanRequestServiceTest {
         LoanRequestResponse response = service.cancel(100L, borrower);
 
         assertEquals(LoanStatus.CANCELLED, response.status());
+        verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
     }
 
     @Test
@@ -218,6 +221,7 @@ class LoanRequestServiceTest {
         assertEquals(LoanStatus.RETURNED, response.status());
         assertNotNull(loan.getReturnedAt());
         assertEquals(ItemStatus.AVAILABLE, item.getStatus());
+        verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
     }
 
     @Test
@@ -273,6 +277,7 @@ class LoanRequestServiceTest {
                 .dueDate(today.plusDays(3))
                 .build();
         when(loanRequestRepository.findWithDetailsById(100L)).thenReturn(Optional.of(loan));
+        when(loanRequestRepository.findWithDetailsByIdForUpdate(100L)).thenReturn(Optional.of(loan));
         return loan;
     }
 

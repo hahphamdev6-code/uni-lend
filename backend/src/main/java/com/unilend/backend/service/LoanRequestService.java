@@ -74,7 +74,7 @@ public class LoanRequestService {
 
     @Transactional
     public LoanRequestResponse approve(Long loanId, User actor) {
-        LoanRequest loan = findLoan(loanId);
+        LoanRequest loan = findLoanForUpdate(loanId);
         requireOwner(loan, actor);
         requirePending(loan);
 
@@ -96,7 +96,7 @@ public class LoanRequestService {
 
     @Transactional
     public LoanRequestResponse reject(Long loanId, User actor) {
-        LoanRequest loan = findLoan(loanId);
+        LoanRequest loan = findLoanForUpdate(loanId);
         requireOwner(loan, actor);
         requirePending(loan);
 
@@ -107,7 +107,7 @@ public class LoanRequestService {
 
     @Transactional
     public LoanRequestResponse cancel(Long loanId, User actor) {
-        LoanRequest loan = findLoan(loanId);
+        LoanRequest loan = findLoanForUpdate(loanId);
         requireBorrower(loan, actor);
         requirePending(loan);
 
@@ -117,7 +117,7 @@ public class LoanRequestService {
 
     @Transactional
     public LoanRequestResponse markReturned(Long loanId, User actor) {
-        LoanRequest loan = findLoan(loanId);
+        LoanRequest loan = findLoanForUpdate(loanId);
         requireOwner(loan, actor);
         if (loan.getStatus() != LoanStatus.APPROVED) {
             throw new BusinessException(ErrorCode.CONFLICT, "Chỉ xác nhận trả được với khoản mượn đã duyệt");
@@ -183,6 +183,11 @@ public class LoanRequestService {
 
     private LoanRequest findLoan(Long loanId) {
         return loanRequestRepository.findWithDetailsById(loanId)
+                .orElseThrow(() -> new ResourceNotFoundException("LoanRequest", loanId));
+    }
+
+    private LoanRequest findLoanForUpdate(Long loanId) {
+        return loanRequestRepository.findWithDetailsByIdForUpdate(loanId)
                 .orElseThrow(() -> new ResourceNotFoundException("LoanRequest", loanId));
     }
 
