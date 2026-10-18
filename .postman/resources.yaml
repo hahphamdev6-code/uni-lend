@@ -1,8 +1,11 @@
 workspace:
   id: 22a727ea-0319-40db-8422-ae4953151231
+
 localResources:
   specs:
     - ../postman/specs/New Specification/New Specification.yaml
+    - ../C:/Users/MY PC/uni-lend/postman/specs/New Specification/New
+      Specification.yaml
 resourceNameMappings:
   specs:
     - ../postman/specs/New Specification/New Specification.yaml: New Specification
