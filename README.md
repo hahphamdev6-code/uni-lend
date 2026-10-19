@@ -63,11 +63,10 @@ Backend runs at:
 http://localhost:8080
 ```
 
-The backend requires `JWT_ISSUER_URI` and `JWT_AUDIENCE` before it can start.
-Set them to the trusted identity provider's issuer URL and the audience intended
-for this API. The backend discovers the provider's JWKS endpoint from its issuer
-metadata; if discovery is unavailable, set `JWT_JWK_SET_URI` to the trusted
-JWKS URL as well. Tokens must have a valid signature, issuer, audience, and
+The backend validates HS256 bearer tokens using the Base64-encoded `JWT_SECRET`
+from `backend/.env`; the decoded key must be at least 32 bytes. No external
+`JWT_ISSUER_URI` or `JWT_AUDIENCE` is required. Tokens must have a valid
+signature, issuer (`JWT_ISSUER`, default `http://unilend.local`), and
 expiration, and their `sub` claim must equal the user's email in the Uni-Lend
 database. Never commit signing keys or secrets to source control.
 

@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
@@ -13,11 +15,11 @@ spring:
       hibernate:
         format_sql: true
 
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    issuer: ${JWT_ISSUER:http://unilend.local}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
 server:
   port: 8080
-
-security:
-  jwt:
-    issuer-uri: ${JWT_ISSUER_URI:}
-    jwk-set-uri: ${JWT_JWK_SET_URI:}
-    audience: ${JWT_AUDIENCE:}

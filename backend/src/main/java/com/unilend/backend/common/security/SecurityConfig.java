@@ -8,15 +8,18 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
-import org.springframework.security.oauth2.core.OAuth2Error;
-import org.springframework.security.oauth2.core.OAuth2TokenValidator;
-import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 
 @Configuration
 public class SecurityConfig {
@@ -37,27 +40,33 @@ public class SecurityConfig {
 
     @Bean
     JwtDecoder jwtDecoder(
-            @Value("${security.jwt.issuer-uri:}") String issuerUri,
-            @Value("${security.jwt.jwk-set-uri:}") String jwkSetUri,
-            @Value("${security.jwt.audience:}") String audience) {
-        if (issuerUri.isBlank()) {
-            throw new IllegalStateException("JWT_ISSUER_URI must be configured");
-        }
-        if (audience.isBlank()) {
-            throw new IllegalStateException("JWT_AUDIENCE must be configured");
-        }
-
-        NimbusJwtDecoder decoder = jwkSetUri.isBlank()
-                ? NimbusJwtDecoder.withIssuerLocation(issuerUri).build()
-                : NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
-        OAuth2TokenValidator<Jwt> audienceValidator = jwt ->
-                jwt.getAudience().contains(audience)
-                        ? OAuth2TokenValidatorResult.success()
-                        : OAuth2TokenValidatorResult.failure(
-                                new OAuth2Error("invalid_token", "Required audience is missing", null));
-        decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(
-                JwtValidators.createDefaultWithIssuer(issuerUri),
-                audienceValidator));
+            SecretKey signingKey,
+            @Value("${app.jwt.issuer:http://unilend.local}") String issuer) {
+        NimbusJwtDecoder decoder = NimbusJwtDecoder.withSecretKey(signingKey)
+                .macAlgorithm(MacAlgorithm.HS256)
+                .build();
+        decoder.setJwtValidator(JwtValidators.createDefaultWithIssuer(issuer));
         return decoder;
+    }
+
+    @Bean
+    SecretKey jwtSigningKey(@Value("${app.jwt.secret:}") String secretBase64) {
+        if (secretBase64.isBlank()) {
+            throw new IllegalStateException("JWT_SECRET must be configured as a Base64-encoded key");
+        }
+        try {
+            byte[] keyBytes = Base64.getDecoder().decode(secretBase64);
+            if (keyBytes.length < 32) {
+                throw new IllegalStateException("JWT_SECRET must decode to at least 32 bytes for HS256");
+            }
+            return new SecretKeySpec(keyBytes, "HmacSHA256");
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalStateException("JWT_SECRET must be a valid Base64-encoded key", ex);
+        }
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
