@@ -23,6 +23,7 @@ public class ItemController {
 
     private final ItemService itemService;
 
+    // Danh sách + tìm kiếm + phân trang (công khai)
     @GetMapping
     public ApiResponse<PageResponse<ItemResponse>> search(
             @RequestParam(required = false) String keyword,
@@ -33,6 +34,7 @@ public class ItemController {
         return ApiResponse.ok(itemService.search(keyword, categoryId, status, page, size));
     }
 
+    // Đồ của tôi (khai báo literal "/me" nên không bị nhầm với /{id})
     @GetMapping("/me")
     public ApiResponse<PageResponse<ItemResponse>> mine(
             @RequestParam(defaultValue = "0") int page,
@@ -62,7 +64,6 @@ public class ItemController {
         itemService.delete(id);
         return ApiResponse.ok("Xoá món đồ thành công");
     }
-
     @PostMapping(value = "/{id}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<ItemResponse>> uploadImages(
             @PathVariable Long id,

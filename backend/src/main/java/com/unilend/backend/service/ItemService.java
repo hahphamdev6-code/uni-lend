@@ -82,8 +82,7 @@ public class ItemService {
         Item item = getWithDetailsOrThrow(id);
         assertOwner(item);
 
-        item.setTitle(req.title().trim())
-                ;
+        item.setTitle(req.title().trim());
         item.setDescription(req.description());
         item.setCategory(resolveCategory(req.categoryId()));
 

@@ -32,6 +32,7 @@ public class CategoryController {
         return ApiResponse.ok(categoryService.findById(id));
     }
 
+    // Chỉ ADMIN
     @PostMapping
     public ResponseEntity<ApiResponse<CategoryResponse>> create(@Valid @RequestBody CategoryRequest req) {
         currentUserService.requireAdmin();

@@ -10,6 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Lấy người dùng đang đăng nhập từ SecurityContext.
+ * Giả định: authentication.getName() là email của user
+ * (JWT filter của phần auth cần set principal theo quy ước này).
+ */
 @Service
 @RequiredArgsConstructor
 public class CurrentUserService {
