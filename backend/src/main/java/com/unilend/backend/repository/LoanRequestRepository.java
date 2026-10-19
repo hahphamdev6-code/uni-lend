@@ -30,13 +30,13 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
     @EntityGraph(attributePaths = {"item", "item.owner"})
     Page<LoanRequest> findByBorrowerIdAndStatus(Long borrowerId, LoanStatus status, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"item", "borrower"})
+    @EntityGraph(attributePaths = {"item", "borrower","item.owner"})
     Page<LoanRequest> findByItemOwnerId(Long ownerId, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"item", "borrower"})
+    @EntityGraph(attributePaths = {"item", "borrower","item.owner"})
     Page<LoanRequest> findByItemOwnerIdAndStatus(Long ownerId, LoanStatus status, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"borrower"})
+    @EntityGraph(attributePaths = {"borrower","item.owner"})
     Page<LoanRequest> findByItemId(Long itemId, Pageable pageable);
 
     boolean existsByItemIdAndBorrowerIdAndStatus(Long itemId, Long borrowerId, LoanStatus status);
@@ -52,7 +52,7 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
                                       @Param("from") LocalDate from,
                                       @Param("to") LocalDate to);
 
-    @EntityGraph(attributePaths = {"item", "borrower"})
+    @EntityGraph(attributePaths = {"item", "borrower","item.owner"})
     @Query("""
             SELECT l FROM LoanRequest l
             WHERE l.status = com.unilend.backend.entity.LoanRequest.LoanStatus.APPROVED

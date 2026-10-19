@@ -163,7 +163,7 @@ class LoanRequestServiceTest {
 
     @Test
     void approve_loanNotFound_throwsResourceNotFound() {
-        when(loanRequestRepository.findWithDetailsById(404L)).thenReturn(Optional.empty());
+        when(loanRequestRepository.findWithDetailsByIdForUpdate(404L)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> service.approve(404L, owner));
     }

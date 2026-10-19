@@ -1,6 +1,7 @@
 package com.unilend.backend.controller;
 
 import com.unilend.backend.common.response.ApiResponse;
+import com.unilend.backend.common.response.PageResponse;
 import com.unilend.backend.common.security.CurrentUserService;
 import com.unilend.backend.dto.loan.LoanRequestCreateRequest;
 import com.unilend.backend.dto.loan.LoanRequestResponse;
@@ -11,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,26 +40,26 @@ public class LoanRequestController {
     }
 
     @GetMapping("/mine")
-    public ApiResponse<PagedModel<LoanRequestResponse>> mine(
+    public ApiResponse<PageResponse<LoanRequestResponse>> mine(
             @RequestParam(required = false) LoanStatus status,
             @PageableDefault(size = 10, sort = "requestedAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ApiResponse.ok(new PagedModel<>(
-                loanRequestService.getMyRequests(currentUserService.getCurrentUser(), status, pageable)));
+        return ApiResponse.ok(
+                loanRequestService.getMyRequests(currentUserService.getCurrentUser(), status, pageable));
     }
 
     @GetMapping("/incoming")
-    public ApiResponse<PagedModel<LoanRequestResponse>> incoming(
+    public ApiResponse<PageResponse<LoanRequestResponse>> incoming(
             @RequestParam(required = false) LoanStatus status,
             @PageableDefault(size = 10, sort = "requestedAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ApiResponse.ok(new PagedModel<>(
-                loanRequestService.getIncomingRequests(currentUserService.getCurrentUser(), status, pageable)));
+        return ApiResponse.ok(
+                loanRequestService.getIncomingRequests(currentUserService.getCurrentUser(), status, pageable));
     }
 
     @GetMapping("/overdue")
-    public ApiResponse<PagedModel<LoanRequestResponse>> overdue(
+    public ApiResponse<PageResponse<LoanRequestResponse>> overdue(
             @PageableDefault(size = 10, sort = "dueDate") Pageable pageable) {
-        return ApiResponse.ok(new PagedModel<>(
-                loanRequestService.getOverdue(currentUserService.getCurrentUser(), pageable)));
+        return ApiResponse.ok(
+                loanRequestService.getOverdue(currentUserService.getCurrentUser(), pageable));
     }
 
     @GetMapping("/{id}")

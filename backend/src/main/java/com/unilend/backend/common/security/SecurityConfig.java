@@ -27,9 +27,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/items/me").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/items/me").authenticated()
                         .requestMatchers(HttpMethod.GET,
-                                "/categories", "/categories/*", "/items", "/items/*").permitAll()
+                                "/api/categories", "/api/categories/*", "/api/items", "/api/items/*").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
