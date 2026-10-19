@@ -62,3 +62,42 @@ Backend runs at:
 ```text
 http://localhost:8080
 ```
+
+The backend requires a MySQL connection and a Base64-encoded `JWT_SECRET` of at
+least 32 random bytes. On Windows, generate a key in PowerShell with:
+
+```powershell
+$bytes = New-Object byte[] 32
+$rng = [Security.Cryptography.RandomNumberGenerator]::Create()
+$rng.GetBytes($bytes)
+[Convert]::ToBase64String($bytes)
+$rng.Dispose()
+```
+
+Create `backend/.env` with your database settings and generated key:
+
+```dotenv
+DB_URL=jdbc:mysql://localhost:3306/uni_lend
+DB_USERNAME=your_mysql_username
+DB_PASSWORD=your_mysql_password
+JWT_SECRET=paste_the_generated_base64_key_here
+CORS_ALLOWED_ORIGINS=http://localhost:3000
+```
+
+The application uses a built-in JWT issuer (`http://unilend.local`); no
+external `JWT_ISSUER_URI` or `JWT_AUDIENCE` is needed. `JWT_EXPIRATION_MS` is
+optional and defaults to 86400000 milliseconds (24 hours).
+`CORS_ALLOWED_ORIGINS` accepts a comma-separated list of frontend origins and
+defaults to `http://localhost:3000`. Keep credentials and signing keys in
+`backend/.env`, which is ignored by Git; never commit them.
+
+`POST /api/auth/login` accepts an email and password and returns a bearer token.
+The account must already exist, be enabled, and have a BCrypt-encoded password
+in the database. Registration is not currently provided. Send the returned
+token in the `Authorization` header as `Bearer <token>` for authenticated
+endpoints.
+
+Unauthenticated access is limited to `GET /categories`, `GET /categories/{id}`,
+`GET /items`, and `GET /items/{id}`. Other endpoints require a valid bearer
+token. Item ownership and admin role checks continue to use the user record in
+the database.

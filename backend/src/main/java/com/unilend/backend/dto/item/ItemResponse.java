@@ -3,8 +3,11 @@ package com.unilend.backend.dto.item;
 import com.unilend.backend.dto.category.CategoryResponse;
 import com.unilend.backend.entity.Item;
 import com.unilend.backend.entity.Item.ItemStatus;
+import com.unilend.backend.entity.ItemImage;
 
 import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
 
 public record ItemResponse(
         Long id,
@@ -13,6 +16,8 @@ public record ItemResponse(
         ItemStatus status,
         OwnerSummary owner,
         CategoryResponse category,
+        List<String> imageUrls,
+        List<ItemImageResponse> images,
         Instant createdAt
 ) {
 
@@ -20,6 +25,14 @@ public record ItemResponse(
     }
 
     public static ItemResponse from(Item i) {
+        List<ItemImage> rawImages = i.getImages() == null ? Collections.emptyList() : i.getImages();
+        List<String> urls = rawImages.stream()
+                .map(ItemImage::getImageUrl)
+                .toList();
+        List<ItemImageResponse> imageDtos = rawImages.stream()
+                .map(ItemImageResponse::from)
+                .toList();
+
         return new ItemResponse(
                 i.getId(),
                 i.getTitle(),
@@ -27,6 +40,8 @@ public record ItemResponse(
                 i.getStatus(),
                 new OwnerSummary(i.getOwner().getId(), i.getOwner().getFullName()),
                 i.getCategory() == null ? null : CategoryResponse.from(i.getCategory()),
+                urls,
+                imageDtos,
                 i.getCreatedAt());
     }
 }

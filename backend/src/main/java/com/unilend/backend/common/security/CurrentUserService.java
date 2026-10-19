@@ -26,8 +26,16 @@ public class CurrentUserService {
         if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
             throw new BusinessException(ErrorCode.UNAUTHORIZED);
         }
-        return userRepository.findByEmail(auth.getName())
+        String email = auth.getName();
+        if (email == null || email.isBlank()) {
+            throw new BusinessException(ErrorCode.UNAUTHORIZED);
+        }
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessException(ErrorCode.UNAUTHORIZED));
+        if (!user.isEnabled()) {
+            throw new BusinessException(ErrorCode.UNAUTHORIZED);
+        }
+        return user;
     }
 
     public boolean isAdmin(User user) {

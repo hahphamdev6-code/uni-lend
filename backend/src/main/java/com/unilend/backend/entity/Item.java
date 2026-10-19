@@ -4,6 +4,9 @@ import com.unilend.backend.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "items", indexes = {
         @Index(name = "idx_items_owner", columnList = "owner_id"),
@@ -42,6 +45,11 @@ public class Item extends BaseEntity {
     @Column(nullable = false, length = 20)
     @Builder.Default
     private ItemStatus status = ItemStatus.AVAILABLE;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
+    @Builder.Default
+    private List<ItemImage> images = new ArrayList<>();
 
     public enum ItemStatus {
         AVAILABLE, LENT_OUT, UNAVAILABLE
