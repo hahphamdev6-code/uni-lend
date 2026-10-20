@@ -95,6 +95,7 @@ export default function Home() {
           <a className="nav-link" href="#community">Cộng đồng</a>
         </nav>
         <div className="header-auth-links">
+          <Link className="header-login" href="/quan-ly">Quản lý đồ</Link>
           <Link className="header-login" href="/login">Đăng nhập</Link>
           <Link className="header-cta" href="/register">Đăng ký <Icon name="arrow" size={16} /></Link>
         </div>
