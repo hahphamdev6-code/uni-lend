@@ -22,8 +22,11 @@ export const itemService = {
     return response.data.data;
   },
 
-  async getById(id: number): Promise<Item> {
-    const response = await apiClient.get<ApiResponse<Item>>(`/items/${id}`);
+  async getById(
+    id: number,
+    config?: Pick<AxiosRequestConfig, "signal">,
+  ): Promise<Item> {
+    const response = await apiClient.get<ApiResponse<Item>>(`/items/${id}`, config);
     return response.data.data;
   },
 

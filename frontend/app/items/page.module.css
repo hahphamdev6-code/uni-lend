@@ -200,6 +200,11 @@
   transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
+.itemLink {
+  display: block;
+  height: 100%;
+}
+
 .itemCard:hover {
   transform: translateY(-3px);
   border-color: #cfe3f4;
@@ -213,6 +218,15 @@
   place-items: center;
   overflow: hidden;
   background: #e2f1ff;
+}
+
+.cardImage {
+  object-fit: cover;
+  transition: transform 180ms ease;
+}
+
+.itemCard:hover .cardImage {
+  transform: scale(1.04);
 }
 
 .itemArtwork::before {

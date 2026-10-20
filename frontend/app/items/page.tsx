@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { categoryService } from "../../lib/api/categoryService";
 import { itemService } from "../../lib/api/itemService";
@@ -19,29 +20,44 @@ function ItemCard({ item }: { item: Item }) {
 
   return (
     <article className={styles.itemCard}>
-      <div className={styles.itemArtwork} aria-hidden="true">
-        <span className={styles.statusBadge}>
-          <span className={item.status === "AVAILABLE" ? styles.availableDot : styles.unavailableDot} />
-          {statusLabel}
-        </span>
-        <svg viewBox="0 0 64 64" fill="none">
-          <path d="m32 9 23 12.5v21L32 55 9 42.5v-21L32 9Z" />
-          <path d="m9 21.5 23 13 23-13M32 34.5V55m-11-40 23 13" />
-        </svg>
-        <span className={styles.artworkCircle} />
-      </div>
-      <div className={styles.itemDetails}>
-        <span className={styles.category}>{item.category?.name ?? "Chưa phân loại"}</span>
-        <h2>{item.title}</h2>
-        {item.description && <p className={styles.description}>{item.description}</p>}
-        <div className={styles.owner}>
-          <span className={styles.avatar} aria-hidden="true">
-            {item.owner.fullName.trim().slice(0, 1).toLocaleUpperCase("vi")}
+      <Link className={styles.itemLink} href={`/items/${item.id}`} aria-label={`Xem chi tiết ${item.title}`}>
+        <div className={styles.itemArtwork}>
+          {item.images?.[0] ? (
+            <Image
+              alt={item.title}
+              className={styles.cardImage}
+              src={item.images[0]}
+              fill
+              sizes="(max-width: 560px) 100vw, (max-width: 800px) 50vw, 33vw"
+              unoptimized
+            />
+          ) : (
+            <>
+              <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="m32 9 23 12.5v21L32 55 9 42.5v-21L32 9Z" />
+                <path d="m9 21.5 23 13 23-13M32 34.5V55m-11-40 23 13" />
+              </svg>
+              <span className={styles.artworkCircle} />
+            </>
+          )}
+          <span className={styles.statusBadge}>
+            <span className={item.status === "AVAILABLE" ? styles.availableDot : styles.unavailableDot} />
+            {statusLabel}
           </span>
-          <span>{item.owner.fullName}</span>
-          <span className={styles.ownerCaption}>· Sinh viên</span>
         </div>
-      </div>
+        <div className={styles.itemDetails}>
+          <span className={styles.category}>{item.category?.name ?? "Chưa phân loại"}</span>
+          <h2>{item.title}</h2>
+          {item.description && <p className={styles.description}>{item.description}</p>}
+          <div className={styles.owner}>
+            <span className={styles.avatar} aria-hidden="true">
+              {item.owner.fullName.trim().slice(0, 1).toLocaleUpperCase("vi")}
+            </span>
+            <span>{item.owner.fullName}</span>
+            <span className={styles.ownerCaption}>· Sinh viên</span>
+          </div>
+        </div>
+      </Link>
     </article>
   );
 }
