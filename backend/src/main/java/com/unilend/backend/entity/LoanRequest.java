@@ -60,7 +60,7 @@ public class LoanRequest extends BaseEntity {
     private Instant returnedAt;
 
     public enum LoanStatus {
-        PENDING, APPROVED, REJECTED, RETURNED, CANCELLED
+        PENDING, APPROVED, REJECTED, RETURNED, CANCELLED, OVERDUE
     }
 
     @Override

@@ -65,4 +65,15 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
               AND l.dueDate < :today
             """)
     Page<LoanRequest> findOverdue(@Param("today") LocalDate today, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"borrower", "item"})
+    @Query("""
+            SELECT l FROM LoanRequest l
+            WHERE l.status = com.unilend.backend.entity.LoanRequest.LoanStatus.APPROVED
+              AND l.dueDate = :dueDate
+            """)
+    Page<LoanRequest> findDueOn(
+            @Param("dueDate") LocalDate dueDate,
+            Pageable pageable
+    );
 }
