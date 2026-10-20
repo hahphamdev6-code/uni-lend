@@ -23,20 +23,19 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
     @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
     @Query("SELECT l FROM LoanRequest l WHERE l.id = :id")
     Optional<LoanRequest> findWithDetailsByIdForUpdate(@Param("id") Long id);
-
     @EntityGraph(attributePaths = {"item", "item.owner"})
     Page<LoanRequest> findByBorrowerId(Long borrowerId, Pageable pageable);
 
     @EntityGraph(attributePaths = {"item", "item.owner"})
     Page<LoanRequest> findByBorrowerIdAndStatus(Long borrowerId, LoanStatus status, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"item", "borrower","item.owner"})
+    @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
     Page<LoanRequest> findByItemOwnerId(Long ownerId, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"item", "borrower","item.owner"})
+    @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
     Page<LoanRequest> findByItemOwnerIdAndStatus(Long ownerId, LoanStatus status, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"borrower","item.owner"})
+    @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
     Page<LoanRequest> findByItemId(Long itemId, Pageable pageable);
 
     boolean existsByItemIdAndBorrowerIdAndStatus(Long itemId, Long borrowerId, LoanStatus status);
@@ -52,7 +51,7 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
                                       @Param("from") LocalDate from,
                                       @Param("to") LocalDate to);
 
-    @EntityGraph(attributePaths = {"item", "borrower","item.owner"})
+    @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
     @Query("""
             SELECT l FROM LoanRequest l
             WHERE l.status = com.unilend.backend.entity.LoanRequest.LoanStatus.APPROVED

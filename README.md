@@ -96,8 +96,9 @@ The account must already exist, be enabled, and have a BCrypt-encoded password
 in the database. Registration is not currently provided. Send the returned
 token in the `Authorization` header as `Bearer <token>` for authenticated
 endpoints.
-
-Unauthenticated access is limited to `GET /categories`, `GET /categories/{id}`,
-`GET /items`, and `GET /items/{id}`. Other endpoints require a valid bearer
-token. Item ownership and admin role checks continue to use the user record in
-the database.
+Unauthenticated access is limited to `POST /api/auth/login`, public item and
+category GET endpoints, and `GET /uploads/**` for displaying item images. Other
+endpoints require a valid bearer token. Tokens must have a valid HS256
+signature, issuer (default `http://unilend.local`), and expiration, and their
+`sub` claim must match the user's email in the database. Item ownership and
+admin role checks continue to use the user record in the database.
