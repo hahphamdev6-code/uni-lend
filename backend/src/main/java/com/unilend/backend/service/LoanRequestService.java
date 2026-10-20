@@ -3,6 +3,7 @@ package com.unilend.backend.service;
 import com.unilend.backend.common.exception.BusinessException;
 import com.unilend.backend.common.exception.ErrorCode;
 import com.unilend.backend.common.exception.ResourceNotFoundException;
+import com.unilend.backend.common.response.PageResponse;
 import com.unilend.backend.dto.loan.LoanRequestCreateRequest;
 import com.unilend.backend.dto.loan.LoanRequestResponse;
 import com.unilend.backend.entity.Item;
@@ -74,7 +75,7 @@ public class LoanRequestService {
 
     @Transactional
     public LoanRequestResponse approve(Long loanId, User actor) {
-        LoanRequest loan = findLoan(loanId);
+        LoanRequest loan = findLoanForUpdate(loanId);
         requireOwner(loan, actor);
         requirePending(loan);
 
@@ -96,7 +97,7 @@ public class LoanRequestService {
 
     @Transactional
     public LoanRequestResponse reject(Long loanId, User actor) {
-        LoanRequest loan = findLoan(loanId);
+        LoanRequest loan = findLoanForUpdate(loanId);
         requireOwner(loan, actor);
         requirePending(loan);
 
@@ -107,7 +108,7 @@ public class LoanRequestService {
 
     @Transactional
     public LoanRequestResponse cancel(Long loanId, User actor) {
-        LoanRequest loan = findLoan(loanId);
+        LoanRequest loan = findLoanForUpdate(loanId);
         requireBorrower(loan, actor);
         requirePending(loan);
 
@@ -117,7 +118,7 @@ public class LoanRequestService {
 
     @Transactional
     public LoanRequestResponse markReturned(Long loanId, User actor) {
-        LoanRequest loan = findLoan(loanId);
+        LoanRequest loan = findLoanForUpdate(loanId);
         requireOwner(loan, actor);
         if (loan.getStatus() != LoanStatus.APPROVED) {
             throw new BusinessException(ErrorCode.CONFLICT, "Chỉ xác nhận trả được với khoản mượn đã duyệt");
@@ -135,21 +136,21 @@ public class LoanRequestService {
     }
 
     @Transactional(readOnly = true)
-    public Page<LoanRequestResponse> getMyRequests(User borrower, LoanStatus status, Pageable pageable) {
+    public PageResponse<LoanRequestResponse> getMyRequests(User borrower, LoanStatus status, Pageable pageable) {
         Pageable boundedPageable = boundedPageable(pageable);
         Page<LoanRequest> page = (status == null)
                 ? loanRequestRepository.findByBorrowerId(borrower.getId(), boundedPageable)
                 : loanRequestRepository.findByBorrowerIdAndStatus(borrower.getId(), status, boundedPageable);
-        return page.map(LoanRequestResponse::from);
+        return PageResponse.from(page, LoanRequestResponse::from);
     }
 
     @Transactional(readOnly = true)
-    public Page<LoanRequestResponse> getIncomingRequests(User owner, LoanStatus status, Pageable pageable) {
+    public PageResponse<LoanRequestResponse> getIncomingRequests(User owner, LoanStatus status, Pageable pageable) {
         Pageable boundedPageable = boundedPageable(pageable);
         Page<LoanRequest> page = (status == null)
                 ? loanRequestRepository.findByItemOwnerId(owner.getId(), boundedPageable)
                 : loanRequestRepository.findByItemOwnerIdAndStatus(owner.getId(), status, boundedPageable);
-        return page.map(LoanRequestResponse::from);
+        return PageResponse.from(page, LoanRequestResponse::from);
     }
 
     @Transactional(readOnly = true)
@@ -164,12 +165,13 @@ public class LoanRequestService {
     }
 
     @Transactional(readOnly = true)
-    public Page<LoanRequestResponse> getOverdue(User actor, Pageable pageable) {
+    public PageResponse<LoanRequestResponse> getOverdue(User actor, Pageable pageable) {
         if (!isAdmin(actor)) {
             throw new BusinessException(ErrorCode.FORBIDDEN);
         }
-        return loanRequestRepository.findOverdue(LocalDate.now(), boundedPageable(pageable))
-                .map(LoanRequestResponse::from);
+        return PageResponse.from(
+                loanRequestRepository.findOverdue(LocalDate.now(), boundedPageable(pageable)),
+                LoanRequestResponse::from);
     }
 
     private Pageable boundedPageable(Pageable pageable) {
@@ -183,6 +185,11 @@ public class LoanRequestService {
 
     private LoanRequest findLoan(Long loanId) {
         return loanRequestRepository.findWithDetailsById(loanId)
+                .orElseThrow(() -> new ResourceNotFoundException("LoanRequest", loanId));
+    }
+
+    private LoanRequest findLoanForUpdate(Long loanId) {
+        return loanRequestRepository.findWithDetailsByIdForUpdate(loanId)
                 .orElseThrow(() -> new ResourceNotFoundException("LoanRequest", loanId));
     }
 
