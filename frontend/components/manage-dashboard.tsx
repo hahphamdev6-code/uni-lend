@@ -12,6 +12,8 @@ import {
   type MarketplaceItem,
   type MarketplaceRequest,
 } from "../lib/marketplace";
+import { ManageSkeleton } from "./page-skeleton";
+import { ConfirmationDialog, ToastNotice } from "./ui-feedback";
 
 type Tab = "items" | "sent" | "received";
 type Confirmation = { title: string; message: string; confirmLabel: string; action: () => void };
@@ -109,7 +111,7 @@ export function ManageDashboard() {
     showToast(status === "APPROVED" ? "Đã duyệt yêu cầu mượn." : status === "REJECTED" ? "Đã từ chối yêu cầu." : status === "RETURNED" ? "Đã xác nhận món đồ được trả." : "Đã hủy yêu cầu mượn.");
   }
 
-  if (!ready) return <main className="manage-loading">Đang tải không gian của bạn...</main>;
+  if (!ready) return <ManageSkeleton />;
 
   return (
     <main className="manage-page">
@@ -149,7 +151,7 @@ export function ManageDashboard() {
               <div className="managed-item-details"><span className="managed-item-category">{item.category}</span><h3>{item.title}</h3><p>{item.description || "Chưa có mô tả cho món đồ này."}</p></div>
               <ItemBadge status={item.status} />
               <Link className="icon-link" href={`/quan-ly/${item.id}/sua`} aria-label={`Sửa ${item.title}`} title="Sửa món đồ">↗</Link>
-            </article>)}</div> : <div className="manage-empty"><span>⌕</span><h3>Chưa có món đồ phù hợp</h3><p>Thử một từ khóa khác hoặc đăng món đồ đầu tiên của bạn.</p><Link href="/quan-ly/dang-moi">Đăng đồ mới</Link></div>
+            </article>)}</div> : <div className="manage-empty" role="status"><span>⌕</span><h3>{items.length ? "Chưa có món đồ phù hợp" : "Bạn chưa đăng món đồ nào"}</h3><p>{items.length ? "Thử từ khóa khác để tìm món đồ trong bộ sưu tập." : "Chia sẻ món đồ đầu tiên để bắt đầu kết nối với cộng đồng."}</p><Link href="/quan-ly/dang-moi">Đăng đồ mới</Link></div>
           ) : activeRequests.length ? <div className="request-list">{activeRequests.map((request) => <article className="request-card" key={request.id}>
             <div className="request-card-top"><div className="request-item-mark">{request.itemTitle.slice(0, 1)}</div><div className="request-item-heading"><span>{tab === "sent" ? "CHỦ MÓN ĐỒ" : "NGƯỜI MƯỢN"}</span><h3>{request.itemTitle}</h3></div><RequestBadge request={request} /></div>
             <div className="request-person"><span className="avatar">{(tab === "sent" ? request.owner : request.borrower).split(" ").map((part) => part[0]).slice(-2).join("")}</span><span>{tab === "sent" ? request.owner : request.borrower}</span><span className="person-caption">· {tab === "sent" ? "Chủ món đồ" : "Sinh viên"}</span></div>
@@ -160,13 +162,13 @@ export function ManageDashboard() {
               {tab === "received" && request.status === "APPROVED" && <button className="small-primary-button" type="button" onClick={() => askToConfirm("Xác nhận đã trả đồ?", `Xác nhận “${request.itemTitle}” đã được trả lại.`, "Đã nhận lại đồ", () => updateRequest(request.id, "RETURNED"))}>Đã trả</button>}
               {tab === "sent" && request.status === "PENDING" && <button className="text-action reject-action" type="button" onClick={() => askToConfirm("Hủy yêu cầu mượn?", `Yêu cầu mượn “${request.itemTitle}” sẽ bị hủy.`, "Hủy yêu cầu", () => updateRequest(request.id, "CANCELLED"))}>Hủy yêu cầu</button>}
             </div></div>
-          </article>)}</div> : <div className="manage-empty"><span>⌕</span><h3>Chưa có yêu cầu nào</h3><p>Khi có cập nhật mới, danh sách sẽ hiển thị tại đây.</p></div>}
+          </article>)}</div> : <div className="manage-empty" role="status"><span>⌕</span><h3>Chưa có yêu cầu nào</h3><p>Khi có cập nhật mới, danh sách sẽ hiển thị tại đây.</p></div>}
         </section>
         <footer className="manage-footer"><span>UNILEND · DÙNG CHUNG, VUI HƠN MỖI NGÀY</span><Link href="/">Quay lại khám phá ↗</Link></footer>
       </div>
 
-      {confirmation && <div className="modal-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) setConfirmation(null); }}><section className="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title"><span className="confirm-modal-mark">?</span><h2 id="confirm-title">{confirmation.title}</h2><p>{confirmation.message}</p><div className="confirm-actions"><button className="secondary-button" type="button" onClick={() => setConfirmation(null)}>Để sau</button><button className="primary-button" type="button" onClick={confirmation.action}>{confirmation.confirmLabel}</button></div></section></div>}
-      {toast && <div className="toast-message" role="status"><span aria-hidden="true">✓</span>{toast}<button type="button" aria-label="Đóng thông báo" onClick={() => setToast("")}>×</button></div>}
+      {confirmation && <ConfirmationDialog title={confirmation.title} message={confirmation.message} confirmLabel={confirmation.confirmLabel} onCancel={() => setConfirmation(null)} onConfirm={confirmation.action} />}
+      {toast && <ToastNotice message={toast} onDismiss={() => setToast("")} />}
     </main>
   );
 }

@@ -201,7 +201,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <div className="empty-state">
+          <div className="empty-state" role="status">
             <span className="empty-icon"><Icon name="search" size={28} /></span>
             <h3>Chưa tìm thấy món đồ phù hợp</h3>
             <p>Thử từ khóa khác hoặc chọn một danh mục khác nhé.</p>

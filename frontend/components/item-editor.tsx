@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { loadItems, saveItems, type ItemStatus, type MarketplaceItem } from "../lib/marketplace";
+import { ItemEditorSkeleton } from "./page-skeleton";
 
 type Values = { title: string; description: string; category: string; status: ItemStatus };
 type Field = keyof Values;
@@ -62,7 +63,7 @@ export function ItemEditor({ itemId }: { itemId?: string }) {
     router.push("/quan-ly?tab=items");
   }
 
-  if (!ready) return <main className="manage-loading">Đang tải món đồ...</main>;
+  if (!ready) return <ItemEditorSkeleton />;
   if (itemId && !loadItems().some((item) => item.id === itemId)) {
     return <main className="manage-loading"><p>Không tìm thấy món đồ này.</p><Link href="/quan-ly">Quay lại quản lý</Link></main>;
   }
