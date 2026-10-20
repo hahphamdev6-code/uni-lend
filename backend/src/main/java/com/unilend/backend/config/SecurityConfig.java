@@ -57,9 +57,11 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         // Mở dần các endpoint public khác ở đây, ví dụ:
                         .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/items/me").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/items/me", "/api/users/me", "/users/me").authenticated()
                         .requestMatchers(HttpMethod.GET,
-                                "/api/categories", "/api/categories/*", "/api/items", "/api/items/*").permitAll()
+                                "/api/categories", "/api/categories/*",
+                                "/api/items", "/api/items/*",
+                                "/api/users/*/reviews", "/users/*/reviews").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((req, res, e) -> writeError(res, ErrorCode.UNAUTHORIZED))

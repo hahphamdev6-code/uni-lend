@@ -14,6 +14,8 @@ public record AuthResponse(
         String email,
         String fullName,
         Set<String> roles,
+        Double averageRating,
+        Long reviewCount,
         String tokenType,
         String token
 ) {
@@ -24,16 +26,24 @@ public record AuthResponse(
                 user.getEmail(),
                 user.getFullName(),
                 Set.copyOf(user.getRoles()),
+                null,
+                null,
                 "Bearer",
                 token);
     }
 
     public static AuthResponse of(User user) {
+        return of(user, 0.0, 0L);
+    }
+
+    public static AuthResponse of(User user, Double averageRating, Long reviewCount) {
         return new AuthResponse(
                 user.getId(),
                 user.getEmail(),
                 user.getFullName(),
                 Set.copyOf(user.getRoles()),
+                averageRating,
+                reviewCount,
                 null,
                 null);
     }

@@ -25,6 +25,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final CurrentUserService currentUserService;
+    private final ReviewService reviewService;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -63,7 +64,10 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public AuthResponse getCurrentUser() {
-        return AuthResponse.of(currentUserService.getCurrentUser());
+        User user = currentUserService.getCurrentUser();
+        double avgRating = reviewService.getAverageRating(user.getId());
+        long reviewCount = reviewService.getReviewCount(user.getId());
+        return AuthResponse.of(user, avgRating, reviewCount);
     }
 
     private String normalize(String email) {
