@@ -162,7 +162,7 @@ export default function Home() {
             <h2>Món đồ đang được sẻ chia</h2>
             <p>Tìm cảm hứng cho lần mượn — hoặc lần chia sẻ tiếp theo của bạn.</p>
           </div>
-          <a className="text-link" href="#how-it-works">Cách tham gia <Icon name="arrow" size={17} /></a>
+          <Link className="text-link" href="/items">Xem danh sách đồ <Icon name="arrow" size={17} /></Link>
         </div>
 
         <div className="catalogue-toolbar">

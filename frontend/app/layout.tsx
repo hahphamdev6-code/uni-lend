@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ApiErrorNotice } from "../components/api-error-notice";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -10,7 +11,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="vi">
-      <body>{children}</body>
+      <body>
+        {children}
+        <ApiErrorNotice />
+      </body>
     </html>
   );
 }
