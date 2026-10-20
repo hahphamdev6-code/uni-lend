@@ -1,11 +1,14 @@
+export type UserRole = "USER" | "ADMIN";
+
 export type UserProfile = {
   id: string;
   fullName: string;
   email: string;
   createdAt: string;
+  roles: UserRole[];
 };
 
-type StoredUser = UserProfile & { password: string };
+type StoredUser = Omit<UserProfile, "roles"> & { roles?: UserRole[]; password: string };
 
 const USERS_KEY = "unilend.mock.users";
 const SESSION_KEY = "unilend.mock.session";
@@ -25,7 +28,10 @@ function isStoredUser(value: unknown): value is StoredUser {
     typeof value.password === "string" &&
     "createdAt" in value &&
     typeof value.createdAt === "string" &&
-    !Number.isNaN(Date.parse(value.createdAt))
+    !Number.isNaN(Date.parse(value.createdAt)) &&
+    (!("roles" in value) ||
+      (Array.isArray(value.roles) &&
+        value.roles.every((role) => role === "USER" || role === "ADMIN")))
   );
 }
 
@@ -81,6 +87,7 @@ export function registerUser(input: {
     email,
     password: input.password,
     createdAt: new Date().toISOString(),
+    roles: ["USER"],
   };
 
   localStorage.setItem(USERS_KEY, JSON.stringify([...users, user]));
@@ -99,6 +106,7 @@ export function loginUser(emailInput: string, password: string): UserProfile {
     fullName: user.fullName,
     email: user.email,
     createdAt: user.createdAt,
+    roles: user.roles ?? ["USER"],
   };
 
   localStorage.setItem(SESSION_KEY, JSON.stringify(profile));
@@ -132,6 +140,7 @@ export function getCurrentUser(): UserProfile | null {
       fullName: user.fullName,
       email: user.email,
       createdAt: user.createdAt,
+      roles: user.roles ?? ["USER"],
     };
   } catch (error) {
     if (error instanceof MockAuthError) throw error;

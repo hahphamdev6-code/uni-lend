@@ -119,6 +119,19 @@ function friendlyMessage(statusCode?: number, serverMessage?: string): string {
   }
 }
 
+function handleAuthorizationFailure(statusCode: number | undefined, message: string): void {
+  if (typeof window === "undefined") return;
+
+  if (statusCode === 401) {
+    clearAuthToken();
+    if (window.location.pathname !== "/login") {
+      window.location.replace("/login");
+    }
+  } else if (statusCode === 403) {
+    window.dispatchEvent(new CustomEvent(API_ERROR_EVENT, { detail: { message } }));
+  }
+}
+
 apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = getAuthToken();
   if (token) config.headers.set("Authorization", `Bearer ${token}`);
@@ -139,10 +152,12 @@ apiClient.interceptors.response.use(
       };
 
       if (!normalizedResponse.success) {
-        throw new ApiClientError(
-          friendlyMessage(normalizedResponse.statusCode, normalizedResponse.message),
+        const message = friendlyMessage(
           normalizedResponse.statusCode,
+          normalizedResponse.message,
         );
+        handleAuthorizationFailure(normalizedResponse.statusCode, message);
+        throw new ApiClientError(message, normalizedResponse.statusCode);
       }
 
       response.data = normalizedResponse;
@@ -154,13 +169,6 @@ apiClient.interceptors.response.use(
     const statusCode = error.response?.status;
     const serverMessage = responseMessage(error.response?.data);
 
-    if (statusCode === 401 && typeof window !== "undefined") {
-      clearAuthToken();
-      if (window.location.pathname !== "/login") {
-        window.location.replace("/login");
-      }
-    }
-
     const message =
       statusCode === undefined
         ? axios.isCancel(error)
@@ -168,9 +176,7 @@ apiClient.interceptors.response.use(
           : "Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng."
         : friendlyMessage(statusCode, serverMessage);
 
-    if (statusCode === 403 && typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent(API_ERROR_EVENT, { detail: { message } }));
-    }
+    handleAuthorizationFailure(statusCode, message);
 
     return Promise.reject(new ApiClientError(message, statusCode));
   },

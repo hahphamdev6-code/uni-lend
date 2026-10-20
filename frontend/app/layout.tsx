@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ApiErrorNotice } from "../components/api-error-notice";
+import { AuthProvider } from "../components/auth-provider";
 import { NotificationsProvider } from "../components/notifications-provider";
 import "./globals.css";
 
@@ -13,10 +14,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="vi">
       <body>
-        <NotificationsProvider>
-          {children}
-          <ApiErrorNotice />
-        </NotificationsProvider>
+        <AuthProvider>
+          <NotificationsProvider>
+            {children}
+            <ApiErrorNotice />
+          </NotificationsProvider>
+        </AuthProvider>
       </body>
     </html>
   );
