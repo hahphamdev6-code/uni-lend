@@ -9,6 +9,7 @@ import com.unilend.backend.entity.Item;
 import com.unilend.backend.entity.Item.ItemStatus;
 import com.unilend.backend.entity.LoanRequest;
 import com.unilend.backend.entity.LoanRequest.LoanStatus;
+import com.unilend.backend.entity.Notification.NotificationType;
 import com.unilend.backend.entity.User;
 import com.unilend.backend.repository.ItemRepository;
 import com.unilend.backend.repository.LoanRequestRepository;
@@ -34,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,6 +52,9 @@ class LoanRequestServiceTest {
 
     @Mock
     private EntityManager entityManager;
+
+    @Mock
+    private NotificationService notificationService;
 
     @InjectMocks
     private LoanRequestService service;
@@ -93,6 +98,7 @@ class LoanRequestServiceTest {
         assertEquals(10L, response.item().id());
         assertEquals(2L, response.borrower().id());
         assertEquals(1L, response.owner().id());
+        verify(notificationService).notify(eq(1L), eq(NotificationType.LOAN_CREATED), anyString(), eq("/loans/100"));
     }
 
     @Test
@@ -164,6 +170,7 @@ class LoanRequestServiceTest {
         assertEquals(ItemStatus.LENT_OUT, item.getStatus());
         verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
         verify(entityManager).refresh(item, LockModeType.PESSIMISTIC_WRITE);
+        verify(notificationService).notify(eq(2L), eq(NotificationType.LOAN_APPROVED), anyString(), eq("/loans/100"));
     }
 
     @Test
@@ -206,6 +213,7 @@ class LoanRequestServiceTest {
         assertNotNull(loan.getRespondedAt());
         assertEquals(ItemStatus.AVAILABLE, item.getStatus());
         verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
+        verify(notificationService).notify(eq(2L), eq(NotificationType.LOAN_REJECTED), anyString(), eq("/loans/100"));
     }
 
     @Test
@@ -223,6 +231,7 @@ class LoanRequestServiceTest {
 
         assertEquals(LoanStatus.CANCELLED, response.status());
         verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
+        verify(notificationService).notify(eq(1L), eq(NotificationType.LOAN_CANCELLED), anyString(), eq("/loans/100"));
     }
 
     @Test
@@ -250,6 +259,7 @@ class LoanRequestServiceTest {
         assertNotNull(loan.getReturnedAt());
         assertEquals(ItemStatus.AVAILABLE, item.getStatus());
         verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
+        verify(notificationService).notify(eq(2L), eq(NotificationType.LOAN_RETURNED), anyString(), eq("/loans/100"));
     }
 
     @Test

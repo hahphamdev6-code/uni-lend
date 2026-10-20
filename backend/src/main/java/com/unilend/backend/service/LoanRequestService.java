@@ -10,6 +10,7 @@ import com.unilend.backend.entity.Item;
 import com.unilend.backend.entity.Item.ItemStatus;
 import com.unilend.backend.entity.LoanRequest;
 import com.unilend.backend.entity.LoanRequest.LoanStatus;
+import com.unilend.backend.entity.Notification.NotificationType;
 import com.unilend.backend.entity.User;
 import com.unilend.backend.repository.ItemRepository;
 import com.unilend.backend.repository.LoanRequestRepository;
@@ -34,6 +35,7 @@ public class LoanRequestService {
     private final LoanRequestRepository loanRequestRepository;
     private final ItemRepository itemRepository;
     private final EntityManager entityManager;
+    private final NotificationService notificationService;
 
     @Transactional
     public LoanRequestResponse create(User borrower, LoanRequestCreateRequest req) {
@@ -70,7 +72,14 @@ public class LoanRequestService {
                 .note(req.note())
                 .build();
 
-        return LoanRequestResponse.from(loanRequestRepository.save(loan));
+        LoanRequest saved = loanRequestRepository.save(loan);
+        notificationService.notify(
+                item.getOwner().getId(),
+                NotificationType.LOAN_CREATED,
+                "%s đã gửi yêu cầu mượn món đồ \"%s\"".formatted(borrower.getFullName(), item.getTitle()),
+                "/loans/" + saved.getId()
+        );
+        return LoanRequestResponse.from(saved);
     }
 
     @Transactional
@@ -92,6 +101,13 @@ public class LoanRequestService {
         loan.setStatus(LoanStatus.APPROVED);
         loan.setRespondedAt(Instant.now());
         item.setStatus(ItemStatus.LENT_OUT);
+
+        notificationService.notify(
+                loan.getBorrower().getId(),
+                NotificationType.LOAN_APPROVED,
+                "Yêu cầu mượn món đồ \"%s\" của bạn đã được duyệt".formatted(item.getTitle()),
+                "/loans/" + loan.getId()
+        );
         return LoanRequestResponse.from(loan);
     }
 
@@ -103,6 +119,13 @@ public class LoanRequestService {
 
         loan.setStatus(LoanStatus.REJECTED);
         loan.setRespondedAt(Instant.now());
+
+        notificationService.notify(
+                loan.getBorrower().getId(),
+                NotificationType.LOAN_REJECTED,
+                "Yêu cầu mượn món đồ \"%s\" của bạn đã bị từ chối".formatted(loan.getItem().getTitle()),
+                "/loans/" + loan.getId()
+        );
         return LoanRequestResponse.from(loan);
     }
 
@@ -113,6 +136,13 @@ public class LoanRequestService {
         requirePending(loan);
 
         loan.setStatus(LoanStatus.CANCELLED);
+
+        notificationService.notify(
+                loan.getItem().getOwner().getId(),
+                NotificationType.LOAN_CANCELLED,
+                "%s đã hủy yêu cầu mượn món đồ \"%s\"".formatted(loan.getBorrower().getFullName(), loan.getItem().getTitle()),
+                "/loans/" + loan.getId()
+        );
         return LoanRequestResponse.from(loan);
     }
 
@@ -132,6 +162,13 @@ public class LoanRequestService {
         if (item.getStatus() == ItemStatus.LENT_OUT) {
             item.setStatus(ItemStatus.AVAILABLE);
         }
+
+        notificationService.notify(
+                loan.getBorrower().getId(),
+                NotificationType.LOAN_RETURNED,
+                "Chủ đồ đã xác nhận bạn đã trả món đồ \"%s\"".formatted(item.getTitle()),
+                "/loans/" + loan.getId()
+        );
         return LoanRequestResponse.from(loan);
     }
 
