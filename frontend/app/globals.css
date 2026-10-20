@@ -1184,6 +1184,52 @@ input:focus-visible {
   width: 100%;
 }
 
+.profile-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.profile-secondary-link {
+  border: 1px solid #c9def1;
+  background: #fff;
+  color: var(--green-dark);
+}
+
+.profile-secondary-link:hover {
+  background: #eff8ff;
+}
+
+.profile-edit-section {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.profile-edit-section h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+}
+
+.profile-edit-back {
+  display: inline-flex;
+  margin-top: 22px;
+  color: var(--green-dark);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-success {
+  margin: 0;
+  padding: 11px 12px;
+  border: 1px solid #cce6d5;
+  border-radius: 8px;
+  background: #f0faf4;
+  color: #27633b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
 .profile-page .auth-disclaimer {
   margin-top: 20px;
 }

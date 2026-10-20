@@ -139,6 +139,61 @@ export function getCurrentUser(): UserProfile | null {
   }
 }
 
+export function updateCurrentUser(input: { fullName: string; email: string }): UserProfile {
+  const currentUser = getCurrentUser();
+  if (!currentUser) {
+    throw new MockAuthError("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+  }
+
+  const fullName = input.fullName.trim();
+  const email = input.email.trim().toLocaleLowerCase("vi");
+  const users = readUsers();
+
+  if (users.some((user) => user.id !== currentUser.id && user.email === email)) {
+    throw new MockAuthError("Email này đã được sử dụng bởi một tài khoản khác.");
+  }
+
+  const updatedUsers = users.map((user) =>
+    user.id === currentUser.id ? { ...user, fullName, email } : user,
+  );
+  const updatedProfile: UserProfile = {
+    ...currentUser,
+    fullName,
+    email,
+  };
+
+  localStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
+  localStorage.setItem(SESSION_KEY, JSON.stringify(updatedProfile));
+  window.dispatchEvent(new Event(AUTH_CHANGE_EVENT));
+  return updatedProfile;
+}
+
+export function changeCurrentUserPassword(input: {
+  currentPassword: string;
+  newPassword: string;
+}): void {
+  const currentUser = getCurrentUser();
+  if (!currentUser) {
+    throw new MockAuthError("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+  }
+
+  const users = readUsers();
+  const user = users.find((candidate) => candidate.id === currentUser.id);
+  if (!user || user.password !== input.currentPassword) {
+    throw new MockAuthError("Mật khẩu hiện tại chưa chính xác.");
+  }
+
+  const updatedUsers = users.map((candidate) =>
+    candidate.id === currentUser.id
+      ? { ...candidate, password: input.newPassword }
+      : candidate,
+  );
+
+  localStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
+  window.dispatchEvent(new Event(AUTH_CHANGE_EVENT));
+}
+
 export function logoutUser(): void {
   localStorage.removeItem(SESSION_KEY);
+  window.dispatchEvent(new Event(AUTH_CHANGE_EVENT));
 }

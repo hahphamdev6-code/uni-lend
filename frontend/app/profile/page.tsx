@@ -82,7 +82,10 @@ export default function ProfilePage() {
             <dd>{user ? new Intl.DateTimeFormat("vi-VN", { day: "numeric", month: "long", year: "numeric" }).format(new Date(user.createdAt)) : ""}</dd>
           </div>
         </dl>
-        <Link className="profile-home-link" href="/">Khám phá món đồ</Link>
+        <div className="profile-actions">
+          <Link className="profile-home-link" href="/profile/edit">Sửa thông tin hồ sơ</Link>
+          <Link className="profile-home-link profile-secondary-link" href="/">Khám phá món đồ</Link>
+        </div>
       </section>
       <p className="auth-disclaimer">Hồ sơ thử nghiệm — dữ liệu chỉ lưu trên trình duyệt này. Không sử dụng mật khẩu thật.</p>
     </main>
