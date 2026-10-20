@@ -2,6 +2,7 @@ package com.unilend.backend.common.security;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -14,6 +15,7 @@ import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SecurityConfigTest {
 
@@ -48,6 +50,14 @@ class SecurityConfigTest {
         assertThrows(IllegalStateException.class, () -> securityConfig.jwtSigningKey("not-base64"));
         assertThrows(IllegalStateException.class, () -> securityConfig.jwtSigningKey(
                 Base64.getEncoder().encodeToString("short-key".getBytes())));
+    }
+
+    @Test
+    void corsConfigurationAllowsPatchRequests() {
+        var corsConfiguration = securityConfig.corsConfigurationSource("http://localhost:3000")
+                .getCorsConfiguration(new MockHttpServletRequest("PATCH", "/api/users/me"));
+
+        assertTrue(corsConfiguration.getAllowedMethods().contains("PATCH"));
     }
 
     @Test

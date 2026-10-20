@@ -5,6 +5,7 @@ frontend/out/
 
 # Backend
 backend/target/
+uploads/
 
 # Environment
 .env
