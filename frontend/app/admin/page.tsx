@@ -13,6 +13,8 @@ export default function AdminPage() {
         <h1>Quản trị UniLend</h1>
         <p>Bạn đã đăng nhập với quyền quản trị.</p>
         <div className={styles.actions}>
+          <Link href="/admin/users">Quản lý người dùng</Link>
+          <Link href="/admin/categories">Quản lý danh mục</Link>
           <Link href="/admin/items">Quản lý đồ</Link>
           <Link href="/">Khám phá trang chủ</Link>
         </div>
