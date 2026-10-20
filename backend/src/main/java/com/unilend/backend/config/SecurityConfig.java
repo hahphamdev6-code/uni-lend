@@ -56,8 +56,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers("/error").permitAll()
                         // Mở dần các endpoint public khác ở đây, ví dụ:
-                        // .requestMatchers(HttpMethod.GET, "/items/**", "/categories/**").permitAll()
-                        // .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/items/me").authenticated()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/categories", "/api/categories/*", "/api/items", "/api/items/*").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((req, res, e) -> writeError(res, ErrorCode.UNAUTHORIZED))

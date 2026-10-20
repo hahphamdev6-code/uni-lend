@@ -3,28 +3,31 @@ package com.unilend.backend.service;
 import com.unilend.backend.common.exception.BusinessException;
 import com.unilend.backend.common.exception.ErrorCode;
 import com.unilend.backend.common.exception.ResourceNotFoundException;
+import com.unilend.backend.common.response.PageResponse;
 import com.unilend.backend.dto.category.CategoryRequest;
 import com.unilend.backend.dto.category.CategoryResponse;
 import com.unilend.backend.entity.Category;
 import com.unilend.backend.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
 
+    private static final int MAX_PAGE_SIZE = 50;
+
     private final CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public List<CategoryResponse> findAll() {
-        return categoryRepository.findAll(Sort.by("name")).stream()
-                .map(CategoryResponse::from)
-                .toList();
+    public PageResponse<CategoryResponse> findAll(int page, int size) {
+        return PageResponse.from(
+                categoryRepository.findAll(pageable(page, size)),
+                CategoryResponse::from);
     }
 
     @Transactional(readOnly = true)
@@ -62,6 +65,7 @@ public class CategoryService {
     @Transactional
     public void delete(Long id) {
         Category category = getOrThrow(id);
+        // Nếu còn món đồ thuộc danh mục, FK ở DB sẽ báo lỗi -> GlobalExceptionHandler trả 409.
         categoryRepository.delete(category);
         categoryRepository.flush();
     }
@@ -70,5 +74,12 @@ public class CategoryService {
     public Category getOrThrow(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("danh mục", id));
+    }
+
+    private Pageable pageable(int page, int size) {
+        int safePage = Math.max(page, 0);
+        int safeSize = Math.min(Math.max(size, 1), MAX_PAGE_SIZE);
+        Sort sort = Sort.by(Sort.Direction.ASC, "name", "id");
+        return PageRequest.of(safePage, safeSize, sort);
     }
 }
