@@ -18,6 +18,12 @@
   border-bottom: 1px solid var(--line);
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -225,6 +231,10 @@
 
   .content {
     padding-top: 24px;
+  }
+
+  .headerActions {
+    gap: 8px;
   }
 
   .info h1 {

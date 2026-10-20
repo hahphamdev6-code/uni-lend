@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { NotificationBell } from "../components/notification-bell";
 
 type Category = "Tất cả" | "Học tập" | "Công nghệ" | "Đời sống";
 type ProductIcon = "book" | "camera" | "projector" | "headphones" | "plant" | "calculator";
@@ -95,6 +96,7 @@ export default function Home() {
           <a className="nav-link" href="#community">Cộng đồng</a>
         </nav>
         <div className="header-auth-links">
+          <NotificationBell />
           <Link className="header-login" href="/login">Đăng nhập</Link>
           <Link className="header-cta" href="/register">Đăng ký <Icon name="arrow" size={16} /></Link>
         </div>

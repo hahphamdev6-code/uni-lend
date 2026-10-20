@@ -16,6 +16,12 @@
   border-bottom: 1px solid var(--line);
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -508,6 +514,10 @@
   .navigation a,
   .backLink {
     display: none;
+  }
+
+  .headerActions {
+    gap: 8px;
   }
 
   .content {

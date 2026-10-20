@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { NotificationBell } from "../../../components/notification-bell";
 import { ItemImageGallery } from "../../../components/item-image-gallery";
 import { itemService } from "../../../lib/api/itemService";
 import type { Item } from "../../../lib/api/types";
@@ -46,7 +47,10 @@ export default function ItemDetailsPage() {
           <span className={styles.brandMark} aria-hidden="true">U</span>
           <span>uni<span className={styles.brandAccent}>lend</span></span>
         </Link>
-        <Link className={styles.backLink} href="/items">← Danh sách đồ</Link>
+        <div className={styles.headerActions}>
+          <NotificationBell />
+          <Link className={styles.backLink} href="/items">← Danh sách đồ</Link>
+        </div>
       </header>
 
       <section className={styles.content} aria-live="polite">

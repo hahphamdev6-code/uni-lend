@@ -6,6 +6,7 @@ import type { ApiResponse } from "./types";
 
 export const AUTH_TOKEN_KEY = "unilend.accessToken";
 export const API_ERROR_EVENT = "unilend:api-error";
+export const AUTH_TOKEN_CHANGE_EVENT = "unilend:auth-token-change";
 
 const apiClient = axios.create({
   baseURL: (process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080").replace(/\/$/, ""),
@@ -61,6 +62,7 @@ export function setAuthToken(token: string): void {
   }
 
   window.localStorage.setItem(AUTH_TOKEN_KEY, token);
+  window.dispatchEvent(new Event(AUTH_TOKEN_CHANGE_EVENT));
 }
 
 export function clearAuthToken(): void {
@@ -73,6 +75,7 @@ export function clearAuthToken(): void {
   for (const name of [AUTH_TOKEN_KEY, "accessToken", "token"]) {
     document.cookie = `${encodeURIComponent(name)}=; Max-Age=0; path=/; SameSite=Lax`;
   }
+  window.dispatchEvent(new Event(AUTH_TOKEN_CHANGE_EVENT));
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

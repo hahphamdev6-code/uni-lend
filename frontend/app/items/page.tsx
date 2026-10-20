@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import { NotificationBell } from "../../components/notification-bell";
 import { categoryService } from "../../lib/api/categoryService";
 import { itemService } from "../../lib/api/itemService";
 import type { Category, Item, PageResponse } from "../../lib/api/types";
@@ -172,9 +173,10 @@ export default function ItemsPage() {
           <Link href="/">Trang chủ</Link>
           <span aria-current="page">Danh sách đồ</span>
         </nav>
-        <Link className={styles.backLink} href="/">
-          Về trang chủ
-        </Link>
+        <div className={styles.headerActions}>
+          <NotificationBell />
+          <Link className={styles.backLink} href="/">Về trang chủ</Link>
+        </div>
       </header>
 
       <section className={styles.content} aria-labelledby="page-title">

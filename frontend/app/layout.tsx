@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ApiErrorNotice } from "../components/api-error-notice";
+import { NotificationsProvider } from "../components/notifications-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,8 +13,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="vi">
       <body>
-        {children}
-        <ApiErrorNotice />
+        <NotificationsProvider>
+          {children}
+          <ApiErrorNotice />
+        </NotificationsProvider>
       </body>
     </html>
   );
