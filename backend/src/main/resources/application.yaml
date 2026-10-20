@@ -2,6 +2,10 @@
 spring:
   config:
     import: optional:file:.env
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 26MB
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
@@ -15,6 +19,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 16
 
 
 app:

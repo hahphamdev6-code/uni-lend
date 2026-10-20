@@ -56,6 +56,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers("/error").permitAll()
                         // Mở dần các endpoint public khác ở đây, ví dụ:
+                        .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/items/me").authenticated()
                         .requestMatchers(HttpMethod.GET,
                                 "/api/categories", "/api/categories/*", "/api/items", "/api/items/*").permitAll()
