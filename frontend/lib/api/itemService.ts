@@ -40,6 +40,27 @@ export const itemService = {
     return response.data.data;
   },
 
+  async uploadImages(id: number, files: File[]): Promise<Item> {
+    const formData = new FormData();
+    for (const file of files) {
+      formData.append("files", file);
+    }
+
+    const response = await apiClient.post<ApiResponse<Item>>(
+      `/items/${id}/images`,
+      formData,
+      { headers: { "Content-Type": null } },
+    );
+    return response.data.data;
+  },
+
+  async deleteImage(id: number, imageId: number): Promise<Item> {
+    const response = await apiClient.delete<ApiResponse<Item>>(
+      `/items/${id}/images/${imageId}`,
+    );
+    return response.data.data;
+  },
+
   async delete(id: number): Promise<void> {
     await apiClient.delete<ApiResponse<void>>(`/items/${id}`);
   },

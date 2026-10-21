@@ -12,19 +12,19 @@
 
 .heading h2 {
   margin: 0;
-  color: #12304a;
+  color: var(--ink);
   font-size: 16px;
 }
 
 .heading p {
   margin: 4px 0 0;
-  color: #5e7184;
+  color: var(--muted);
   font-size: 13px;
 }
 
 .imageCount {
   flex: none;
-  color: #5e7184;
+  color: var(--muted);
   font-size: 13px;
 }
 
@@ -40,18 +40,34 @@
   aspect-ratio: 1;
   overflow: hidden;
   margin: 0;
-  border: 1px solid #dce8f2;
+  border: 1px solid var(--line);
   border-radius: 10px;
-  background: #eaf5ff;
+  background: var(--green-soft);
 }
 
-.image {
+.previewImage {
   object-fit: cover;
+}
+
+.previewLabel {
+  position: absolute;
+  z-index: 1;
+  right: 6px;
+  bottom: 6px;
+  left: 6px;
+  overflow: hidden;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--ink) 78%, transparent);
+  color: #fff;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .removeButton {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: 7px;
   right: 7px;
   width: 30px;
@@ -60,8 +76,8 @@
   place-items: center;
   border: 1px solid #ffffffaa;
   border-radius: 50%;
-  background: #12304ae8;
-  color: #ffffff;
+  background: color-mix(in srgb, var(--ink) 88%, transparent);
+  color: #fff;
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
@@ -78,28 +94,30 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
+  padding: 12px;
   border-style: dashed;
-  color: #1766a2;
+  color: var(--green-dark);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: border-color 150ms ease, background 150ms ease;
 }
 
-.addTile:hover {
-  border-color: #1677c8;
-  background: #e1f1ff;
+.addTile:hover,
+.dragging {
+  border-color: var(--green);
+  background: var(--green-soft);
 }
 
-.addTile > span:first-child {
+.addTile:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.addIcon {
   font-size: 30px;
   font-weight: 400;
   line-height: 1;
-}
-
-.disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
 }
 
 .visuallyHidden {
@@ -112,9 +130,9 @@
   clip-path: inset(50%);
 }
 
-.addTile:focus-within,
+.addTile:focus-visible,
 .removeButton:focus-visible {
-  outline: 3px solid #62a9e8;
+  outline: 3px solid var(--green);
   outline-offset: 3px;
 }
 
