@@ -31,8 +31,7 @@ export const adminUserService = {
 
   async setEnabled(id: number, enabled: boolean): Promise<AdminUser> {
     const response = await apiClient.patch<ApiResponse<AdminUser>>(
-      `/admin/users/${id}/status`,
-      { enabled },
+      `/admin/users/${id}/${enabled ? "unlock" : "lock"}`,
     );
     return response.data.data;
   },

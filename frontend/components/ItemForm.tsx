@@ -32,7 +32,7 @@ export function ItemForm({ item }: ItemFormProps) {
     const controller = new AbortController();
     async function loadCategories() {
       try {
-        setCategories(await categoryService.list({ signal: controller.signal }));
+        setCategories(await categoryService.listAll({ signal: controller.signal }));
       } catch (loadError) {
         if (!controller.signal.aborted) {
           setError(
