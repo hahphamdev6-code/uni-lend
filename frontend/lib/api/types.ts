@@ -14,11 +14,18 @@ export interface Category {
 
 export type ItemStatus = "AVAILABLE" | "LENT_OUT" | "UNAVAILABLE";
 
+export interface ItemImage {
+  id: number;
+  imageUrl: string;
+  createdAt: string;
+}
+
 export interface Item {
   id: number;
   title: string;
   description: string | null;
-  images?: string[];
+  imageUrls: string[];
+  images: ItemImage[];
   status: ItemStatus;
   owner: {
     id: number;
@@ -35,12 +42,25 @@ export interface ItemInput {
   status?: "AVAILABLE" | "UNAVAILABLE";
 }
 
-export type LoanStatus = "PENDING" | "APPROVED" | "REJECTED" | "RETURNED" | "CANCELLED";
+export type LoanStatus =
+  | "PENDING"
+  | "APPROVED"
+  | "REJECTED"
+  | "RETURNED"
+  | "CANCELLED"
+  | "OVERDUE";
 
 export interface Loan {
   id: number;
-  item: Item;
+  item: {
+    id: number;
+    title: string;
+  };
   borrower: {
+    id: number;
+    fullName: string;
+  };
+  owner: {
     id: number;
     fullName: string;
   };
@@ -55,8 +75,8 @@ export interface Loan {
 
 export interface CreateLoanInput {
   itemId: number;
-  borrowFrom?: string;
-  dueDate?: string;
+  borrowFrom: string;
+  dueDate: string;
   note?: string;
 }
 

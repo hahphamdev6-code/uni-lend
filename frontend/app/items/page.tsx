@@ -23,11 +23,11 @@ function ItemCard({ item }: { item: Item }) {
     <article className={styles.itemCard}>
       <Link className={styles.itemLink} href={`/items/${item.id}`} aria-label={`Xem chi tiết ${item.title}`}>
         <div className={styles.itemArtwork}>
-          {item.images?.[0] ? (
+          {item.imageUrls?.[0] ? (
             <Image
               alt={item.title}
               className={styles.cardImage}
-              src={item.images[0]}
+              src={item.imageUrls[0]}
               fill
               sizes="(max-width: 560px) 100vw, (max-width: 800px) 50vw, 33vw"
               unoptimized

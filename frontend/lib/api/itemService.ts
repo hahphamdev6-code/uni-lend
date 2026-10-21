@@ -22,6 +22,17 @@ export const itemService = {
     return response.data.data;
   },
 
+  async listMine(
+    params: { page?: number; size?: number } = {},
+    config?: Pick<AxiosRequestConfig, "signal">,
+  ): Promise<PageResponse<Item>> {
+    const response = await apiClient.get<ApiResponse<PageResponse<Item>>>("/items/me", {
+      ...config,
+      params,
+    });
+    return response.data.data;
+  },
+
   async getById(
     id: number,
     config?: Pick<AxiosRequestConfig, "signal">,
@@ -37,6 +48,20 @@ export const itemService = {
 
   async update(id: number, input: ItemInput): Promise<Item> {
     const response = await apiClient.put<ApiResponse<Item>>(`/items/${id}`, input);
+    return response.data.data;
+  },
+
+  async uploadImages(id: number, files: File[]): Promise<Item> {
+    const payload = new FormData();
+    files.forEach((file) => payload.append("files", file));
+    const response = await apiClient.post<ApiResponse<Item>>(`/items/${id}/images`, payload, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data.data;
+  },
+
+  async deleteImage(id: number, imageId: number): Promise<Item> {
+    const response = await apiClient.delete<ApiResponse<Item>>(`/items/${id}/images/${imageId}`);
     return response.data.data;
   },
 

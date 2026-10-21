@@ -76,7 +76,7 @@ export default function ItemDetailsPage() {
               <span aria-current="page">{item.title}</span>
             </nav>
             <div className={styles.details}>
-              <ItemImageGallery images={item.images ?? []} title={item.title} />
+              <ItemImageGallery images={item.imageUrls ?? []} title={item.title} />
               <div className={styles.info}>
                 <span className={styles.category}>{item.category?.name ?? "Chưa phân loại"}</span>
                 <h1>{item.title}</h1>
