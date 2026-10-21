@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { NotificationBell } from "../../../components/notification-bell";
 import { ItemImageGallery } from "../../../components/item-image-gallery";
 import { itemService } from "../../../lib/api/itemService";
-import type { Item } from "../../../lib/api/types";
+import { getItemImageUrls, type Item } from "../../../lib/api/types";
 import styles from "./page.module.css";
 
 export default function ItemDetailsPage() {
@@ -76,7 +76,7 @@ export default function ItemDetailsPage() {
               <span aria-current="page">{item.title}</span>
             </nav>
             <div className={styles.details}>
-              <ItemImageGallery images={item.images ?? []} title={item.title} />
+              <ItemImageGallery images={getItemImageUrls(item)} title={item.title} />
               <div className={styles.info}>
                 <span className={styles.category}>{item.category?.name ?? "Chưa phân loại"}</span>
                 <h1>{item.title}</h1>

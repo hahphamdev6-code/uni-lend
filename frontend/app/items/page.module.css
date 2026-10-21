@@ -80,6 +80,36 @@
   margin-bottom: 31px;
 }
 
+.headingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.createLink {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 9px;
+  background: var(--green);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.createLink:hover {
+  background: var(--green-dark);
+}
+
+.createLink:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 3px;
+}
+
 .eyebrow {
   color: var(--green);
   font-size: 12px;
@@ -227,6 +257,7 @@
 }
 
 .cardImage {
+  z-index: 1;
   object-fit: cover;
   transition: transform 180ms ease;
 }
@@ -522,6 +553,16 @@
 
   .content {
     padding-top: 42px;
+  }
+
+  .headingRow {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .heading {
+    margin-bottom: 18px;
   }
 
   .toolbar {

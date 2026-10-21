@@ -1,0 +1,135 @@
+.page {
+  min-height: 100vh;
+  background: var(--canvas);
+}
+
+.pageHeader {
+  width: min(1160px, calc(100% - 48px));
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  margin-inline: auto;
+  border-bottom: 1px solid var(--line);
+}
+
+.headerLink {
+  color: var(--green-dark);
+  font-weight: 650;
+}
+
+.form {
+  display: grid;
+  gap: 22px;
+  width: min(760px, 100%);
+  margin: 40px auto 80px;
+  padding: clamp(20px, 4vw, 36px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 12px 36px #173b590c;
+}
+
+.form h1 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(25px, 4vw, 34px);
+  letter-spacing: -0.8px;
+}
+
+.intro {
+  margin: -14px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.fields {
+  display: grid;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+}
+
+.field label {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+}
+
+.field textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  border-color: var(--green);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.submit,
+.cancel {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  border: 1px solid var(--green);
+  border-radius: 9px;
+  background: var(--green);
+  color: #fff;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background: var(--green-dark);
+}
+
+.submit:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.cancel {
+  border-color: var(--line);
+  background: #fff;
+  color: var(--ink);
+}
+
+.cancel:hover {
+  border-color: var(--green);
+}
+
+.error {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .form {
+    margin-top: 24px;
+  }
+}

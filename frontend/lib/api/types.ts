@@ -14,11 +14,18 @@ export interface Category {
 
 export type ItemStatus = "AVAILABLE" | "LENT_OUT" | "UNAVAILABLE";
 
+export interface ItemImage {
+  id: number;
+  imageUrl: string;
+  createdAt: string;
+}
+
 export interface Item {
   id: number;
   title: string;
   description: string | null;
-  images?: string[];
+  imageUrls?: string[];
+  images?: ItemImage[];
   status: ItemStatus;
   owner: {
     id: number;
@@ -26,6 +33,13 @@ export interface Item {
   };
   category: Category | null;
   createdAt: string;
+}
+
+export function getItemImageUrls(item: Pick<Item, "imageUrls" | "images">): string[] {
+  if (item.images?.length) {
+    return item.images.map((image) => image.imageUrl);
+  }
+  return item.imageUrls ?? [];
 }
 
 export interface ItemInput {

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { resolveImageUrl } from "../lib/api/imageUrl";
 import styles from "./item-image-gallery.module.css";
 
 type ItemImageGalleryProps = {
@@ -11,7 +12,8 @@ type ItemImageGalleryProps = {
 
 export function ItemImageGallery({ images, title }: ItemImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const selectedImage = images[selectedIndex];
+  const activeIndex = Math.min(selectedIndex, images.length - 1);
+  const selectedImage = images[activeIndex];
 
   if (images.length === 0) {
     return (
@@ -27,19 +29,52 @@ export function ItemImageGallery({ images, title }: ItemImageGalleryProps) {
   }
 
   return (
-    <section className={styles.gallery} aria-label={`Thư viện ảnh ${title}`}>
+    <section
+      className={styles.gallery}
+      aria-label={`Thư viện ảnh ${title}`}
+      onKeyDown={(event) => {
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          setSelectedIndex((activeIndex - 1 + images.length) % images.length);
+        } else if (event.key === "ArrowRight") {
+          event.preventDefault();
+          setSelectedIndex((activeIndex + 1) % images.length);
+        }
+      }}
+      tabIndex={0}
+    >
       <div className={styles.mainImage}>
         <Image
-          alt={`${title} - ảnh ${selectedIndex + 1}`}
+          alt={`${title} - ảnh ${activeIndex + 1}`}
           className={styles.image}
-          src={selectedImage}
+          src={resolveImageUrl(selectedImage)}
           fill
           priority
           sizes="(max-width: 800px) 100vw, 55vw"
           unoptimized
         />
+        {images.length > 1 && (
+          <>
+            <button
+              aria-label="Xem ảnh trước"
+              className={`${styles.navigationButton} ${styles.previousButton}`}
+              onClick={() => setSelectedIndex((activeIndex - 1 + images.length) % images.length)}
+              type="button"
+            >
+              ‹
+            </button>
+            <button
+              aria-label="Xem ảnh tiếp theo"
+              className={`${styles.navigationButton} ${styles.nextButton}`}
+              onClick={() => setSelectedIndex((activeIndex + 1) % images.length)}
+              type="button"
+            >
+              ›
+            </button>
+          </>
+        )}
         <span className={styles.imageCounter}>
-          {selectedIndex + 1} / {images.length}
+          {activeIndex + 1} / {images.length}
         </span>
       </div>
       {images.length > 1 && (
@@ -47,8 +82,8 @@ export function ItemImageGallery({ images, title }: ItemImageGalleryProps) {
           {images.map((image, index) => (
             <button
               aria-label={`Xem ảnh ${index + 1}`}
-              aria-pressed={index === selectedIndex}
-              className={`${styles.thumbnail}${index === selectedIndex ? ` ${styles.selected}` : ""}`}
+              aria-current={index === activeIndex ? "true" : undefined}
+              className={`${styles.thumbnail}${index === activeIndex ? ` ${styles.selected}` : ""}`}
               key={`${image}-${index}`}
               onClick={() => setSelectedIndex(index)}
               type="button"
@@ -56,7 +91,7 @@ export function ItemImageGallery({ images, title }: ItemImageGalleryProps) {
               <Image
                 alt=""
                 className={styles.image}
-                src={image}
+                src={resolveImageUrl(image)}
                 fill
                 sizes="100px"
                 unoptimized

@@ -12,8 +12,44 @@
   background: #e2f1ff;
 }
 
+.gallery:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 4px;
+}
+
 .image {
   object-fit: cover;
+}
+
+.navigationButton {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 1px solid #ffffff90;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 72%, transparent);
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.previousButton {
+  left: 12px;
+}
+
+.nextButton {
+  right: 12px;
+}
+
+.navigationButton:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 3px;
 }
 
 .imageCounter {
@@ -50,7 +86,7 @@
 
 .thumbnail:hover,
 .selected {
-  border-color: #1677c8;
+  border-color: var(--green);
 }
 
 .thumbnail:focus-visible {
