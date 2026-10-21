@@ -25,12 +25,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
 public class LoanRequestService {
 
     private static final int MAX_PAGE_SIZE = 50;
+    private static final ZoneId HISTORY_ZONE = ZoneId.of("Asia/Ho_Chi_Minh");
 
     private final LoanRequestRepository loanRequestRepository;
     private final ItemRepository itemRepository;
@@ -188,6 +190,41 @@ public class LoanRequestService {
                 ? loanRequestRepository.findByItemOwnerId(owner.getId(), boundedPageable)
                 : loanRequestRepository.findByItemOwnerIdAndStatus(owner.getId(), status, boundedPageable);
         return PageResponse.from(page, LoanRequestResponse::from);
+    }
+
+    // Khoảng ngày lọc theo requestedAt, gồm cả ngày kết thúc tại múi giờ Việt Nam.
+    @Transactional(readOnly = true)
+    public PageResponse<LoanRequestResponse> getMyHistory(
+            User borrower, LoanStatus status, LocalDate fromDate, LocalDate toDate, Pageable pageable) {
+        validateHistoryRange(fromDate, toDate);
+        Page<LoanRequest> page = loanRequestRepository.findBorrowerHistory(
+                borrower.getId(), status, historyStart(fromDate), historyEndExclusive(toDate),
+                boundedPageable(pageable));
+        return PageResponse.from(page, LoanRequestResponse::from);
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<LoanRequestResponse> getIncomingHistory(
+            User owner, LoanStatus status, LocalDate fromDate, LocalDate toDate, Pageable pageable) {
+        validateHistoryRange(fromDate, toDate);
+        Page<LoanRequest> page = loanRequestRepository.findOwnerHistory(
+                owner.getId(), status, historyStart(fromDate), historyEndExclusive(toDate),
+                boundedPageable(pageable));
+        return PageResponse.from(page, LoanRequestResponse::from);
+    }
+
+    private void validateHistoryRange(LocalDate fromDate, LocalDate toDate) {
+        if (fromDate != null && toDate != null && fromDate.isAfter(toDate)) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST, "fromDate không được sau toDate");
+        }
+    }
+
+    private Instant historyStart(LocalDate fromDate) {
+        return fromDate == null ? null : fromDate.atStartOfDay(HISTORY_ZONE).toInstant();
+    }
+
+    private Instant historyEndExclusive(LocalDate toDate) {
+        return toDate == null ? null : toDate.plusDays(1).atStartOfDay(HISTORY_ZONE).toInstant();
     }
 
     @Transactional(readOnly = true)
