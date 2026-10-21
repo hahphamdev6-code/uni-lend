@@ -24,36 +24,55 @@ type ToastContextValue = {
 const ToastContext = createContext<ToastContextValue | null>(null);
 
 export function AdminToastProvider({ children }: { children: ReactNode }) {
-  const [toast, setToast] = useState<ToastMessage | null>(null);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const nextId = useRef(0);
+  const timers = useRef(new Map<number, ReturnType<typeof setTimeout>>());
 
   const showToast = useCallback((kind: ToastMessage["kind"], text: string) => {
-    setToast({ id: Date.now(), kind, text });
+    const id = ++nextId.current;
+    setToasts((current) => [...current, { id, kind, text }]);
+    timers.current.set(
+      id,
+      setTimeout(() => {
+        timers.current.delete(id);
+        setToasts((current) => current.filter((toast) => toast.id !== id));
+      }, 4500),
+    );
   }, []);
 
-  useEffect(() => {
-    if (!toast) return;
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => setToast(null), 4500);
-    return () => {
-      if (timer.current) clearTimeout(timer.current);
-      timer.current = null;
-    };
-  }, [toast]);
+  useEffect(() => () => {
+    for (const timer of timers.current.values()) clearTimeout(timer);
+    timers.current.clear();
+  }, []);
+
+  const dismissToast = useCallback((id: number) => {
+    const timer = timers.current.get(id);
+    if (timer) clearTimeout(timer);
+    timers.current.delete(id);
+    setToasts((current) => current.filter((toast) => toast.id !== id));
+  }, []);
 
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      {toast && (
-        <div
-          className={`${styles.toast} ${toast.kind === "success" ? styles.success : styles.error}`}
-          key={toast.id}
-          role={toast.kind === "error" ? "alert" : "status"}
-        >
-          <span>{toast.text}</span>
-          <button aria-label="Đóng thông báo" onClick={() => setToast(null)} type="button">
-            ×
-          </button>
+      {toasts.length > 0 && (
+        <div className={styles.toastContainer} aria-label="Thông báo">
+          {toasts.map((toast) => (
+            <div
+              className={`${styles.toast} ${toast.kind === "success" ? styles.success : styles.error}`}
+              key={toast.id}
+              role={toast.kind === "error" ? "alert" : "status"}
+            >
+              <span>{toast.text}</span>
+              <button
+                aria-label="Đóng thông báo"
+                onClick={() => dismissToast(toast.id)}
+                type="button"
+              >
+                ×
+              </button>
+            </div>
+          ))}
         </div>
       )}
     </ToastContext.Provider>

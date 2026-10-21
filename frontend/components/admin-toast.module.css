@@ -1,12 +1,22 @@
-.toast {
+.toastContainer {
   position: fixed;
   z-index: 100;
   top: 20px;
   right: 20px;
   width: min(420px, calc(100vw - 40px));
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: min(70vh, 620px);
+  overflow-y: auto;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
   align-items: center;
   justify-content: space-between;
+  flex: 0 0 auto;
   gap: 16px;
   padding: 14px 16px;
   border: 1px solid;
@@ -15,6 +25,7 @@
   box-shadow: 0 12px 35px #12304a20;
   font-size: 14px;
   line-height: 1.5;
+  pointer-events: auto;
 }
 
 .success {
@@ -34,4 +45,15 @@
   color: inherit;
   font-size: 22px;
   cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .toastContainer {
+    top: auto;
+    right: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    left: 12px;
+    width: auto;
+    max-height: 40vh;
+  }
 }
