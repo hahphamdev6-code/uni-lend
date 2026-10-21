@@ -65,4 +65,27 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
               AND l.dueDate < :today
             """)
     Page<LoanRequest> findOverdue(@Param("today") LocalDate today, Pageable pageable);
+    @Query("""
+            SELECT l.status, COUNT(l)
+            FROM LoanRequest l
+            GROUP BY l.status
+            """)
+    java.util.List<Object[]> countLoansByStatus();
+
+    // Only loans that were actually approved count as borrowed.
+    @Query("""
+            SELECT c.id, c.name, COUNT(l)
+            FROM LoanRequest l
+            JOIN l.item i
+            JOIN i.category c
+            WHERE l.status NOT IN (
+                com.unilend.backend.entity.LoanRequest.LoanStatus.PENDING,
+                com.unilend.backend.entity.LoanRequest.LoanStatus.REJECTED,
+                com.unilend.backend.entity.LoanRequest.LoanStatus.CANCELLED
+            )
+            GROUP BY c.id, c.name
+            ORDER BY COUNT(l) DESC, c.name ASC
+            """)
+    java.util.List<Object[]> findMostBorrowedCategories(Pageable pageable);
+
 }
