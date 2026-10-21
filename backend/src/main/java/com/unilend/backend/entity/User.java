@@ -32,6 +32,15 @@ public class User extends BaseEntity {
     @Column(name = "full_name", nullable = false, length = 100)
     private String fullName;
 
+    @Column(name = "phone", length = 20)
+    private String phone;
+
+    @Column(name = "university", length = 150)
+    private String university;
+
+    @Column(name = "avatar_url", length = 500)
+    private String avatarUrl;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role", nullable = false, length = 20)

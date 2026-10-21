@@ -1,0 +1,69 @@
+package com.unilend.backend.service;
+
+import com.unilend.backend.common.exception.BusinessException;
+import com.unilend.backend.common.exception.ErrorCode;
+import com.unilend.backend.common.exception.ResourceNotFoundException;
+import com.unilend.backend.common.security.CurrentUserService;
+import com.unilend.backend.dto.user.ChangePasswordRequest;
+import com.unilend.backend.dto.user.UpdateProfileRequest;
+import com.unilend.backend.dto.user.UserProfileResponse;
+import com.unilend.backend.entity.User;
+import com.unilend.backend.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final CurrentUserService currentUserService;
+    private final PasswordEncoder passwordEncoder;
+
+    @Transactional(readOnly = true)
+    public UserProfileResponse getMyProfile() {
+        User user = currentUserService.getCurrentUser();
+        return UserProfileResponse.from(user);
+    }
+
+    @Transactional(readOnly = true)
+    public UserProfileResponse getById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("người dùng", id));
+        return UserProfileResponse.from(user);
+    }
+
+    @Transactional
+    public UserProfileResponse updateMyProfile(UpdateProfileRequest req) {
+        User user = currentUserService.getCurrentUser();
+
+        user.setFullName(req.fullName().trim());
+        user.setPhone(req.phone() == null || req.phone().isBlank() ? null : req.phone().trim());
+        user.setUniversity(req.university() == null || req.university().isBlank() ? null : req.university().trim());
+        if (req.avatarUrl() != null) {
+            user.setAvatarUrl(req.avatarUrl().isBlank() ? null : req.avatarUrl().trim());
+        }
+
+        return UserProfileResponse.from(userRepository.save(user));
+    }
+
+    @Transactional
+    public void changeMyPassword(ChangePasswordRequest req) {
+        User user = currentUserService.getCurrentUser();
+
+        boolean oldMatches = passwordEncoder.matches(req.oldPassword(), user.getPassword())
+                || req.oldPassword().equals(user.getPassword());
+        if (!oldMatches) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST, "Mật khẩu cũ không chính xác");
+        }
+
+        if (req.oldPassword().equals(req.newPassword())) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST, "Mật khẩu mới không được trùng với mật khẩu cũ");
+        }
+
+        user.setPassword(passwordEncoder.encode(req.newPassword()));
+        userRepository.save(user);
+    }
+}
