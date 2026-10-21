@@ -98,7 +98,7 @@ export default function ItemsPage() {
     async function loadCategories() {
       setCategoryError("");
       try {
-        const data = await categoryService.list({ signal: controller.signal });
+        const data = await categoryService.listAll({ signal: controller.signal });
         setCategories(data);
       } catch (error) {
         if (controller.signal.aborted) return;
