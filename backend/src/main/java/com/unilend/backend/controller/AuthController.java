@@ -20,14 +20,14 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/api/v1/auth/register")
+    @PostMapping({"/api/v1/auth/register", "/api/auth/register", "/auth/register"})
     public ResponseEntity<ApiResponse<AuthResponse>> register(@Valid @RequestBody RegisterRequest request) {
         AuthResponse data = authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok("Registration successful", data));
     }
 
-    @PostMapping("/api/v1/auth/login")
+    @PostMapping({"/api/v1/auth/login", "/api/auth/login", "/auth/login"})
     public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(ApiResponse.ok("Login successful", authService.login(request)));
     }

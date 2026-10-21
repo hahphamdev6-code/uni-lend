@@ -54,6 +54,8 @@ public class Notification extends BaseEntity {
         LOAN_REJECTED,
         LOAN_CANCELLED,
         LOAN_RETURNED,
+        LOAN_DUE_SOON,
+        LOAN_OVERDUE,
         REVIEW_RECEIVED,
         SYSTEM
     }

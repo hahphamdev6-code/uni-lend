@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+
 @RestController
-@RequestMapping("/api/loan-requests")
+@RequestMapping({"/api/loan-requests", "/loan-requests"})
 @RequiredArgsConstructor
 public class LoanRequestController {
 
@@ -42,17 +45,21 @@ public class LoanRequestController {
     @GetMapping("/mine")
     public ApiResponse<PageResponse<LoanRequestResponse>> mine(
             @RequestParam(required = false) LoanStatus status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
             @PageableDefault(size = 10, sort = "requestedAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ApiResponse.ok(
-                loanRequestService.getMyRequests(currentUserService.getCurrentUser(), status, pageable));
+        return ApiResponse.ok(loanRequestService.getMyHistory(
+                currentUserService.getCurrentUser(), status, fromDate, toDate, pageable));
     }
 
     @GetMapping("/incoming")
     public ApiResponse<PageResponse<LoanRequestResponse>> incoming(
             @RequestParam(required = false) LoanStatus status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
             @PageableDefault(size = 10, sort = "requestedAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ApiResponse.ok(
-                loanRequestService.getIncomingRequests(currentUserService.getCurrentUser(), status, pageable));
+        return ApiResponse.ok(loanRequestService.getIncomingHistory(
+                currentUserService.getCurrentUser(), status, fromDate, toDate, pageable));
     }
 
     @GetMapping("/overdue")

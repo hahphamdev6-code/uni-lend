@@ -27,4 +27,12 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
                AND n.read = false
             """)
     int markAllAsRead(@Param("userId") Long userId, @Param("now") Instant now);
+
+    boolean existsByUserIdAndTypeAndLinkAndCreatedAtBetween(
+            Long userId,
+            String type,
+            String link,
+            Instant start,
+            Instant end
+    );
 }

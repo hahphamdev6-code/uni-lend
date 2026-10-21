@@ -11,7 +11,9 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> {
@@ -65,4 +67,69 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
               AND l.dueDate < :today
             """)
     Page<LoanRequest> findOverdue(@Param("today") LocalDate today, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"borrower", "item"})
+    @Query("""
+            SELECT l FROM LoanRequest l
+            WHERE l.status = com.unilend.backend.entity.LoanRequest.LoanStatus.APPROVED
+              AND l.dueDate = :dueDate
+            """)
+    Page<LoanRequest> findDueOn(
+            @Param("dueDate") LocalDate dueDate,
+            Pageable pageable
+    );
+
+    // Lọc lịch sử theo ngày gửi yêu cầu (requestedAt), giới hạn bởi người liên quan.
+    @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
+    @Query("""
+            SELECT l FROM LoanRequest l
+            WHERE l.borrower.id = :userId
+              AND (:status IS NULL OR l.status = :status)
+              AND (:fromInstant IS NULL OR l.requestedAt >= :fromInstant)
+              AND (:toExclusive IS NULL OR l.requestedAt < :toExclusive)
+            """)
+    Page<LoanRequest> findBorrowerHistory(
+            @Param("userId") Long userId,
+            @Param("status") LoanStatus status,
+            @Param("fromInstant") Instant fromInstant,
+            @Param("toExclusive") Instant toExclusive,
+            Pageable pageable);
+
+    @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
+    @Query("""
+            SELECT l FROM LoanRequest l
+            WHERE l.item.owner.id = :userId
+              AND (:status IS NULL OR l.status = :status)
+              AND (:fromInstant IS NULL OR l.requestedAt >= :fromInstant)
+              AND (:toExclusive IS NULL OR l.requestedAt < :toExclusive)
+            """)
+    Page<LoanRequest> findOwnerHistory(
+            @Param("userId") Long userId,
+            @Param("status") LoanStatus status,
+            @Param("fromInstant") Instant fromInstant,
+            @Param("toExclusive") Instant toExclusive,
+            Pageable pageable);
+
+    @Query("""
+            SELECT l.status, COUNT(l)
+            FROM LoanRequest l
+            GROUP BY l.status
+            """)
+    List<Object[]> countLoansByStatus();
+
+    // Only loans that were actually approved count as borrowed.
+    @Query("""
+            SELECT c.id, c.name, COUNT(l)
+            FROM LoanRequest l
+            JOIN l.item i
+            JOIN i.category c
+            WHERE l.status NOT IN (
+                com.unilend.backend.entity.LoanRequest.LoanStatus.PENDING,
+                com.unilend.backend.entity.LoanRequest.LoanStatus.REJECTED,
+                com.unilend.backend.entity.LoanRequest.LoanStatus.CANCELLED
+            )
+            GROUP BY c.id, c.name
+            ORDER BY COUNT(l) DESC, c.name ASC
+            """)
+    List<Object[]> findMostBorrowedCategories(Pageable pageable);
 }
