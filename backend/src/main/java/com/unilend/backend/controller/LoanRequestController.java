@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping({"/api/loan-requests", "/loan-requests"})
+@RequestMapping({"/api/loan-requests", "/loan-requests", "/api/loans", "/loans"})
 @RequiredArgsConstructor
 public class LoanRequestController {
 
