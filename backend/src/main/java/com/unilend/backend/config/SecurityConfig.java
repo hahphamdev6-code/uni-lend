@@ -53,7 +53,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/**", "/api/admin/**", "/admin/**").hasRole("ADMIN")
                         .requestMatchers("/error").permitAll()
                         // Mở dần các endpoint public khác ở đây, ví dụ:
                         .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
