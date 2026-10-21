@@ -1,6 +1,7 @@
 package com.unilend.backend.controller;
 
 import com.unilend.backend.common.response.ApiResponse;
+import com.unilend.backend.common.response.PageResponse;
 import com.unilend.backend.common.security.CurrentUserService;
 import com.unilend.backend.dto.category.CategoryRequest;
 import com.unilend.backend.dto.category.CategoryResponse;
@@ -11,10 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/categories")
+@RequestMapping({"/api/categories", "/categories"})
 @RequiredArgsConstructor
 public class CategoryController {
 
@@ -23,8 +22,10 @@ public class CategoryController {
 
     // Ai cũng xem được
     @GetMapping
-    public ApiResponse<List<CategoryResponse>> list() {
-        return ApiResponse.ok(categoryService.findAll());
+    public ApiResponse<PageResponse<CategoryResponse>> list(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ApiResponse.ok(categoryService.findAll(page, size));
     }
 
     @GetMapping("/{id}")

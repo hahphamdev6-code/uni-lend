@@ -1,4 +1,11 @@
+
 spring:
+  config:
+    import: optional:file:.env
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 26MB
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
@@ -12,6 +19,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 16
+
+
+app:
+  jwt:
+    # Base64, tối thiểu 32 byte. Tạo bằng: openssl rand -base64 32
+    secret: ${JWT_SECRET}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
 
 server:
   port: 8080
