@@ -5,6 +5,17 @@ export interface ApiResponse<T> {
   statusCode: number;
 }
 
+export interface AdminStats {
+  totalUsers: number;
+  totalItems: number;
+  loansByStatus: Record<LoanStatus, number>;
+  mostBorrowedCategories: {
+    categoryId: number;
+    categoryName: string;
+    loanCount: number;
+  }[];
+}
+
 export interface Category {
   id: number;
   name: string;
