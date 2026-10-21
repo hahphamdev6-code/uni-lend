@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { NotificationBell } from "../components/notification-bell";
+import { RoleNavigation } from "../components/role-navigation";
 
 type Category = "Tất cả" | "Học tập" | "Công nghệ" | "Đời sống";
 type ProductIcon = "book" | "camera" | "projector" | "headphones" | "plant" | "calculator";
@@ -95,8 +97,8 @@ export default function Home() {
           <a className="nav-link" href="#community">Cộng đồng</a>
         </nav>
         <div className="header-auth-links">
-          <Link className="header-login" href="/login">Đăng nhập</Link>
-          <Link className="header-cta" href="/register">Đăng ký <Icon name="arrow" size={16} /></Link>
+          <NotificationBell />
+          <RoleNavigation className="header-login" registerClassName="header-cta" />
         </div>
       </header>
 
@@ -162,7 +164,7 @@ export default function Home() {
             <h2>Món đồ đang được sẻ chia</h2>
             <p>Tìm cảm hứng cho lần mượn — hoặc lần chia sẻ tiếp theo của bạn.</p>
           </div>
-          <a className="text-link" href="#how-it-works">Cách tham gia <Icon name="arrow" size={17} /></a>
+          <Link className="text-link" href="/items">Xem danh sách đồ <Icon name="arrow" size={17} /></Link>
         </div>
 
         <div className="catalogue-toolbar">

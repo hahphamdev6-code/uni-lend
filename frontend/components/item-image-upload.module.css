@@ -1,0 +1,133 @@
+.upload {
+  display: grid;
+  gap: 14px;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.heading h2 {
+  margin: 0;
+  color: #12304a;
+  font-size: 16px;
+}
+
+.heading p {
+  margin: 4px 0 0;
+  color: #5e7184;
+  font-size: 13px;
+}
+
+.imageCount {
+  flex: none;
+  color: #5e7184;
+  font-size: 13px;
+}
+
+.previewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.preview,
+.addTile {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid #dce8f2;
+  border-radius: 10px;
+  background: #eaf5ff;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.removeButton {
+  position: absolute;
+  z-index: 1;
+  top: 7px;
+  right: 7px;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ffffffaa;
+  border-radius: 50%;
+  background: #12304ae8;
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.removeButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.addTile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-style: dashed;
+  color: #1766a2;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease;
+}
+
+.addTile:hover {
+  border-color: #1677c8;
+  background: #e1f1ff;
+}
+
+.addTile > span:first-child {
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.addTile:focus-within,
+.removeButton:focus-visible {
+  outline: 3px solid #62a9e8;
+  outline-offset: 3px;
+}
+
+.error {
+  margin: 0;
+  color: #a43939;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  .previewGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+}
