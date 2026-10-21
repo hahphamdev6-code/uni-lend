@@ -21,18 +21,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final CurrentUserService currentUserService;
     private final PasswordEncoder passwordEncoder;
+    private final ReviewService reviewService;
 
     @Transactional(readOnly = true)
     public UserProfileResponse getMyProfile() {
         User user = currentUserService.getCurrentUser();
-        return UserProfileResponse.from(user);
+        return toProfileResponse(user);
     }
 
     @Transactional(readOnly = true)
     public UserProfileResponse getById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("người dùng", id));
-        return UserProfileResponse.from(user);
+                .orElseThrow(() -> new ResourceNotFoundException("User", id));
+        return toProfileResponse(user);
     }
 
     @Transactional
@@ -46,7 +47,8 @@ public class UserService {
             user.setAvatarUrl(req.avatarUrl().isBlank() ? null : req.avatarUrl().trim());
         }
 
-        return UserProfileResponse.from(userRepository.save(user));
+        User saved = userRepository.save(user);
+        return toProfileResponse(saved);
     }
 
     @Transactional
@@ -65,5 +67,11 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(req.newPassword()));
         userRepository.save(user);
+    }
+
+    private UserProfileResponse toProfileResponse(User user) {
+        double avgRating = reviewService.getAverageRating(user.getId());
+        long reviewCount = reviewService.getReviewCount(user.getId());
+        return UserProfileResponse.from(user, avgRating, reviewCount);
     }
 }

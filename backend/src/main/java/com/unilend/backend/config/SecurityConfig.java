@@ -52,12 +52,20 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/auth/**", "/api/auth/**", "/auth/**").permitAll()
+                        .requestMatchers("/api/v1/admin/**", "/api/admin/**", "/admin/**").hasRole("ADMIN")
                         .requestMatchers("/error").permitAll()
                         // Mở dần các endpoint public khác ở đây, ví dụ:
-                        // .requestMatchers(HttpMethod.GET, "/items/**", "/categories/**").permitAll()
-                        // .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/items/me", "/items/me",
+                                "/api/users/me", "/users/me", "/api/v1/users/me").authenticated()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/categories", "/api/categories/*",
+                                "/categories", "/categories/*",
+                                "/api/items", "/api/items/*",
+                                "/items", "/items/*",
+                                "/api/users/*/reviews", "/users/*/reviews").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((req, res, e) -> writeError(res, ErrorCode.UNAUTHORIZED))

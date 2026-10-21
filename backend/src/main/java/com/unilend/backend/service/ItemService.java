@@ -182,6 +182,8 @@ public class ItemService {
                 ItemResponse::from);
     }
 
+    // ---- helpers ----
+
     private void validateImageFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw new BusinessException(ErrorCode.BAD_REQUEST, "File ảnh không được rỗng");

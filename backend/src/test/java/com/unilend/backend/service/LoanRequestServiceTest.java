@@ -9,6 +9,7 @@ import com.unilend.backend.entity.Item;
 import com.unilend.backend.entity.Item.ItemStatus;
 import com.unilend.backend.entity.LoanRequest;
 import com.unilend.backend.entity.LoanRequest.LoanStatus;
+import com.unilend.backend.entity.Notification.NotificationType;
 import com.unilend.backend.entity.User;
 import com.unilend.backend.repository.ItemRepository;
 import com.unilend.backend.repository.LoanRequestRepository;
@@ -24,18 +25,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,88 +50,121 @@ class LoanRequestServiceTest {
 
     @Mock
     private LoanRequestRepository loanRequestRepository;
+
     @Mock
     private ItemRepository itemRepository;
+
     @Mock
     private EntityManager entityManager;
+
+    @Mock
+    private NotificationService notificationService;
 
     @InjectMocks
     private LoanRequestService service;
 
-    private final LocalDate today = LocalDate.now();
-
     private User owner;
     private User borrower;
     private Item item;
+    private LocalDate today;
 
     @BeforeEach
     void setUp() {
-        owner = User.builder().id(1L).email("owner@unilend.test").password("x").fullName("Chủ đồ").build();
-        borrower = User.builder().id(2L).email("borrower@unilend.test").password("x").fullName("Người mượn").build();
-        item = Item.builder().id(10L).title("Máy tính Casio").owner(owner).build();
-
-        when(entityManager.find(Item.class, 10L, LockModeType.PESSIMISTIC_WRITE)).thenReturn(item);
-        when(itemRepository.findWithDetailsById(10L)).thenReturn(Optional.of(item));
-        when(loanRequestRepository.save(any(LoanRequest.class))).thenAnswer(inv -> inv.getArgument(0));
+        owner = User.builder().id(1L).email("owner@unilend.test").fullName("Chủ đồ").build();
+        borrower = User.builder().id(2L).email("borrower@unilend.test").fullName("Người mượn").build();
+        item = Item.builder()
+                .id(10L)
+                .title("Máy tính Casio")
+                .owner(owner)
+                .status(ItemStatus.AVAILABLE)
+                .build();
+        today = LocalDate.now();
     }
 
     @Test
-    void create_success_locksItemBeforeCheckingRequests() {
+    void create_success() {
+        when(entityManager.find(Item.class, 10L, LockModeType.PESSIMISTIC_WRITE)).thenReturn(item);
+        when(itemRepository.findWithDetailsById(10L)).thenReturn(Optional.of(item));
+        when(loanRequestRepository.existsByItemIdAndBorrowerIdAndStatus(10L, 2L, LoanStatus.PENDING))
+                .thenReturn(false);
+        when(loanRequestRepository.existsOverlappingApproved(10L, today, today.plusDays(3)))
+                .thenReturn(false);
+        when(loanRequestRepository.save(any(LoanRequest.class))).thenAnswer(invocation -> {
+            LoanRequest saved = invocation.getArgument(0);
+            saved.setId(100L);
+            return saved;
+        });
+
         LoanRequestResponse response = service.create(borrower, createReq(10L, today, today.plusDays(3)));
 
+        assertEquals(100L, response.id());
         assertEquals(LoanStatus.PENDING, response.status());
         assertEquals(10L, response.item().id());
         assertEquals(2L, response.borrower().id());
         assertEquals(1L, response.owner().id());
-        verify(entityManager).find(Item.class, 10L, LockModeType.PESSIMISTIC_WRITE);
-        verify(loanRequestRepository).save(any(LoanRequest.class));
-    }
-
-    @Test
-    void create_itemNotFound_throwsResourceNotFound() {
-        when(entityManager.find(Item.class, 99L, LockModeType.PESSIMISTIC_WRITE)).thenReturn(null);
-
-        assertThrows(ResourceNotFoundException.class,
-                () -> service.create(borrower, createReq(99L, today, today.plusDays(1))));
+        verify(notificationService).notify(eq(1L), eq(NotificationType.LOAN_CREATED), anyString(), eq("/loans/100"));
     }
 
     @Test
     void create_ownItem_badRequest() {
-        assertCode(ErrorCode.BAD_REQUEST, () -> service.create(owner, createReq(10L, today, today.plusDays(1))));
+        when(entityManager.find(Item.class, 10L, LockModeType.PESSIMISTIC_WRITE)).thenReturn(item);
+        when(itemRepository.findWithDetailsById(10L)).thenReturn(Optional.of(item));
+
+        assertCode(ErrorCode.BAD_REQUEST,
+                () -> service.create(owner, createReq(10L, today, today.plusDays(1))));
     }
 
     @Test
     void create_itemNotAvailable_conflict() {
         item.setStatus(ItemStatus.LENT_OUT);
+        when(entityManager.find(Item.class, 10L, LockModeType.PESSIMISTIC_WRITE)).thenReturn(item);
+        when(itemRepository.findWithDetailsById(10L)).thenReturn(Optional.of(item));
 
-        assertCode(ErrorCode.CONFLICT, () -> service.create(borrower, createReq(10L, today, today.plusDays(1))));
-        verify(loanRequestRepository, never()).save(any());
+        assertCode(ErrorCode.CONFLICT,
+                () -> service.create(borrower, createReq(10L, today, today.plusDays(1))));
     }
 
     @Test
     void create_dueDateBeforeBorrowFrom_badRequest() {
+        when(entityManager.find(Item.class, 10L, LockModeType.PESSIMISTIC_WRITE)).thenReturn(item);
+        when(itemRepository.findWithDetailsById(10L)).thenReturn(Optional.of(item));
+
         assertCode(ErrorCode.BAD_REQUEST,
-                () -> service.create(borrower, createReq(10L, today.plusDays(2), today)));
+                () -> service.create(borrower, createReq(10L, today.plusDays(3), today)));
     }
 
     @Test
     void create_duplicatePending_conflict() {
+        when(entityManager.find(Item.class, 10L, LockModeType.PESSIMISTIC_WRITE)).thenReturn(item);
+        when(itemRepository.findWithDetailsById(10L)).thenReturn(Optional.of(item));
         when(loanRequestRepository.existsByItemIdAndBorrowerIdAndStatus(10L, 2L, LoanStatus.PENDING))
                 .thenReturn(true);
 
-        assertCode(ErrorCode.CONFLICT, () -> service.create(borrower, createReq(10L, today, today.plusDays(1))));
+        assertCode(ErrorCode.CONFLICT,
+                () -> service.create(borrower, createReq(10L, today, today.plusDays(1))));
     }
 
     @Test
-    void create_overlapWithApproved_conflict() {
-        when(loanRequestRepository.existsOverlappingApproved(eq(10L), any(LocalDate.class), any(LocalDate.class)))
+    void create_overlappingApproved_conflict() {
+        when(entityManager.find(Item.class, 10L, LockModeType.PESSIMISTIC_WRITE)).thenReturn(item);
+        when(itemRepository.findWithDetailsById(10L)).thenReturn(Optional.of(item));
+        when(loanRequestRepository.existsOverlappingApproved(10L, today, today.plusDays(3)))
                 .thenReturn(true);
 
-        assertCode(ErrorCode.CONFLICT, () -> service.create(borrower, createReq(10L, today, today.plusDays(1))));
+        assertCode(ErrorCode.CONFLICT,
+                () -> service.create(borrower, createReq(10L, today, today.plusDays(3))));
     }
 
     @Test
-    void approve_success_setsLentOut() {
+    void create_itemNotFound_throwsResourceNotFound() {
+        when(entityManager.find(Item.class, 999L, LockModeType.PESSIMISTIC_WRITE)).thenReturn(null);
+
+        assertThrows(ResourceNotFoundException.class,
+                () -> service.create(borrower, createReq(999L, today, today.plusDays(1))));
+    }
+
+    @Test
+    void approve_success_marksItemLentOut() {
         LoanRequest loan = givenLoan(LoanStatus.PENDING);
 
         LoanRequestResponse response = service.approve(100L, owner);
@@ -136,6 +174,7 @@ class LoanRequestServiceTest {
         assertEquals(ItemStatus.LENT_OUT, item.getStatus());
         verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
         verify(entityManager).refresh(item, LockModeType.PESSIMISTIC_WRITE);
+        verify(notificationService).notify(eq(2L), eq(NotificationType.LOAN_APPROVED), anyString(), eq("/loans/100"));
     }
 
     @Test
@@ -178,6 +217,7 @@ class LoanRequestServiceTest {
         assertNotNull(loan.getRespondedAt());
         assertEquals(ItemStatus.AVAILABLE, item.getStatus());
         verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
+        verify(notificationService).notify(eq(2L), eq(NotificationType.LOAN_REJECTED), anyString(), eq("/loans/100"));
     }
 
     @Test
@@ -195,6 +235,7 @@ class LoanRequestServiceTest {
 
         assertEquals(LoanStatus.CANCELLED, response.status());
         verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
+        verify(notificationService).notify(eq(1L), eq(NotificationType.LOAN_CANCELLED), anyString(), eq("/loans/100"));
     }
 
     @Test
@@ -222,6 +263,7 @@ class LoanRequestServiceTest {
         assertNotNull(loan.getReturnedAt());
         assertEquals(ItemStatus.AVAILABLE, item.getStatus());
         verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
+        verify(notificationService).notify(eq(2L), eq(NotificationType.LOAN_RETURNED), anyString(), eq("/loans/100"));
     }
 
     @Test
@@ -261,6 +303,51 @@ class LoanRequestServiceTest {
 
         verify(loanRequestRepository).findByBorrowerId(eq(2L),
                 org.mockito.ArgumentMatchers.argThat(pageable -> pageable.getPageSize() == 50));
+    }
+
+    @Test
+    void getMyHistory_filtersRequestDatesAndStatusForBorrower() {
+        LocalDate from = LocalDate.of(2026, 10, 1);
+        LocalDate to = LocalDate.of(2026, 10, 5);
+        ZoneId zone = ZoneId.of("Asia/Ho_Chi_Minh");
+        Instant expectedStart = from.atStartOfDay(zone).toInstant();
+        Instant expectedEnd = to.plusDays(1).atStartOfDay(zone).toInstant();
+        when(loanRequestRepository.findBorrowerHistory(
+                eq(borrower.getId()), eq(LoanStatus.RETURNED),
+                eq(expectedStart), eq(expectedEnd), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+
+        var result = service.getMyHistory(borrower, LoanStatus.RETURNED, from, to, PageRequest.of(0, 10));
+
+        assertEquals(0, result.totalElements());
+        verify(loanRequestRepository).findBorrowerHistory(
+                eq(borrower.getId()), eq(LoanStatus.RETURNED),
+                eq(expectedStart), eq(expectedEnd), any(Pageable.class));
+    }
+
+    @Test
+    void getIncomingHistory_allowsOpenEndedDateRange() {
+        LocalDate from = LocalDate.of(2026, 10, 1);
+        Instant expectedStart = from.atStartOfDay(ZoneId.of("Asia/Ho_Chi_Minh")).toInstant();
+        when(loanRequestRepository.findOwnerHistory(
+                eq(owner.getId()), eq(null), eq(expectedStart), eq(null), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+
+        var result = service.getIncomingHistory(owner, null, from, null, PageRequest.of(0, 10));
+
+        assertEquals(0, result.totalElements());
+        verify(loanRequestRepository).findOwnerHistory(
+                eq(owner.getId()), eq(null), eq(expectedStart), eq(null), any(Pageable.class));
+    }
+
+    @Test
+    void getMyHistory_rejectsReversedDates() {
+        var from = LocalDate.of(2026, 10, 6);
+        var to = LocalDate.of(2026, 10, 5);
+        assertCode(ErrorCode.BAD_REQUEST,
+                () -> service.getMyHistory(borrower, null, from, to, PageRequest.of(0, 10)));
+        verify(loanRequestRepository, org.mockito.Mockito.never()).findBorrowerHistory(
+                any(), any(), any(), any(), any());
     }
 
     private LoanRequestCreateRequest createReq(Long itemId, LocalDate from, LocalDate to) {

@@ -10,6 +10,7 @@ import com.unilend.backend.entity.Item;
 import com.unilend.backend.entity.Item.ItemStatus;
 import com.unilend.backend.entity.LoanRequest;
 import com.unilend.backend.entity.LoanRequest.LoanStatus;
+import com.unilend.backend.entity.Notification.NotificationType;
 import com.unilend.backend.entity.User;
 import com.unilend.backend.repository.ItemRepository;
 import com.unilend.backend.repository.LoanRequestRepository;
@@ -24,16 +25,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
 public class LoanRequestService {
 
     private static final int MAX_PAGE_SIZE = 50;
+    private static final ZoneId HISTORY_ZONE = ZoneId.of("Asia/Ho_Chi_Minh");
 
     private final LoanRequestRepository loanRequestRepository;
     private final ItemRepository itemRepository;
     private final EntityManager entityManager;
+    private final NotificationService notificationService;
 
     @Transactional
     public LoanRequestResponse create(User borrower, LoanRequestCreateRequest req) {
@@ -70,7 +74,14 @@ public class LoanRequestService {
                 .note(req.note())
                 .build();
 
-        return LoanRequestResponse.from(loanRequestRepository.save(loan));
+        LoanRequest saved = loanRequestRepository.save(loan);
+        notificationService.notify(
+                item.getOwner().getId(),
+                NotificationType.LOAN_CREATED,
+                "%s đã gửi yêu cầu mượn món đồ \"%s\"".formatted(borrower.getFullName(), item.getTitle()),
+                "/loans/" + saved.getId()
+        );
+        return LoanRequestResponse.from(saved);
     }
 
     @Transactional
@@ -92,6 +103,13 @@ public class LoanRequestService {
         loan.setStatus(LoanStatus.APPROVED);
         loan.setRespondedAt(Instant.now());
         item.setStatus(ItemStatus.LENT_OUT);
+
+        notificationService.notify(
+                loan.getBorrower().getId(),
+                NotificationType.LOAN_APPROVED,
+                "Yêu cầu mượn món đồ \"%s\" của bạn đã được duyệt".formatted(item.getTitle()),
+                "/loans/" + loan.getId()
+        );
         return LoanRequestResponse.from(loan);
     }
 
@@ -103,6 +121,13 @@ public class LoanRequestService {
 
         loan.setStatus(LoanStatus.REJECTED);
         loan.setRespondedAt(Instant.now());
+
+        notificationService.notify(
+                loan.getBorrower().getId(),
+                NotificationType.LOAN_REJECTED,
+                "Yêu cầu mượn món đồ \"%s\" của bạn đã bị từ chối".formatted(loan.getItem().getTitle()),
+                "/loans/" + loan.getId()
+        );
         return LoanRequestResponse.from(loan);
     }
 
@@ -113,6 +138,13 @@ public class LoanRequestService {
         requirePending(loan);
 
         loan.setStatus(LoanStatus.CANCELLED);
+
+        notificationService.notify(
+                loan.getItem().getOwner().getId(),
+                NotificationType.LOAN_CANCELLED,
+                "%s đã hủy yêu cầu mượn món đồ \"%s\"".formatted(loan.getBorrower().getFullName(), loan.getItem().getTitle()),
+                "/loans/" + loan.getId()
+        );
         return LoanRequestResponse.from(loan);
     }
 
@@ -120,7 +152,7 @@ public class LoanRequestService {
     public LoanRequestResponse markReturned(Long loanId, User actor) {
         LoanRequest loan = findLoanForUpdate(loanId);
         requireOwner(loan, actor);
-        if (loan.getStatus() != LoanStatus.APPROVED) {
+        if (loan.getStatus() != LoanStatus.APPROVED && loan.getStatus() != LoanStatus.OVERDUE) {
             throw new BusinessException(ErrorCode.CONFLICT, "Chỉ xác nhận trả được với khoản mượn đã duyệt");
         }
 
@@ -132,6 +164,13 @@ public class LoanRequestService {
         if (item.getStatus() == ItemStatus.LENT_OUT) {
             item.setStatus(ItemStatus.AVAILABLE);
         }
+
+        notificationService.notify(
+                loan.getBorrower().getId(),
+                NotificationType.LOAN_RETURNED,
+                "Chủ đồ đã xác nhận bạn đã trả món đồ \"%s\"".formatted(item.getTitle()),
+                "/loans/" + loan.getId()
+        );
         return LoanRequestResponse.from(loan);
     }
 
@@ -151,6 +190,41 @@ public class LoanRequestService {
                 ? loanRequestRepository.findByItemOwnerId(owner.getId(), boundedPageable)
                 : loanRequestRepository.findByItemOwnerIdAndStatus(owner.getId(), status, boundedPageable);
         return PageResponse.from(page, LoanRequestResponse::from);
+    }
+
+    // Khoảng ngày lọc theo requestedAt, gồm cả ngày kết thúc tại múi giờ Việt Nam.
+    @Transactional(readOnly = true)
+    public PageResponse<LoanRequestResponse> getMyHistory(
+            User borrower, LoanStatus status, LocalDate fromDate, LocalDate toDate, Pageable pageable) {
+        validateHistoryRange(fromDate, toDate);
+        Page<LoanRequest> page = loanRequestRepository.findBorrowerHistory(
+                borrower.getId(), status, historyStart(fromDate), historyEndExclusive(toDate),
+                boundedPageable(pageable));
+        return PageResponse.from(page, LoanRequestResponse::from);
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<LoanRequestResponse> getIncomingHistory(
+            User owner, LoanStatus status, LocalDate fromDate, LocalDate toDate, Pageable pageable) {
+        validateHistoryRange(fromDate, toDate);
+        Page<LoanRequest> page = loanRequestRepository.findOwnerHistory(
+                owner.getId(), status, historyStart(fromDate), historyEndExclusive(toDate),
+                boundedPageable(pageable));
+        return PageResponse.from(page, LoanRequestResponse::from);
+    }
+
+    private void validateHistoryRange(LocalDate fromDate, LocalDate toDate) {
+        if (fromDate != null && toDate != null && fromDate.isAfter(toDate)) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST, "fromDate không được sau toDate");
+        }
+    }
+
+    private Instant historyStart(LocalDate fromDate) {
+        return fromDate == null ? null : fromDate.atStartOfDay(HISTORY_ZONE).toInstant();
+    }
+
+    private Instant historyEndExclusive(LocalDate toDate) {
+        return toDate == null ? null : toDate.plusDays(1).atStartOfDay(HISTORY_ZONE).toInstant();
     }
 
     @Transactional(readOnly = true)

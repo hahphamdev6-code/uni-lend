@@ -15,8 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -67,6 +65,7 @@ public class CategoryService {
     @Transactional
     public void delete(Long id) {
         Category category = getOrThrow(id);
+        // Nếu còn món đồ thuộc danh mục, FK ở DB sẽ báo lỗi -> GlobalExceptionHandler trả 409.
         categoryRepository.delete(category);
         categoryRepository.flush();
     }
@@ -76,6 +75,7 @@ public class CategoryService {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("danh mục", id));
     }
+
     private Pageable pageable(int page, int size) {
         int safePage = Math.max(page, 0);
         int safeSize = Math.min(Math.max(size, 1), MAX_PAGE_SIZE);

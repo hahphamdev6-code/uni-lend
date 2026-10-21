@@ -14,9 +14,11 @@ public record UserProfileResponse(
         String avatarUrl,
         Set<String> roles,
         boolean enabled,
+        Double averageRating,
+        Long reviewCount,
         Instant createdAt
 ) {
-    public static UserProfileResponse from(User user) {
+    public static UserProfileResponse from(User user, double averageRating, long reviewCount) {
         return new UserProfileResponse(
                 user.getId(),
                 user.getEmail(),
@@ -26,7 +28,13 @@ public record UserProfileResponse(
                 user.getAvatarUrl(),
                 user.getRoles(),
                 user.isEnabled(),
+                averageRating,
+                reviewCount,
                 user.getCreatedAt()
         );
+    }
+
+    public static UserProfileResponse from(User user) {
+        return from(user, 0.0, 0L);
     }
 }

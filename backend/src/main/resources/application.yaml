@@ -2,6 +2,10 @@
 spring:
   config:
     import: optional:file:.env[.properties]
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 26MB
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3306/uni_lend}
     username: ${DB_USERNAME:root}
@@ -15,13 +19,15 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 16
+
 
 app:
   jwt:
+    # Base64, tối thiểu 32 byte. Tạo bằng: openssl rand -base64 32
     secret: ${JWT_SECRET}
     issuer: ${JWT_ISSUER:http://unilend.local}
     expiration-ms: ${JWT_EXPIRATION_MS:86400000}
-    # Base64, tối thiểu 32 byte. Tạo bằng: openssl rand -base64 32
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
 

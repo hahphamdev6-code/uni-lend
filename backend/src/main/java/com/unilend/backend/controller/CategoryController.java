@@ -13,13 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping({"/api/categories", "/categories"})
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
     private final CurrentUserService currentUserService;
 
+    // Ai cũng xem được
     @GetMapping
     public ApiResponse<PageResponse<CategoryResponse>> list(
             @RequestParam(defaultValue = "0") int page,
@@ -32,6 +33,7 @@ public class CategoryController {
         return ApiResponse.ok(categoryService.findById(id));
     }
 
+    // Chỉ ADMIN
     @PostMapping
     public ResponseEntity<ApiResponse<CategoryResponse>> create(@Valid @RequestBody CategoryRequest req) {
         currentUserService.requireAdmin();

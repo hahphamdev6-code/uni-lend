@@ -12,8 +12,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 
@@ -21,11 +21,14 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Lỗi nghiệp vụ tự định nghĩa
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ApiResponse<Void>> handleBusiness(BusinessException ex) {
         ErrorCode code = ex.getErrorCode();
         return build(code, ex.getMessage());
     }
+
+    // Lỗi validate @Valid trên @RequestBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleBodyValidation(MethodArgumentNotValidException ex) {
         List<FieldErrorDetail> errors = ex.getBindingResult().getFieldErrors().stream()
@@ -39,6 +42,7 @@ public class GlobalExceptionHandler {
                         errors));
     }
 
+    // Lỗi validate @RequestParam / @PathVariable (@Validated ở controller)
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiResponse<Void>> handleConstraintViolation(ConstraintViolationException ex) {
         List<FieldErrorDetail> errors = ex.getConstraintViolations().stream()
@@ -52,11 +56,13 @@ public class GlobalExceptionHandler {
                         errors));
     }
 
+    // JSON sai cú pháp hoặc sai kiểu dữ liệu
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse<Void>> handleUnreadable(HttpMessageNotReadableException ex) {
         return build(ErrorCode.BAD_REQUEST, "Body request không đọc được hoặc sai định dạng");
     }
 
+    // Sai kiểu tham số, ví dụ /items/abc khi cần Long
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApiResponse<Void>> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
         return build(ErrorCode.BAD_REQUEST, "Tham số '%s' có giá trị không hợp lệ".formatted(ex.getName()));
@@ -72,12 +78,19 @@ public class GlobalExceptionHandler {
         return build(ErrorCode.RESOURCE_NOT_FOUND, "Đường dẫn không tồn tại");
     }
 
+    // Vi phạm unique/foreign key ở DB (ví dụ trùng email, trùng tên category)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse<Void>> handleDataIntegrity(DataIntegrityViolationException ex) {
         log.warn("Data integrity violation: {}", ex.getMostSpecificCause().getMessage());
         return build(ErrorCode.CONFLICT, "Dữ liệu bị trùng hoặc vi phạm ràng buộc");
     }
 
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMaxSizeException(MaxUploadSizeExceededException ex) {
+        return build(ErrorCode.BAD_REQUEST, "Dung lượng file vượt quá giới hạn cho phép (tối đa 5MB)");
+    }
+
+    // Bắt mọi lỗi còn lại, không lộ chi tiết nội bộ ra client
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleUnexpected(Exception ex) {
         log.error("Unexpected error", ex);
@@ -88,9 +101,5 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(code.getStatus())
                 .body(ApiResponse.error(code.name(), message));
-    }
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<ApiResponse<Void>> handleMaxSizeException(MaxUploadSizeExceededException ex) {
-        return build(ErrorCode.BAD_REQUEST, "Dung lượng file vượt quá giới hạn cho phép (tối đa 5MB)");
     }
 }

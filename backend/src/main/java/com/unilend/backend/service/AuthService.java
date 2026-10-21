@@ -2,23 +2,19 @@ package com.unilend.backend.service;
 
 import com.unilend.backend.common.exception.BusinessException;
 import com.unilend.backend.common.exception.ErrorCode;
+import com.unilend.backend.common.security.CurrentUserService;
 import com.unilend.backend.dto.auth.AuthResponse;
 import com.unilend.backend.dto.auth.LoginRequest;
+import com.unilend.backend.dto.auth.RegisterRequest;
 import com.unilend.backend.entity.User;
 import com.unilend.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
-import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Instant;
-import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -26,32 +22,55 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtEncoder jwtEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final CurrentUserService currentUserService;
+    private final ReviewService reviewService;
 
-    @Value("${app.jwt.issuer:http://unilend.local}")
-    private String issuer;
+    @Transactional
+    public AuthResponse register(RegisterRequest request) {
+        String email = normalize(request.email());
 
-    @Value("${app.jwt.expiration-ms:86400000}")
-    private long expirationMillis;
+        if (userRepository.existsByEmail(email)) {
+            throw new BusinessException(ErrorCode.CONFLICT, "Email đã được sử dụng");
+        }
+
+        User user = User.builder()
+                .email(email)
+                .password(passwordEncoder.encode(request.password())) // BCrypt
+                .fullName(request.fullName().trim())
+                .build();
+
+        user = userRepository.save(user);
+        return AuthResponse.of(user, jwtService.generateToken(user.getId(), user.getEmail(), user.getRoles().stream().toList()));
+    }
 
     @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.email().trim().toLowerCase(Locale.ROOT))
-                .filter(candidate -> candidate.isEnabled()
-                        && passwordEncoder.matches(request.password(), candidate.getPassword()))
+        String email = normalize(request.email());
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, request.password()));
+        } catch (AuthenticationException ex) {
+            // Không tiết lộ là sai email hay sai mật khẩu
+            throw new BusinessException(ErrorCode.UNAUTHORIZED, "Email hoặc mật khẩu không đúng");
+        }
+
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessException(ErrorCode.UNAUTHORIZED, "Email hoặc mật khẩu không đúng"));
+        return AuthResponse.of(user, jwtService.generateToken(user.getId(), user.getEmail(), user.getRoles().stream().toList()));
+    }
 
-        Instant issuedAt = Instant.now();
-        Instant expiresAt = issuedAt.plusMillis(expirationMillis);
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer(issuer)
-                .issuedAt(issuedAt)
-                .expiresAt(expiresAt)
-                .subject(user.getEmail())
-                .build();
-        JwsHeader header = JwsHeader.with(MacAlgorithm.HS256).build();
-        String token = jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
+    @Transactional(readOnly = true)
+    public AuthResponse getCurrentUser() {
+        User user = currentUserService.getCurrentUser();
+        double avgRating = reviewService.getAverageRating(user.getId());
+        long reviewCount = reviewService.getReviewCount(user.getId());
+        return AuthResponse.of(user, avgRating, reviewCount);
+    }
 
-        return new AuthResponse(token, "Bearer", expiresAt);
+    private String normalize(String email) {
+        return email.trim().toLowerCase();
     }
 }
