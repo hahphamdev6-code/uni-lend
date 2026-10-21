@@ -13,6 +13,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+
 
 @SpringBootTest(properties = {
         "app.jwt.secret=dW5pbGVuZC10ZXN0LWp3dC1zZWNyZXQta2V5LWF0LWxlYXN0LTMyLWJ5dGVz",
@@ -32,7 +34,9 @@ class AuthAndLoanIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = webAppContextSetup(context).build();
+        mockMvc = webAppContextSetup(context)
+        .apply(springSecurity())
+        .build();
     }
 
     @Test
