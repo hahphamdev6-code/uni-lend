@@ -65,4 +65,35 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
               AND l.dueDate < :today
             """)
     Page<LoanRequest> findOverdue(@Param("today") LocalDate today, Pageable pageable);
+    // Lọc lịch sử theo ngày gửi yêu cầu (requestedAt), giới hạn bởi người liên quan.
+    @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
+    @Query("""
+            SELECT l FROM LoanRequest l
+            WHERE l.borrower.id = :userId
+              AND (:status IS NULL OR l.status = :status)
+              AND (:fromInstant IS NULL OR l.requestedAt >= :fromInstant)
+              AND (:toExclusive IS NULL OR l.requestedAt < :toExclusive)
+            """)
+    Page<LoanRequest> findBorrowerHistory(
+            @Param("userId") Long userId,
+            @Param("status") LoanStatus status,
+            @Param("fromInstant") java.time.Instant fromInstant,
+            @Param("toExclusive") java.time.Instant toExclusive,
+            Pageable pageable);
+
+    @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
+    @Query("""
+            SELECT l FROM LoanRequest l
+            WHERE l.item.owner.id = :userId
+              AND (:status IS NULL OR l.status = :status)
+              AND (:fromInstant IS NULL OR l.requestedAt >= :fromInstant)
+              AND (:toExclusive IS NULL OR l.requestedAt < :toExclusive)
+            """)
+    Page<LoanRequest> findOwnerHistory(
+            @Param("userId") Long userId,
+            @Param("status") LoanStatus status,
+            @Param("fromInstant") java.time.Instant fromInstant,
+            @Param("toExclusive") java.time.Instant toExclusive,
+            Pageable pageable);
+
 }

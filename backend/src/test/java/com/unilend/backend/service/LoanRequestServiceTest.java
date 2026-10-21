@@ -29,6 +29,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.Instant;
+import java.util.List;
+import org.springframework.data.domain.PageImpl;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -323,4 +327,50 @@ class LoanRequestServiceTest {
         BusinessException exception = assertThrows(BusinessException.class, action);
         assertEquals(expected, exception.getErrorCode());
     }
+
+    @Test
+    void getMyHistory_filtersRequestDatesAndStatusForBorrower() {
+        LocalDate from = LocalDate.of(2026, 10, 1);
+        LocalDate to = LocalDate.of(2026, 10, 5);
+        ZoneId zone = ZoneId.of("Asia/Ho_Chi_Minh");
+        Instant expectedStart = from.atStartOfDay(zone).toInstant();
+        Instant expectedEnd = to.plusDays(1).atStartOfDay(zone).toInstant();
+        when(loanRequestRepository.findBorrowerHistory(
+                eq(borrower.getId()), eq(LoanStatus.RETURNED),
+                eq(expectedStart), eq(expectedEnd), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+
+        var result = service.getMyHistory(borrower, LoanStatus.RETURNED, from, to, PageRequest.of(0, 10));
+
+        assertEquals(0, result.totalElements());
+        verify(loanRequestRepository).findBorrowerHistory(
+                eq(borrower.getId()), eq(LoanStatus.RETURNED),
+                eq(expectedStart), eq(expectedEnd), any(Pageable.class));
+    }
+
+    @Test
+    void getIncomingHistory_allowsOpenEndedDateRange() {
+        LocalDate from = LocalDate.of(2026, 10, 1);
+        Instant expectedStart = from.atStartOfDay(ZoneId.of("Asia/Ho_Chi_Minh")).toInstant();
+        when(loanRequestRepository.findOwnerHistory(
+                eq(owner.getId()), eq(null), eq(expectedStart), eq(null), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+
+        var result = service.getIncomingHistory(owner, null, from, null, PageRequest.of(0, 10));
+
+        assertEquals(0, result.totalElements());
+        verify(loanRequestRepository).findOwnerHistory(
+                eq(owner.getId()), eq(null), eq(expectedStart), eq(null), any(Pageable.class));
+    }
+
+    @Test
+    void getMyHistory_rejectsReversedDates() {
+        var from = LocalDate.of(2026, 10, 6);
+        var to = LocalDate.of(2026, 10, 5);
+        assertCode(ErrorCode.BAD_REQUEST,
+                () -> service.getMyHistory(borrower, null, from, to, PageRequest.of(0, 10)));
+        verify(loanRequestRepository, org.mockito.Mockito.never()).findBorrowerHistory(
+                any(), any(), any(), any(), any());
+    }
+
 }

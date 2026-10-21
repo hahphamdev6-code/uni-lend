@@ -8,6 +8,8 @@ import com.unilend.backend.dto.loan.LoanRequestResponse;
 import com.unilend.backend.entity.LoanRequest.LoanStatus;
 import com.unilend.backend.service.LoanRequestService;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -42,17 +44,21 @@ public class LoanRequestController {
     @GetMapping("/mine")
     public ApiResponse<PageResponse<LoanRequestResponse>> mine(
             @RequestParam(required = false) LoanStatus status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
             @PageableDefault(size = 10, sort = "requestedAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ApiResponse.ok(
-                loanRequestService.getMyRequests(currentUserService.getCurrentUser(), status, pageable));
+        return ApiResponse.ok(loanRequestService.getMyHistory(
+                currentUserService.getCurrentUser(), status, fromDate, toDate, pageable));
     }
 
     @GetMapping("/incoming")
     public ApiResponse<PageResponse<LoanRequestResponse>> incoming(
             @RequestParam(required = false) LoanStatus status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
             @PageableDefault(size = 10, sort = "requestedAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ApiResponse.ok(
-                loanRequestService.getIncomingRequests(currentUserService.getCurrentUser(), status, pageable));
+        return ApiResponse.ok(loanRequestService.getIncomingHistory(
+                currentUserService.getCurrentUser(), status, fromDate, toDate, pageable));
     }
 
     @GetMapping("/overdue")
