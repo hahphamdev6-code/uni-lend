@@ -12,7 +12,7 @@
   display: grid;
   justify-items: center;
   gap: 12px;
-  padding: 42px 30px;
+  padding: clamp(28px, 7vw, 42px) clamp(20px, 6vw, 30px);
   border: 1px solid var(--line);
   border-radius: 16px;
   background: #fff;
@@ -22,14 +22,14 @@
 
 .code {
   color: var(--green);
-  font-size: 64px;
+  font-size: clamp(54px, 12vw, 64px);
   font-weight: 800;
   line-height: 1;
 }
 
 .card h1 {
   margin: 0;
-  font-size: 25px;
+  font-size: clamp(21px, 5vw, 25px);
 }
 
 .card p {
@@ -40,9 +40,10 @@
 }
 
 .card a {
-  min-height: 42px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   margin-top: 10px;
   padding: 0 16px;
   border-radius: 8px;

@@ -167,11 +167,22 @@ export function ItemForm({ itemId }: { itemId: number | null }) {
         </div>
 
         {auth.status === "loading" || auth.status === "unauthenticated" || loadingItem ? (
-          <div className={styles.statePanel} role="status">Đang tải thông tin...</div>
+          <div className={styles.formSkeleton} aria-label="Đang tải thông tin" aria-busy="true">
+            <span className={styles.visuallyHidden} role="status">Đang tải thông tin</span>
+            <div className={`${styles.skeletonLine} ${styles.skeletonHeading}`} />
+            <div className={`${styles.skeletonLine} ${styles.skeletonLabel}`} />
+            <div className={`${styles.skeletonLine} ${styles.skeletonField}`} />
+            <div className={`${styles.skeletonLine} ${styles.skeletonLabel}`} />
+            <div className={`${styles.skeletonLine} ${styles.skeletonArea}`} />
+            <div className={`${styles.skeletonLine} ${styles.skeletonField}`} />
+          </div>
         ) : auth.status === "error" ? (
           <div className={styles.statePanel} role="alert">{auth.error}</div>
         ) : invalidItemId ? (
-          <div className={styles.statePanel} role="alert">Mã món đồ không hợp lệ.</div>
+          <div className={styles.statePanel} role="alert">
+            <p>Mã món đồ không hợp lệ hoặc món đồ không còn tồn tại.</p>
+            <Link className={styles.secondaryButton} href="/my">Quay lại đồ của tôi</Link>
+          </div>
         ) : loadError ? (
           <div className={styles.statePanel} role="alert">
             <p>{loadError}</p>

@@ -1,9 +1,9 @@
 .toast {
   position: fixed;
   z-index: 100;
-  top: 20px;
-  right: 20px;
-  width: min(420px, calc(100vw - 40px));
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+  width: min(420px, calc(100vw - 32px));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -34,4 +34,12 @@
   color: inherit;
   font-size: 22px;
   cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .toast {
+    right: max(12px, env(safe-area-inset-right));
+    width: calc(100vw - 24px);
+    padding: 12px 14px;
+  }
 }

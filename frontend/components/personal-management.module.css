@@ -189,19 +189,6 @@
 
 .itemMark,
 .emptyIcon,
-.modalIcon {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  flex: none;
-  place-items: center;
-  border-radius: 12px;
-  background: var(--green-soft);
-  color: var(--green-dark);
-  font-size: 22px;
-  font-weight: 700;
-}
-
 .itemInfo {
   min-width: 0;
   flex: 1;
@@ -429,8 +416,7 @@
   font-size: 13px;
 }
 
-.pagination button,
-.cancelButton {
+.pagination button {
   min-height: 38px;
   padding: 0 13px;
   border: 1px solid var(--line);
@@ -446,68 +432,43 @@
   cursor: not-allowed;
 }
 
-.modalBackdrop {
-  position: fixed;
-  z-index: 110;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  background: #102b3f75;
-}
-
-.confirmModal {
-  width: min(440px, 100%);
-  padding: 28px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: white;
-  box-shadow: 0 24px 70px #102b3f30;
-}
-
-.modalIcon {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-}
-
-.confirmModal h2 {
-  margin: 15px 0 7px;
-  font-size: 20px;
-}
-
-.confirmModal p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.65;
-}
-
-.modalActions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 9px;
-  margin-top: 24px;
-}
-
-.cancelButton {
-  color: var(--muted);
-}
-
-.modalActions button:disabled {
-  opacity: 0.65;
-  cursor: wait;
-}
-
 .header a:focus-visible,
 .tabs button:focus-visible,
 .primaryButton:focus-visible,
 .editLink:focus-visible,
 .loanActions button:focus-visible,
-.modalActions button:focus-visible,
 .pagination button:focus-visible {
   outline: 3px solid #62a9e8;
   outline-offset: 3px;
+}
+
+.loadingList {
+  display: grid;
+  gap: 12px;
+  padding-top: 18px;
+}
+
+.loadingSkeleton {
+  min-height: 104px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: linear-gradient(90deg, #e8f0f7 25%, #f5f9fc 50%, #e8f0f7 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s ease-in-out infinite;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes shimmer {
+  to { background-position: -200% 0; }
 }
 
 @media (max-width: 720px) {
@@ -557,6 +518,12 @@
 @media (max-width: 420px) {
   .itemRow {
     align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loadingSkeleton {
+    animation: none;
   }
 
   .badge {

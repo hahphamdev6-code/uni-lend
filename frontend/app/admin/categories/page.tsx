@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { AdminNavigation } from "../../../components/admin-navigation";
+import { ConfirmationDialog } from "../../../components/confirmation-dialog";
 import { useAdminToast } from "../../../components/admin-toast";
 import { useAuth } from "../../../components/auth-provider";
 import {
@@ -229,7 +230,7 @@ export default function AdminCategoriesPage() {
             </table>
           </div>
         ) : (
-          <div className={styles.state}>
+          <div className={styles.empty}>
             Chưa có danh mục nào. Tạo danh mục đầu tiên để bắt đầu.
           </div>
         )}
@@ -281,33 +282,18 @@ export default function AdminCategoriesPage() {
       )}
 
       {deletingCategory && (
-        <div className={styles.modalBackdrop}>
-          <section
-            aria-labelledby="delete-category-title"
-            aria-modal="true"
-            className={styles.modal}
-            role="dialog"
-          >
-            <h2 id="delete-category-title">Xóa danh mục?</h2>
-            <p>
-              Bạn có chắc muốn xóa <strong>{deletingCategory.name}</strong>? Nếu danh mục đang
-              được món đồ sử dụng, máy chủ có thể từ chối thao tác này.
-            </p>
-            <div className={styles.modalActions}>
-              <button
-                className={styles.secondaryButton}
-                disabled={saving}
-                onClick={() => setDeletingCategory(null)}
-                type="button"
-              >
-                Hủy
-              </button>
-              <button className={styles.dangerButton} disabled={saving} onClick={() => void handleDelete()} type="button">
-                {saving ? "Đang xóa..." : "Xác nhận xóa"}
-              </button>
-            </div>
-          </section>
-        </div>
+        <ConfirmationDialog
+          busy={saving}
+          confirmLabel="Xác nhận xóa"
+          onCancel={() => setDeletingCategory(null)}
+          onConfirm={() => void handleDelete()}
+          pendingLabel="Đang xóa..."
+          title="Xóa danh mục?"
+          tone="danger"
+        >
+          Bạn có chắc muốn xóa <strong>{deletingCategory.name}</strong>? Nếu danh mục đang
+          được món đồ sử dụng, máy chủ có thể từ chối thao tác này.
+        </ConfirmationDialog>
       )}
     </main>
   );

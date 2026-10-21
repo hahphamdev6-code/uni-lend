@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { ConfirmationDialog } from "./confirmation-dialog";
 import { useAdminToast } from "./admin-toast";
 import { useAuth } from "./auth-provider";
 import { NotificationBell } from "./notification-bell";
@@ -333,7 +334,12 @@ export function PersonalManagement() {
             </button>
           </div>
         ) : loading ? (
-          <div className={styles.statePanel} role="status">Đang tải dữ liệu...</div>
+          <div className={styles.loadingList} aria-label="Đang tải dữ liệu" aria-busy="true">
+            <span className={styles.visuallyHidden} role="status">Đang tải dữ liệu</span>
+            {Array.from({ length: 4 }, (_, index) => (
+              <div className={styles.loadingSkeleton} key={index} />
+            ))}
+          </div>
         ) : tab === "items" ? (
           <section
             aria-labelledby={`tab-${tab}`}
@@ -475,36 +481,17 @@ export function PersonalManagement() {
       </section>
 
       {confirmation && (
-        <div className={styles.modalBackdrop}>
-          <section
-            aria-labelledby="confirm-title"
-            aria-modal="true"
-            className={styles.confirmModal}
-            onKeyDown={(event) => {
-              if (event.key === "Escape" && !submitting) setConfirmation(null);
-            }}
-            role="dialog"
-            tabIndex={-1}
-          >
-            <span className={styles.modalIcon} aria-hidden="true">?</span>
-            <h2 id="confirm-title">{actionDetails[confirmation.action].title}</h2>
-            <p>{actionDetails[confirmation.action].message}</p>
-            <div className={styles.modalActions}>
-              <button
-                className={styles.cancelButton}
-                disabled={submitting}
-                onClick={() => setConfirmation(null)}
-                autoFocus
-                type="button"
-              >
-                Để sau
-              </button>
-              <button className={styles.primaryButton} disabled={submitting} onClick={runAction} type="button">
-                {submitting ? "Đang xử lý..." : actionDetails[confirmation.action].confirm}
-              </button>
-            </div>
-          </section>
-        </div>
+        <ConfirmationDialog
+          busy={submitting}
+          cancelLabel="Để sau"
+          confirmLabel={actionDetails[confirmation.action].confirm}
+          onCancel={() => setConfirmation(null)}
+          onConfirm={() => void runAction()}
+          pendingLabel="Đang xử lý..."
+          title={actionDetails[confirmation.action].title}
+        >
+          {actionDetails[confirmation.action].message}
+        </ConfirmationDialog>
       )}
       {reviewingLoan && (
         <ReviewDialog
