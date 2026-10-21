@@ -5,13 +5,16 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { NotificationBell } from "../../components/notification-bell";
 import { categoryService } from "../../lib/api/categoryService";
+import { resolveImageUrl } from "../../lib/api/imageUrl";
 import { itemService } from "../../lib/api/itemService";
-import type { Category, Item, PageResponse } from "../../lib/api/types";
+import { getItemImageUrls, type Category, type Item, type PageResponse } from "../../lib/api/types";
 import styles from "./page.module.css";
 
 const PAGE_SIZE = 9;
 
 function ItemCard({ item }: { item: Item }) {
+  const imageUrl = getItemImageUrls(item)[0];
+  const [failedImageUrl, setFailedImageUrl] = useState("");
   const statusLabel =
     item.status === "AVAILABLE"
       ? "Có thể mượn"
@@ -23,14 +26,15 @@ function ItemCard({ item }: { item: Item }) {
     <article className={styles.itemCard}>
       <Link className={styles.itemLink} href={`/items/${item.id}`} aria-label={`Xem chi tiết ${item.title}`}>
         <div className={styles.itemArtwork}>
-          {item.images?.[0] ? (
+          {imageUrl && imageUrl !== failedImageUrl ? (
             <Image
               alt={item.title}
               className={styles.cardImage}
-              src={item.images[0]}
+              src={resolveImageUrl(imageUrl)}
               fill
               sizes="(max-width: 560px) 100vw, (max-width: 800px) 50vw, 33vw"
               unoptimized
+              onError={() => setFailedImageUrl(imageUrl)}
             />
           ) : (
             <>
@@ -180,10 +184,13 @@ export default function ItemsPage() {
       </header>
 
       <section className={styles.content} aria-labelledby="page-title">
-        <div className={styles.heading}>
-          <span className={styles.eyebrow}>Khám phá UniLend</span>
-          <h1 id="page-title">Danh sách đồ</h1>
-          <p>Tìm món đồ hữu ích và kết nối với những người bạn quanh trường.</p>
+        <div className={styles.headingRow}>
+          <div className={styles.heading}>
+            <span className={styles.eyebrow}>Khám phá UniLend</span>
+            <h1 id="page-title">Danh sách đồ</h1>
+            <p>Tìm món đồ hữu ích và kết nối với những người bạn quanh trường.</p>
+          </div>
+          <Link className={styles.createLink} href="/items/new">Đăng món đồ</Link>
         </div>
 
         <div className={styles.toolbar}>
