@@ -246,6 +246,11 @@
   color: #946114;
 }
 
+.statusOverdue {
+  background: #fff0cf;
+  color: #8a5200;
+}
+
 .statusRejected {
   background: #fff0ee;
   color: #a43f37;

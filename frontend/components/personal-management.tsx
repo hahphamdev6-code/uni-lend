@@ -15,6 +15,12 @@ import type { Item, Loan, PageResponse } from "../lib/api/types";
 import styles from "./personal-management.module.css";
 
 const PAGE_SIZE = 10;
+const VIETNAM_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  day: "2-digit",
+  month: "2-digit",
+  timeZone: "Asia/Ho_Chi_Minh",
+  year: "numeric",
+});
 
 type Tab = "items" | "outgoing" | "incoming";
 type LoanAction = "approve" | "reject" | "return";
@@ -63,6 +69,21 @@ function formatDate(value: string | null): string {
   }).format(date);
 }
 
+function getOverdueDays(dueDate: string | null): number | null {
+  const match = dueDate?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return null;
+
+  const dueDateUtc = Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  if (new Date(dueDateUtc).toISOString().slice(0, 10) !== dueDate) return null;
+
+  const todayParts = VIETNAM_DATE_FORMATTER.formatToParts(new Date());
+  const todayPart = (type: Intl.DateTimeFormatPartTypes) =>
+    Number(todayParts.find((part) => part.type === type)?.value);
+  const todayUtc = Date.UTC(todayPart("year"), todayPart("month") - 1, todayPart("day"));
+
+  return Math.max(0, Math.floor((todayUtc - dueDateUtc) / 86_400_000));
+}
+
 function ItemStatus({ item }: { item: Item }) {
   const label =
     item.status === "AVAILABLE"
@@ -79,7 +100,8 @@ function ItemStatus({ item }: { item: Item }) {
   return <span className={`${styles.badge} ${tone}`}>{label}</span>;
 }
 
-function LoanStatus({ status }: { status: Loan["status"] }) {
+function LoanStatus({ loan }: { loan: Loan }) {
+  const { status } = loan;
   const tone =
     status === "PENDING"
       ? styles.statusPending
@@ -87,10 +109,18 @@ function LoanStatus({ status }: { status: Loan["status"] }) {
         ? styles.statusApproved
         : status === "RETURNED"
           ? styles.statusAvailable
-          : status === "OVERDUE" || status === "REJECTED"
-            ? styles.statusRejected
-            : styles.statusMuted;
-  return <span className={`${styles.badge} ${tone}`}>{statusLabels[status]}</span>;
+          : status === "OVERDUE"
+            ? styles.statusOverdue
+            : status === "REJECTED"
+              ? styles.statusRejected
+              : styles.statusMuted;
+  const overdueDays = status === "OVERDUE" ? getOverdueDays(loan.dueDate) : null;
+  return (
+    <span className={`${styles.badge} ${tone}`}>
+      {statusLabels[status]}
+      {overdueDays !== null && ` · trễ ${overdueDays} ngày`}
+    </span>
+  );
 }
 
 export function PersonalManagement() {
@@ -347,7 +377,7 @@ export function PersonalManagement() {
                 {loansPage?.content.map((loan) => (
                   <article className={styles.loanCard} key={loan.id}>
                     <div className={styles.loanTopline}>
-                      <LoanStatus status={loan.status} />
+                      <LoanStatus loan={loan} />
                       <span className={styles.requestDate}>Gửi ngày {formatDate(loan.requestedAt)}</span>
                     </div>
                     <h2>{loan.item.title}</h2>
