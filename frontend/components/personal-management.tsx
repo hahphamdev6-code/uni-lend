@@ -6,8 +6,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useAdminToast } from "./admin-toast";
 import { useAuth } from "./auth-provider";
 import { NotificationBell } from "./notification-bell";
+import { ReviewDialog } from "./review-dialog";
 import { itemService } from "../lib/api/itemService";
 import { loanService } from "../lib/api/loanService";
+import { reviewService } from "../lib/api/reviewService";
+import { userService } from "../lib/api/userService";
 import type { Item, Loan, PageResponse } from "../lib/api/types";
 import styles from "./personal-management.module.css";
 
@@ -103,6 +106,11 @@ export function PersonalManagement() {
   const [reload, setReload] = useState(0);
   const [confirmation, setConfirmation] = useState<{ loan: Loan; action: LoanAction } | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [apiUserId, setApiUserId] = useState<number | null>(null);
+  const [reviewedLoans, setReviewedLoans] = useState<Record<number, boolean>>({});
+  const [reviewCheckError, setReviewCheckError] = useState("");
+  const [reviewCheckRetry, setReviewCheckRetry] = useState(0);
+  const [reviewingLoan, setReviewingLoan] = useState<Loan | null>(null);
 
   useEffect(() => {
     if (auth.status === "unauthenticated") router.replace("/login");
@@ -140,6 +148,56 @@ export function PersonalManagement() {
     return () => controller.abort();
   }, [auth.status, page, reload, tab]);
 
+  useEffect(() => {
+    if (auth.status !== "authenticated") return;
+    const controller = new AbortController();
+    setApiUserId(null);
+    userService.getMe({ signal: controller.signal })
+      .then((profile) => {
+        if (!controller.signal.aborted) {
+          setApiUserId(profile.id);
+          setReviewCheckError("");
+        }
+      })
+      .catch((profileError: unknown) => {
+        if (controller.signal.aborted) return;
+        setReviewCheckError(
+          profileError instanceof Error
+            ? profileError.message
+            : "Không thể xác định tài khoản để kiểm tra đánh giá.",
+        );
+      });
+    return () => controller.abort();
+  }, [auth.status, reviewCheckRetry]);
+
+  useEffect(() => {
+    if (!apiUserId || tab === "items" || !loansPage) return;
+    const controller = new AbortController();
+    const returnedLoans = loansPage.content.filter((loan) => loan.status === "RETURNED");
+    setReviewCheckError("");
+
+    async function checkReviews() {
+      try {
+        const entries = await Promise.all(returnedLoans.map(async (loan) => {
+          const reviews = await reviewService.listByLoan(
+            loan.id,
+            { signal: controller.signal },
+          );
+          return [loan.id, reviews.some((review) => review.reviewer?.id === apiUserId)] as const;
+        }));
+        if (!controller.signal.aborted) setReviewedLoans(Object.fromEntries(entries));
+      } catch (reviewError) {
+        if (controller.signal.aborted) return;
+        setReviewCheckError(
+          reviewError instanceof Error ? reviewError.message : "Không thể kiểm tra đánh giá đã gửi.",
+        );
+      }
+    }
+
+    void checkReviews();
+    return () => controller.abort();
+  }, [apiUserId, loansPage, reviewCheckRetry, tab]);
+
   const changeTab = useCallback((nextTab: Tab) => {
     setTab(nextTab);
     setPage(0);
@@ -170,6 +228,17 @@ export function PersonalManagement() {
     } finally {
       setSubmitting(false);
     }
+  }
+
+  async function submitReview(rating: number, comment: string) {
+    if (!reviewingLoan) return;
+    await reviewService.create(reviewingLoan.id, {
+      rating,
+      ...(comment ? { comment } : {}),
+    });
+    setReviewedLoans((current) => ({ ...current, [reviewingLoan.id]: true }));
+    setReviewingLoan(null);
+    showToast("success", "Đã gửi đánh giá. Cảm ơn bạn!");
   }
 
   const currentPage = tab === "items" ? itemsPage : loansPage;
@@ -322,6 +391,20 @@ export function PersonalManagement() {
                         )}
                       </div>
                     )}
+                    {loan.status === "RETURNED" && reviewedLoans[loan.id] !== true && (
+                      <div className={styles.loanActions}>
+                        <button
+                          className={styles.reviewButton}
+                          onClick={() => setReviewingLoan(loan)}
+                          type="button"
+                        >
+                          ★ Đánh giá
+                        </button>
+                      </div>
+                    )}
+                    {loan.status === "RETURNED" && reviewedLoans[loan.id] === true && (
+                      <p className={styles.reviewedLabel}>✓ Bạn đã đánh giá giao dịch này</p>
+                    )}
                   </article>
                 ))}
               </div>
@@ -338,6 +421,14 @@ export function PersonalManagement() {
               </div>
             )}
           </section>
+        )}
+        {reviewCheckError && tab !== "items" && (
+          <p className={styles.reviewCheckError} role="alert">
+            Không thể kiểm tra đánh giá: {reviewCheckError}{" "}
+            <button onClick={() => setReviewCheckRetry((value) => value + 1)} type="button">
+              Thử lại
+            </button>
+          </p>
         )}
 
         {!loading && !error && totalPages > 1 && (
@@ -384,6 +475,14 @@ export function PersonalManagement() {
             </div>
           </section>
         </div>
+      )}
+      {reviewingLoan && (
+        <ReviewDialog
+          itemTitle={reviewingLoan.item.title}
+          revieweeName={tab === "incoming" ? reviewingLoan.borrower.fullName : reviewingLoan.owner.fullName}
+          onClose={() => setReviewingLoan(null)}
+          onSubmit={submitReview}
+        />
       )}
     </main>
   );

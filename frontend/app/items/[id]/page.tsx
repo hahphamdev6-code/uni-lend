@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { NotificationBell } from "../../../components/notification-bell";
 import { ItemImageGallery } from "../../../components/item-image-gallery";
+import { UserReviewSection } from "../../../components/user-review-section";
 import { itemService } from "../../../lib/api/itemService";
 import type { Item } from "../../../lib/api/types";
 import styles from "./page.module.css";
@@ -106,6 +107,10 @@ export default function ItemDetailsPage() {
                 </Link>
               </div>
             </div>
+            <UserReviewSection
+              title={`Đánh giá về ${item.owner.fullName}`}
+              userId={item.owner.id}
+            />
           </>
         ) : null}
       </section>

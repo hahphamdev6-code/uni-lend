@@ -339,6 +339,46 @@
   background: #fff4f2;
 }
 
+.reviewButton {
+  min-height: 36px;
+  padding: 0 13px;
+  border: 1px solid #f0dcae;
+  border-radius: 9px;
+  background: #fff9e9;
+  color: #8e6418;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.reviewButton:hover {
+  background: #fff1ca;
+}
+
+.reviewedLabel {
+  margin: 12px 0 0;
+  color: #38734a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.reviewCheckError {
+  margin: 8px 0;
+  color: #a43f37;
+  font-size: 12px;
+}
+
+.reviewCheckError button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #a43f37;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .statePanel,
 .emptyState {
   min-height: 270px;

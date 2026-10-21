@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { UserReviewSection } from "../../components/user-review-section";
 import {
   getCurrentUser,
   getSessionSnapshot,
@@ -86,6 +87,7 @@ export default function ProfilePage() {
           <Link className="profile-home-link" href="/profile/edit">Sửa thông tin hồ sơ</Link>
           <Link className="profile-home-link profile-secondary-link" href="/">Khám phá món đồ</Link>
         </div>
+        <UserReviewSection title="Đánh giá của bạn" />
       </section>
       <p className="auth-disclaimer">Hồ sơ thử nghiệm — dữ liệu chỉ lưu trên trình duyệt này. Không sử dụng mật khẩu thật.</p>
     </main>
