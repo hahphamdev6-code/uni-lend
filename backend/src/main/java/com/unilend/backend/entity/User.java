@@ -51,6 +51,10 @@ public class User extends BaseEntity {
     @Builder.Default
     private boolean enabled = true;
 
+    @Column(name = "email_verified", nullable = false)
+    @Builder.Default
+    private boolean emailVerified = false;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
