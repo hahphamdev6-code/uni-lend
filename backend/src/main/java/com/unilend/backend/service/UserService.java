@@ -54,10 +54,11 @@ public class UserService {
     @Transactional
     public void changeMyPassword(ChangePasswordRequest req) {
         User user = currentUserService.getCurrentUser();
+        if (!user.isEnabled()) {
+            throw new BusinessException(ErrorCode.FORBIDDEN, "Tài khoản đã bị khóa");
+        }
 
-        boolean oldMatches = passwordEncoder.matches(req.oldPassword(), user.getPassword())
-                || req.oldPassword().equals(user.getPassword());
-        if (!oldMatches) {
+        if (!passwordEncoder.matches(req.oldPassword(), user.getPassword())) {
             throw new BusinessException(ErrorCode.BAD_REQUEST, "Mật khẩu cũ không chính xác");
         }
 
@@ -66,6 +67,7 @@ public class UserService {
         }
 
         user.setPassword(passwordEncoder.encode(req.newPassword()));
+        user.incrementTokenVersion();
         userRepository.save(user);
     }
 

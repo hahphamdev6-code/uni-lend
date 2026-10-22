@@ -49,7 +49,8 @@ public class AuthService {
         String rawToken = accountTokenService.createEmailVerificationToken(user);
         emailService.sendVerificationEmail(user.getEmail(), user.getFullName(), rawToken);
 
-        return AuthResponse.of(user, jwtService.generateToken(user.getId(), user.getEmail(), user.getRoles().stream().toList()));
+        return AuthResponse.of(user, jwtService.generateToken(
+                user.getId(), user.getEmail(), user.getRoles().stream().toList(), user.getTokenVersion()));
     }
 
     @Transactional(readOnly = true)
@@ -69,7 +70,8 @@ public class AuthService {
         if (!user.isEnabled()) {
             throw new BusinessException(ErrorCode.FORBIDDEN, "Tài khoản đã bị khóa");
         }
-        return AuthResponse.of(user, jwtService.generateToken(user.getId(), user.getEmail(), user.getRoles().stream().toList()));
+        return AuthResponse.of(user, jwtService.generateToken(
+                user.getId(), user.getEmail(), user.getRoles().stream().toList(), user.getTokenVersion()));
     }
 
     @Transactional
@@ -116,6 +118,7 @@ public class AuthService {
             throw new BusinessException(ErrorCode.FORBIDDEN, "Tài khoản đã bị khóa");
         }
         user.setPassword(passwordEncoder.encode(request.newPassword()));
+        user.incrementTokenVersion();
         userRepository.save(user);
     }
 

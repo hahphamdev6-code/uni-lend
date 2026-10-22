@@ -1,6 +1,9 @@
 package com.unilend.backend.security;
 
-import com.unilend.backend.service.*;
+import com.unilend.backend.entity.User;
+import com.unilend.backend.repository.UserRepository;
+import com.unilend.backend.service.CustomUserDetailsService;
+import com.unilend.backend.service.JwtService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,6 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final CustomUserDetailsService userDetailsService;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -37,15 +41,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = header.substring(BEARER.length());
             try {
                 String email = jwtService.extractEmail(token);
-                UserDetails user = userDetailsService.loadUserByUsername(email);
-                if (user.isEnabled()) {
-                    var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                    auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(auth);
+                int tokenVersion = jwtService.extractTokenVersion(token);
+
+                User domainUser = userRepository.findByEmail(email).orElse(null);
+                if (domainUser != null
+                        && domainUser.isEnabled()
+                        && domainUser.getTokenVersion() == tokenVersion) {
+                    UserDetails user = userDetailsService.loadUserByUsername(email);
+                    if (user.isEnabled()) {
+                        var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                        auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(auth);
+                    }
                 }
             } catch (JwtException | IllegalArgumentException | AuthenticationException ignored) {
-                // Token sai/hết hạn/user không tồn tại: để request đi tiếp như chưa đăng nhập,
-                // AuthenticationEntryPoint sẽ trả 401 nếu endpoint yêu cầu xác thực.
             }
         }
         chain.doFilter(request, response);

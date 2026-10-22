@@ -50,7 +50,10 @@ public class AdminUserService {
                         "Không thể khóa quản trị viên đang hoạt động cuối cùng");
             }
         }
-        target.setEnabled(false);
+        if (target.isEnabled()) {
+            target.setEnabled(false);
+            target.incrementTokenVersion();
+        }
         return UserProfileResponse.from(userRepository.save(target));
     }
 
@@ -58,7 +61,10 @@ public class AdminUserService {
     public UserProfileResponse unlockUser(Long targetUserId) {
         currentUserService.requireAdmin();
         User target = getOrThrow(targetUserId);
-        target.setEnabled(true);
+        if (!target.isEnabled()) {
+            target.setEnabled(true);
+            target.incrementTokenVersion();
+        }
         return UserProfileResponse.from(userRepository.save(target));
     }
 
