@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { AdminNavigation } from "../../../components/admin-navigation";
+import { ConfirmationDialog } from "../../../components/confirmation-dialog";
 import { useAdminToast } from "../../../components/admin-toast";
 import { useAuth } from "../../../components/auth-provider";
 import { adminUserService, type AdminUser } from "../../../lib/api/adminUserService";
@@ -197,45 +198,25 @@ export default function AdminUsersPage() {
             )}
           </>
         ) : (
-          <div className={styles.state}>Không tìm thấy người dùng phù hợp.</div>
+          <div className={styles.empty}>
+            {search ? "Không tìm thấy người dùng phù hợp với nội dung tìm kiếm." : "Chưa có tài khoản nào."}
+          </div>
         )}
       </section>
 
       {pendingUser && (
-        <div className={styles.modalBackdrop}>
-          <section
-            aria-labelledby="confirm-user-action"
-            aria-modal="true"
-            className={styles.modal}
-            role="dialog"
-          >
-            <h2 id="confirm-user-action">
-              {pendingUser.enabled ? "Khóa tài khoản này?" : "Mở khóa tài khoản này?"}
-            </h2>
-            <p>
-              {pendingUser.enabled ? "Tài khoản sẽ bị khóa:" : "Tài khoản sẽ được mở khóa:"}{" "}
-              <strong>{pendingUser.fullName}</strong> ({pendingUser.email})
-            </p>
-            <div className={styles.modalActions}>
-              <button
-                className={styles.secondaryButton}
-                disabled={saving}
-                onClick={() => setPendingUser(null)}
-                type="button"
-              >
-                Hủy
-              </button>
-              <button
-                className={pendingUser.enabled ? styles.dangerButton : styles.button}
-                disabled={saving}
-                onClick={() => void confirmToggleStatus()}
-                type="button"
-              >
-                {saving ? "Đang xử lý..." : pendingUser.enabled ? "Xác nhận khóa" : "Xác nhận mở khóa"}
-              </button>
-            </div>
-          </section>
-        </div>
+        <ConfirmationDialog
+          busy={saving}
+          confirmLabel={pendingUser.enabled ? "Xác nhận khóa" : "Xác nhận mở khóa"}
+          onCancel={() => setPendingUser(null)}
+          onConfirm={() => void confirmToggleStatus()}
+          pendingLabel="Đang xử lý..."
+          title={pendingUser.enabled ? "Khóa tài khoản này?" : "Mở khóa tài khoản này?"}
+          tone={pendingUser.enabled ? "danger" : "primary"}
+        >
+          {pendingUser.enabled ? "Tài khoản sẽ bị khóa: " : "Tài khoản sẽ được mở khóa: "}
+          <strong>{pendingUser.fullName}</strong> ({pendingUser.email})
+        </ConfirmationDialog>
       )}
     </main>
   );

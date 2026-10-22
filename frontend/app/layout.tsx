@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AdminToastProvider } from "../components/admin-toast";
 import { ApiErrorNotice } from "../components/api-error-notice";
 import { AuthProvider } from "../components/auth-provider";
 import { NotificationsProvider } from "../components/notifications-provider";
@@ -16,8 +17,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <AuthProvider>
           <NotificationsProvider>
-            {children}
-            <ApiErrorNotice />
+            <AdminToastProvider>
+              {children}
+              <ApiErrorNotice />
+            </AdminToastProvider>
           </NotificationsProvider>
         </AuthProvider>
       </body>
