@@ -26,10 +26,13 @@ public class AuthService {
     private final CurrentUserService currentUserService;
     private final ReviewService reviewService;
     private final AccountTokenService accountTokenService;
+    private final EmailService emailService;
+    private final RateLimitService rateLimitService;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
         String email = normalize(request.email());
+        rateLimitService.checkEmailRateLimit("register", email);
 
         if (userRepository.existsByEmail(email)) {
             throw new BusinessException(ErrorCode.CONFLICT, "Email đã được sử dụng");
@@ -43,7 +46,8 @@ public class AuthService {
                 .build();
 
         user = userRepository.save(user);
-        accountTokenService.createEmailVerificationToken(user);
+        String rawToken = accountTokenService.createEmailVerificationToken(user);
+        emailService.sendVerificationEmail(user.getEmail(), user.getFullName(), rawToken);
 
         return AuthResponse.of(user, jwtService.generateToken(user.getId(), user.getEmail(), user.getRoles().stream().toList()));
     }
@@ -51,6 +55,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest request) {
         String email = normalize(request.email());
+        rateLimitService.checkLoginRateLimit(email);
 
         try {
             authenticationManager.authenticate(
@@ -80,19 +85,28 @@ public class AuthService {
     @Transactional
     public void resendVerificationEmail(ForgotPasswordRequest request) {
         String email = normalize(request.email());
+        rateLimitService.checkEmailRateLimit("resend-verify", email);
+
         userRepository.findByEmail(email)
                 .filter(User::isEnabled)
                 .filter(u -> !u.isEmailVerified())
-                .ifPresent(accountTokenService::createEmailVerificationToken);
+                .ifPresent(user -> {
+                    String rawToken = accountTokenService.createEmailVerificationToken(user);
+                    emailService.sendVerificationEmail(user.getEmail(), user.getFullName(), rawToken);
+                });
     }
 
     @Transactional
     public void forgotPassword(ForgotPasswordRequest request) {
         String email = normalize(request.email());
-        // Không tiết lộ email có tồn tại hay không ra ngoài response
+        rateLimitService.checkEmailRateLimit("forgot-password", email);
+
         userRepository.findByEmail(email)
                 .filter(User::isEnabled)
-                .ifPresent(accountTokenService::createPasswordResetToken);
+                .ifPresent(user -> {
+                    String rawToken = accountTokenService.createPasswordResetToken(user);
+                    emailService.sendPasswordResetEmail(user.getEmail(), user.getFullName(), rawToken);
+                });
     }
 
     @Transactional
