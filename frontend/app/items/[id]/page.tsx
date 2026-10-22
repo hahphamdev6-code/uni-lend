@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { NotificationBell } from "../../../components/notification-bell";
 import { ItemImageGallery } from "../../../components/item-image-gallery";
+import { UserReviewSection } from "../../../components/user-review-section";
 import { itemService } from "../../../lib/api/itemService";
 import { getItemImageUrls, type Item } from "../../../lib/api/types";
 import styles from "./page.module.css";
@@ -61,7 +62,17 @@ export default function ItemDetailsPage() {
             <Link className={styles.button} href="/items">Quay lại danh sách</Link>
           </div>
         ) : loading ? (
-          <p className={styles.state}>Đang tải thông tin món đồ...</p>
+          <div className={styles.detailsSkeleton} aria-label="Đang tải thông tin món đồ" aria-busy="true">
+            <span className={styles.visuallyHidden} role="status">Đang tải thông tin món đồ</span>
+            <div className={styles.imageSkeleton} />
+            <div className={styles.infoSkeleton}>
+              <div className={`${styles.skeletonLine} ${styles.categorySkeleton}`} />
+              <div className={`${styles.skeletonLine} ${styles.titleSkeleton}`} />
+              <div className={`${styles.skeletonLine} ${styles.copySkeleton}`} />
+              <div className={`${styles.skeletonLine} ${styles.copySkeleton}`} />
+              <div className={`${styles.skeletonLine} ${styles.ownerSkeleton}`} />
+            </div>
+          </div>
         ) : error ? (
           <div className={styles.statePanel} role="alert">
             <h1>Không thể tải món đồ</h1>
@@ -106,6 +117,10 @@ export default function ItemDetailsPage() {
                 </Link>
               </div>
             </div>
+            <UserReviewSection
+              title={`Đánh giá về ${item.owner.fullName}`}
+              userId={item.owner.id}
+            />
           </>
         ) : null}
       </section>

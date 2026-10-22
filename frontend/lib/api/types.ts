@@ -5,6 +5,17 @@ export interface ApiResponse<T> {
   statusCode: number;
 }
 
+export interface AdminStats {
+  totalUsers: number;
+  totalItems: number;
+  loansByStatus: Record<LoanStatus, number>;
+  mostBorrowedCategories: {
+    categoryId: number;
+    categoryName: string;
+    loanCount: number;
+  }[];
+}
+
 export interface Category {
   id: number;
   name: string;
@@ -49,12 +60,25 @@ export interface ItemInput {
   status?: "AVAILABLE" | "UNAVAILABLE";
 }
 
-export type LoanStatus = "PENDING" | "APPROVED" | "REJECTED" | "RETURNED" | "CANCELLED";
+export type LoanStatus =
+  | "PENDING"
+  | "APPROVED"
+  | "REJECTED"
+  | "RETURNED"
+  | "CANCELLED"
+  | "OVERDUE";
 
 export interface Loan {
   id: number;
-  item: Item;
+  item: {
+    id: number;
+    title: string;
+  };
   borrower: {
+    id: number;
+    fullName: string;
+  };
+  owner: {
     id: number;
     fullName: string;
   };
@@ -67,10 +91,47 @@ export interface Loan {
   returnedAt: string | null;
 }
 
+export interface Review {
+  id: number;
+  loanId: number | null;
+  itemId: number | null;
+  itemTitle: string | null;
+  rating: number;
+  comment: string | null;
+  reviewer: {
+    id: number;
+    fullName: string;
+  } | null;
+  reviewee: {
+    id: number;
+    fullName: string;
+  } | null;
+  createdAt: string;
+}
+
+export interface UserProfileResponse {
+  id: number;
+  email: string;
+  fullName: string;
+  phone: string | null;
+  university: string | null;
+  avatarUrl: string | null;
+  roles: string[];
+  enabled: boolean;
+  averageRating: number;
+  reviewCount: number;
+  createdAt: string;
+}
+
+export interface UserRatingResponse {
+  averageRating: number;
+  reviewCount: number;
+}
+
 export interface CreateLoanInput {
   itemId: number;
-  borrowFrom?: string;
-  dueDate?: string;
+  borrowFrom: string;
+  dueDate: string;
   note?: string;
 }
 

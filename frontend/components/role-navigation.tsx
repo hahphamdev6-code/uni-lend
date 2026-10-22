@@ -25,6 +25,7 @@ export function RoleNavigation({
   return (
     <>
       <Link className={className} href="/profile">Hồ sơ</Link>
+      <Link className={className} href="/my">Quản lý cá nhân</Link>
       {auth.hasRole("ADMIN") && (
         <>
           <Link className={className} href="/admin">Quản trị</Link>

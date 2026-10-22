@@ -22,6 +22,17 @@ export const itemService = {
     return response.data.data;
   },
 
+  async listMine(
+    params: { page?: number; size?: number } = {},
+    config?: Pick<AxiosRequestConfig, "signal">,
+  ): Promise<PageResponse<Item>> {
+    const response = await apiClient.get<ApiResponse<PageResponse<Item>>>("/items/me", {
+      ...config,
+      params,
+    });
+    return response.data.data;
+  },
+
   async getById(
     id: number,
     config?: Pick<AxiosRequestConfig, "signal">,
