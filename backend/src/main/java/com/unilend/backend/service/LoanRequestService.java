@@ -32,7 +32,7 @@ import java.time.ZoneId;
 public class LoanRequestService {
 
     private static final int MAX_PAGE_SIZE = 50;
-    private static final ZoneId HISTORY_ZONE = ZoneId.of("Asia/Ho_Chi_Minh");
+    public static final ZoneId LOAN_ZONE = ZoneId.of("Asia/Ho_Chi_Minh");
 
     private final LoanRequestRepository loanRequestRepository;
     private final ItemRepository itemRepository;
@@ -41,6 +41,8 @@ public class LoanRequestService {
 
     @Transactional
     public LoanRequestResponse create(User borrower, LoanRequestCreateRequest req) {
+        validateLoanDates(req.borrowFrom(), req.dueDate());
+
         Item lockedItem = entityManager.find(Item.class, req.itemId(), LockModeType.PESSIMISTIC_WRITE);
         if (lockedItem == null) {
             throw new ResourceNotFoundException("Item", req.itemId());
@@ -54,9 +56,6 @@ public class LoanRequestService {
         }
         if (item.getStatus() != ItemStatus.AVAILABLE) {
             throw new BusinessException(ErrorCode.CONFLICT, "Món đồ hiện không sẵn sàng để mượn");
-        }
-        if (req.dueDate().isBefore(req.borrowFrom())) {
-            throw new BusinessException(ErrorCode.BAD_REQUEST, "Hạn trả phải sau hoặc bằng ngày bắt đầu mượn");
         }
         if (loanRequestRepository.existsByItemIdAndBorrowerIdAndStatus(
                 item.getId(), borrower.getId(), LoanStatus.PENDING)) {
@@ -213,6 +212,22 @@ public class LoanRequestService {
         return PageResponse.from(page, LoanRequestResponse::from);
     }
 
+    private void validateLoanDates(LocalDate borrowFrom, LocalDate dueDate) {
+        if (borrowFrom == null) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST, "Ngày bắt đầu mượn không được để trống");
+        }
+        if (dueDate == null) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST, "Hạn trả không được để trống");
+        }
+        LocalDate today = LocalDate.now(LOAN_ZONE);
+        if (borrowFrom.isBefore(today)) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST, "Ngày bắt đầu mượn không được ở quá khứ");
+        }
+        if (dueDate.isBefore(borrowFrom)) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST, "Hạn trả phải sau hoặc bằng ngày bắt đầu mượn");
+        }
+    }
+
     private void validateHistoryRange(LocalDate fromDate, LocalDate toDate) {
         if (fromDate != null && toDate != null && fromDate.isAfter(toDate)) {
             throw new BusinessException(ErrorCode.BAD_REQUEST, "fromDate không được sau toDate");
@@ -220,11 +235,11 @@ public class LoanRequestService {
     }
 
     private Instant historyStart(LocalDate fromDate) {
-        return fromDate == null ? null : fromDate.atStartOfDay(HISTORY_ZONE).toInstant();
+        return fromDate == null ? null : fromDate.atStartOfDay(LOAN_ZONE).toInstant();
     }
 
     private Instant historyEndExclusive(LocalDate toDate) {
-        return toDate == null ? null : toDate.plusDays(1).atStartOfDay(HISTORY_ZONE).toInstant();
+        return toDate == null ? null : toDate.plusDays(1).atStartOfDay(LOAN_ZONE).toInstant();
     }
 
     @Transactional(readOnly = true)
@@ -244,7 +259,7 @@ public class LoanRequestService {
             throw new BusinessException(ErrorCode.FORBIDDEN);
         }
         return PageResponse.from(
-                loanRequestRepository.findOverdue(LocalDate.now(), boundedPageable(pageable)),
+                loanRequestRepository.findOverdue(LocalDate.now(LOAN_ZONE), boundedPageable(pageable)),
                 LoanRequestResponse::from);
     }
 
