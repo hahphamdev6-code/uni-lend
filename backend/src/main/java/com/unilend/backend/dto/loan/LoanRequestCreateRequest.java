@@ -1,6 +1,5 @@
 package com.unilend.backend.dto.loan;
 
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -11,7 +10,6 @@ public record LoanRequestCreateRequest(
         Long itemId,
 
         @NotNull(message = "Ngày bắt đầu mượn không được để trống")
-        @FutureOrPresent(message = "Ngày bắt đầu mượn không được ở quá khứ")
         LocalDate borrowFrom,
 
         @NotNull(message = "Hạn trả không được để trống")

@@ -78,7 +78,7 @@ class LoanRequestServiceTest {
                 .owner(owner)
                 .status(ItemStatus.AVAILABLE)
                 .build();
-        today = LocalDate.now();
+        today = LocalDate.now(LoanRequestService.LOAN_ZONE);
     }
 
     @Test
@@ -122,6 +122,12 @@ class LoanRequestServiceTest {
 
         assertCode(ErrorCode.CONFLICT,
                 () -> service.create(borrower, createReq(10L, today, today.plusDays(1))));
+    }
+
+    @Test
+    void create_borrowFromInPast_badRequest() {
+        assertCode(ErrorCode.BAD_REQUEST,
+                () -> service.create(borrower, createReq(10L, today.minusDays(1), today.plusDays(1))));
     }
 
     @Test
