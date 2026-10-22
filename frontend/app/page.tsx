@@ -18,6 +18,7 @@ type Item = {
 };
 
 const categories: Category[] = ["Tất cả", "Học tập", "Công nghệ", "Đời sống"];
+const HOME_PAGE_SIZE = 9;
 
 const items: Item[] = [
   { name: "Giáo trình Giải tích", category: "Học tập", owner: "Minh Anh", initials: "MA", icon: "book", color: "lavender" },
@@ -26,6 +27,84 @@ const items: Item[] = [
   { name: "Tai nghe chụp tai", category: "Đời sống", owner: "Gia Huy", initials: "GH", icon: "headphones", color: "mint" },
   { name: "Cây xanh để bàn", category: "Đời sống", owner: "Linh Chi", initials: "LC", icon: "plant", color: "yellow" },
   { name: "Máy tính Casio", category: "Học tập", owner: "Tuấn Kiệt", initials: "TK", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Tô Thành", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Tô Thành", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Tô Thành", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "Giáo trình Giải tích", category: "Học tập", owner: "Minh Anh", initials: "MA", icon: "book", color: "lavender" },
+  { name: "Máy ảnh film Canon", category: "Công nghệ", owner: "Quốc Bảo", initials: "QB", icon: "camera", color: "peach" },
+  { name: "Máy chiếu mini", category: "Công nghệ", owner: "Thu Hà", initials: "TH", icon: "projector", color: "blue" },
+  { name: "Tai nghe chụp tai", category: "Đời sống", owner: "Gia Huy", initials: "GH", icon: "headphones", color: "mint" },
+  { name: "Cây xanh để bàn", category: "Đời sống", owner: "Linh Chi", initials: "LC", icon: "plant", color: "yellow" },
+  { name: "Máy tính Casio", category: "Học tập", owner: "Tuấn Kiệt", initials: "TK", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Tô Thành", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Tô Thành", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Tô Thành", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "Giáo trình Giải tích", category: "Học tập", owner: "Minh Anh", initials: "MA", icon: "book", color: "lavender" },
+  { name: "Máy ảnh film Canon", category: "Công nghệ", owner: "Quốc Bảo", initials: "QB", icon: "camera", color: "peach" },
+  { name: "Máy chiếu mini", category: "Công nghệ", owner: "Thu Hà", initials: "TH", icon: "projector", color: "blue" },
+  { name: "Tai nghe chụp tai", category: "Đời sống", owner: "Gia Huy", initials: "GH", icon: "headphones", color: "mint" },
+  { name: "Cây xanh để bàn", category: "Đời sống", owner: "Linh Chi", initials: "LC", icon: "plant", color: "yellow" },
+  { name: "Máy tính Casio", category: "Học tập", owner: "Tuấn Kiệt", initials: "TK", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Tô Thành", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Tô Thành", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Tô Thành", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "Giáo trình Giải tích", category: "Học tập", owner: "Minh Anh", initials: "MA", icon: "book", color: "lavender" },
+  { name: "Máy ảnh film Canon", category: "Công nghệ", owner: "Quốc Bảo", initials: "QB", icon: "camera", color: "peach" },
+  { name: "Máy chiếu mini", category: "Công nghệ", owner: "Thu Hà", initials: "TH", icon: "projector", color: "blue" },
+  { name: "Tai nghe chụp tai", category: "Đời sống", owner: "Gia Huy", initials: "GH", icon: "headphones", color: "mint" },
+  { name: "Cây xanh để bàn", category: "Đời sống", owner: "Linh Chi", initials: "LC", icon: "plant", color: "yellow" },
+  { name: "Máy tính Casio", category: "Học tập", owner: "Tuấn Kiệt", initials: "TK", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Tô Thành", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Tô Thành", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Tô Thành", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" },
+  { name: "điện thoại", category: "Công nghệ", owner: "Sang Trần", initials: "TH", icon: "calculator", color: "pink" }
 ];
 
 function Icon({ name, size = 20 }: { name: ProductIcon | "search" | "arrow" | "spark" | "pin" | "box"; size?: number }) {
@@ -70,6 +149,7 @@ function Icon({ name, size = 20 }: { name: ProductIcon | "search" | "arrow" | "s
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState<Category>("Tất cả");
   const [query, setQuery] = useState("");
+  const [page, setPage] = useState(0);
 
   const filteredItems = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("vi");
@@ -83,6 +163,11 @@ export default function Home() {
       return matchesCategory && matchesQuery;
     });
   }, [activeCategory, query]);
+  const pageCount = Math.ceil(filteredItems.length / HOME_PAGE_SIZE);
+  const paginatedItems = filteredItems.slice(
+    page * HOME_PAGE_SIZE,
+    (page + 1) * HOME_PAGE_SIZE,
+  );
 
   return (
     <main>
@@ -124,7 +209,10 @@ export default function Home() {
               type="search"
               placeholder="Bạn đang cần tìm món gì?"
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                setPage(0);
+              }}
             />
             <button type="submit">Tìm kiếm</button>
           </form>
@@ -173,7 +261,10 @@ export default function Home() {
               <button
                 className={`category-tab${activeCategory === category ? " selected" : ""}`}
                 key={category}
-                onClick={() => setActiveCategory(category)}
+                onClick={() => {
+                  setActiveCategory(category);
+                  setPage(0);
+                }}
                 type="button"
                 aria-pressed={activeCategory === category}
               >
@@ -186,8 +277,8 @@ export default function Home() {
 
         {filteredItems.length > 0 ? (
           <div className="item-grid">
-            {filteredItems.map((item) => (
-              <article className="item-card" key={item.name}>
+            {paginatedItems.map((item, index) => (
+              <article className="item-card" key={`${item.name}-${item.owner}-${index}`}>
                 <div className={`item-art ${item.color}`}>
                   <span className="item-availability"><span className="availability-dot" /> Có thể chia sẻ</span>
                   <Icon name={item.icon} size={64} />
@@ -206,10 +297,31 @@ export default function Home() {
             <span className="empty-icon"><Icon name="search" size={28} /></span>
             <h3>Chưa tìm thấy món đồ phù hợp</h3>
             <p>Thử từ khóa khác hoặc chọn một danh mục khác nhé.</p>
-            <button className="reset-search" onClick={() => { setQuery(""); setActiveCategory("Tất cả"); }} type="button">
+            <button className="reset-search" onClick={() => { setQuery(""); setActiveCategory("Tất cả"); setPage(0); }} type="button">
               Xóa bộ lọc
             </button>
           </div>
+        )}
+        {pageCount > 1 && (
+          <nav className="catalogue-pagination" aria-label="Phân trang danh sách món đồ">
+            <button
+              type="button"
+              onClick={() => setPage((current) => Math.max(0, current - 1))}
+              disabled={page === 0}
+              aria-label="Trang trước"
+            >
+              ← <span>Trước</span>
+            </button>
+            <span aria-live="polite">Trang {page + 1} / {pageCount}</span>
+            <button
+              type="button"
+              onClick={() => setPage((current) => Math.min(pageCount - 1, current + 1))}
+              disabled={page >= pageCount - 1}
+              aria-label="Trang sau"
+            >
+              <span>Sau</span> →
+            </button>
+          </nav>
         )}
       </section>
 
