@@ -1,0 +1,34 @@
+[
+  {
+    "path": "src/main/java/com/unilend/backend/entity/Category.java",
+    "sha256": "dbfe9b3fa8981849753269786f992c893824f52452fa4aa80c10d4717f8bdd0a"
+  },
+  {
+    "path": "src/main/java/com/unilend/backend/entity/Item.java",
+    "sha256": "0b8a5537646e1c096fd740a2db9860d21ae21bbf8083975dbe8c2b5f53db16d3"
+  },
+  {
+    "path": "src/main/java/com/unilend/backend/entity/ItemImage.java",
+    "sha256": "b06e84cbe93b991dfca7f7b3ab96699796f37193662422c9f0cd63fe8c2222bc"
+  },
+  {
+    "path": "src/main/java/com/unilend/backend/entity/LoanRequest.java",
+    "sha256": "f247f00567f024b9b4274d54515cfb1edb609aed8920e4ae2bd3c85ad7ca8e52"
+  },
+  {
+    "path": "src/main/java/com/unilend/backend/entity/Notification.java",
+    "sha256": "8f50bb024f1c955af288b97688a61100a716f8eeee1b8c4242f579c94e1e9e7c"
+  },
+  {
+    "path": "src/main/java/com/unilend/backend/entity/Review.java",
+    "sha256": "300251716f062bf962b47d3f57533b377460bb775be0e179a5e7bcda3b757760"
+  },
+  {
+    "path": "src/main/java/com/unilend/backend/entity/User.java",
+    "sha256": "ed0d268cce03ce1f63990f235f489858543fc65c096ff3bbb8628ef997a4f1ba"
+  },
+  {
+    "path": "src/main/java/com/unilend/backend/common/entity/BaseEntity.java",
+    "sha256": "25f6636c81f16614799eead1f86edcf16b89013a19f719153eb4add07cf1c242"
+  }
+]
