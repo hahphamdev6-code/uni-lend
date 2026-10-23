@@ -14,6 +14,7 @@ public record UserProfileResponse(
         String avatarUrl,
         Set<String> roles,
         boolean enabled,
+        boolean emailVerified,
         Double averageRating,
         Long reviewCount,
         Instant createdAt
@@ -28,6 +29,7 @@ public record UserProfileResponse(
                 user.getAvatarUrl(),
                 user.getRoles(),
                 user.isEnabled(),
+                user.isEmailVerified(),
                 averageRating,
                 reviewCount,
                 user.getCreatedAt()
