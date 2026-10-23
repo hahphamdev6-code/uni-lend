@@ -30,10 +30,10 @@ class DatabaseMigrationTest {
         flyway.validate();
         try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
             for (String table : new String[]{"users", "user_roles", "categories", "items",
-                    "item_images", "loan_requests", "notifications", "reviews"}) {
+                    "item_images", "loan_requests", "notifications", "reviews", "account_tokens"}) {
                 assertEquals(0, scalar(connection, "SELECT COUNT(*) FROM " + table));
             }
-            assertEquals(12, scalar(connection, "SELECT COUNT(*) FROM information_schema.indexes "
+            assertEquals(14, scalar(connection, "SELECT COUNT(*) FROM information_schema.indexes "
                     + "WHERE index_name LIKE 'idx_%' AND table_schema = 'public'"));
             insertOwner(connection);
             connection.createStatement().executeUpdate("INSERT INTO user_roles(user_id, role) VALUES (1, 'USER')");

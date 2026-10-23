@@ -11,6 +11,8 @@ CREATE TABLE users (
     university VARCHAR(150),
     avatar_url VARCHAR(500),
     enabled BIT(1) NOT NULL,
+    email_verified BIT(1) NOT NULL DEFAULT 0,
+    token_version INT NOT NULL DEFAULT 0,
     CONSTRAINT uk_users_email UNIQUE (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -91,6 +93,17 @@ CREATE TABLE reviews (
     CONSTRAINT fk_reviews_reviewee FOREIGN KEY (reviewee_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE account_tokens (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    created_at DATETIME(6) NOT NULL,
+    user_id BIGINT NOT NULL,
+    type VARCHAR(30) NOT NULL,
+    token_hash VARCHAR(64) NOT NULL,
+    expires_at DATETIME(6) NOT NULL,
+    used_at DATETIME(6),
+    CONSTRAINT fk_account_tokens_user FOREIGN KEY (user_id) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE INDEX idx_items_owner ON items (owner_id);
 CREATE INDEX idx_items_category ON items (category_id);
 CREATE INDEX idx_items_status ON items (status);
@@ -103,3 +116,5 @@ CREATE INDEX idx_notification_user_read ON notifications (user_id, is_read);
 CREATE INDEX idx_notification_created_at ON notifications (created_at);
 CREATE INDEX idx_review_reviewee ON reviews (reviewee_id);
 CREATE INDEX idx_review_loan ON reviews (loan_id);
+CREATE UNIQUE INDEX idx_account_token_hash ON account_tokens (token_hash);
+CREATE INDEX idx_account_token_user_type ON account_tokens (user_id, type);

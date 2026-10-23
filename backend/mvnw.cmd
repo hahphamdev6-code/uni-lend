@@ -33,7 +33,7 @@
 @SET __MVNW_PSMODULEP_SAVE=%PSModulePath%
 @SET PSModulePath=
 @FOR /F "usebackq tokens=1* delims==" %%A IN (`powershell -noprofile "& {$scriptDir='%~dp0'; $script='%__MVNW_ARG0_NAME__%'; icm -ScriptBlock ([Scriptblock]::Create((Get-Content -Raw '%~f0'))) -NoNewScope}"`) DO @(
-  IF "%%A"=="MVN_CMD" (set __MVNW_CMD__=%%B) ELSE IF "%%B"=="" (echo %%A) ELSE (echo %%A=%%B)
+  IF "%%A"=="MVN_CMD" (set __MVNW_CMD__=%%B) ELSE IF "%%A"=="JAVA_HOME" (set "JAVA_HOME=%%B") ELSE IF "%%B"=="" (echo %%A) ELSE (echo %%A=%%B)
 )
 @SET PSModulePath=%__MVNW_PSMODULEP_SAVE%
 @SET __MVNW_PSMODULEP_SAVE=
@@ -48,6 +48,13 @@
 $ErrorActionPreference = "Stop"
 if ($env:MVNW_VERBOSE -eq "true") {
   $VerbosePreference = "Continue"
+}
+
+if ((-not $env:JAVA_HOME) -or ($env:JAVA_HOME -notmatch '25')) {
+  $jdk25 = Get-ChildItem "C:\Program Files\Eclipse Adoptium\jdk-25*", "C:\Program Files\Java\jdk-25*" -Directory -ErrorAction SilentlyContinue | Select-Object -First 1
+  if ($jdk25) {
+    Write-Output "JAVA_HOME=$($jdk25.FullName)"
+  }
 }
 
 # calculate distributionUrl, requires .mvn/wrapper/maven-wrapper.properties
