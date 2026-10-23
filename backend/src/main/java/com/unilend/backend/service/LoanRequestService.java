@@ -91,12 +91,16 @@ public class LoanRequestService {
 
     @Transactional
     public LoanRequestResponse approve(Long loanId, User actor) {
+        LoanRequest peekLoan = findLoan(loanId);
+        requireOwner(peekLoan, actor);
+
+        // Khóa theo thứ tự Item -> LoanRequest để chống deadlock và tuần tự hóa mọi thao tác duyệt trên cùng món đồ
+        Item item = peekLoan.getItem();
+        lockAndRefresh(item);
+
         LoanRequest loan = findLoanForUpdate(loanId);
         requireOwner(loan, actor);
         requirePending(loan);
-
-        Item item = loan.getItem();
-        lockAndRefresh(item);
 
         if (item.getStatus() == ItemStatus.UNAVAILABLE) {
             throw new BusinessException(ErrorCode.CONFLICT, "Món đồ hiện không sẵn sàng để cho mượn");
@@ -109,10 +113,28 @@ public class LoanRequestService {
             throw new BusinessException(ErrorCode.CONFLICT, "Món đồ đã có người mượn trong khoảng thời gian này");
         }
 
+        Instant respondedAt = Instant.now();
         loan.setStatus(LoanStatus.APPROVED);
-        loan.setRespondedAt(Instant.now());
+        loan.setRespondedAt(respondedAt);
         if (isPeriodActive(loan.getBorrowFrom(), loan.getDueDate(), today)) {
             item.setStatus(ItemStatus.LENT_OUT);
+        }
+
+        // Tự động từ chối các yêu cầu đang chờ duyệt (PENDING) bị trùng lịch
+        List<LoanRequest> conflictingPendings = loanRequestRepository.findOverlappingPendingForUpdate(
+                item.getId(), loan.getId(), loan.getBorrowFrom(), loan.getDueDate());
+        if (conflictingPendings != null) {
+            for (LoanRequest pending : conflictingPendings) {
+                pending.setStatus(LoanStatus.REJECTED);
+                pending.setRespondedAt(respondedAt);
+                notificationService.notify(
+                        pending.getBorrower().getId(),
+                        NotificationType.LOAN_REJECTED,
+                        "Yêu cầu mượn món đồ \"%s\" của bạn đã bị từ chối do trùng lịch với lượt mượn khác"
+                                .formatted(item.getTitle()),
+                        "/loans/" + pending.getId()
+                );
+            }
         }
 
         notificationService.notify(
@@ -349,6 +371,7 @@ public class LoanRequestService {
     }
 
     private void lockAndRefresh(Item item) {
-        entityManager.refresh(item, LockModeType.PESSIMISTIC_WRITE);
+        entityManager.lock(item, LockModeType.PESSIMISTIC_WRITE);
+        entityManager.refresh(item);
     }
 }

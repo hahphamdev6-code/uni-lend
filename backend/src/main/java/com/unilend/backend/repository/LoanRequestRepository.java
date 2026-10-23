@@ -62,6 +62,22 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
                                       @Param("from") LocalDate from,
                                       @Param("to") LocalDate to);
 
+    // Tìm các yêu cầu PENDING khác bị trùng khoảng thời gian để tự động từ chối khi duyệt
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @EntityGraph(attributePaths = {"borrower", "item"})
+    @Query("""
+            SELECT l FROM LoanRequest l
+            WHERE l.item.id = :itemId
+              AND l.id <> :excludeLoanId
+              AND l.status = com.unilend.backend.entity.LoanRequest.LoanStatus.PENDING
+              AND l.borrowFrom <= :to
+              AND l.dueDate >= :from
+            """)
+    List<LoanRequest> findOverlappingPendingForUpdate(@Param("itemId") Long itemId,
+                                                      @Param("excludeLoanId") Long excludeLoanId,
+                                                      @Param("from") LocalDate from,
+                                                      @Param("to") LocalDate to);
+
     // Kiểm tra món đồ có đang trong kỳ cho mượn tại ngày today hay không
     @Query("""
             SELECT COUNT(l) > 0 FROM LoanRequest l
