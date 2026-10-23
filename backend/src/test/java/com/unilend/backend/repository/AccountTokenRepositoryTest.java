@@ -4,6 +4,7 @@ import com.unilend.backend.entity.AccountToken;
 import com.unilend.backend.entity.AccountToken.TokenType;
 import com.unilend.backend.entity.User;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
@@ -12,12 +13,13 @@ import java.time.Instant;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DataJpaTest(properties = {
+@ActiveProfiles("test")
+@DataJpaTest(showSql = false, properties = {
         "spring.datasource.url=jdbc:h2:mem:account-token-repository;MODE=MySQL;DB_CLOSE_DELAY=-1",
         "spring.datasource.username=sa",
         "spring.datasource.password=",
         "spring.datasource.driver-class-name=org.h2.Driver",
-        "spring.jpa.hibernate.ddl-auto=create-drop"
+        "spring.jpa.hibernate.ddl-auto=validate"
 })
 class AccountTokenRepositoryTest {
 
