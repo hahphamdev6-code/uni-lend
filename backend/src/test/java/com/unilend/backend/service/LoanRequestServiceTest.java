@@ -13,6 +13,7 @@ import com.unilend.backend.entity.Notification.NotificationType;
 import com.unilend.backend.entity.User;
 import com.unilend.backend.repository.ItemRepository;
 import com.unilend.backend.repository.LoanRequestRepository;
+import com.unilend.backend.repository.ReviewRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,6 +54,9 @@ class LoanRequestServiceTest {
 
     @Mock
     private ItemRepository itemRepository;
+
+    @Mock
+    private ReviewRepository reviewRepository;
 
     @Mock
     private EntityManager entityManager;
@@ -437,6 +441,21 @@ class LoanRequestServiceTest {
                 () -> service.getMyHistory(borrower, null, from, to, PageRequest.of(0, 10)));
         verify(loanRequestRepository, org.mockito.Mockito.never()).findBorrowerHistory(
                 any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void getById_returnedLoan_populatesReviewFlags() {
+        givenLoan(LoanStatus.RETURNED);
+        when(reviewRepository.existsByLoanIdAndReviewerId(100L, 2L)).thenReturn(false);
+
+        LoanRequestResponse unreviewed = service.getById(100L, borrower);
+        org.junit.jupiter.api.Assertions.assertFalse(unreviewed.hasReviewed());
+        org.junit.jupiter.api.Assertions.assertTrue(unreviewed.canReview());
+
+        when(reviewRepository.existsByLoanIdAndReviewerId(100L, 2L)).thenReturn(true);
+        LoanRequestResponse reviewed = service.getById(100L, borrower);
+        org.junit.jupiter.api.Assertions.assertTrue(reviewed.hasReviewed());
+        org.junit.jupiter.api.Assertions.assertFalse(reviewed.canReview());
     }
 
     private LoanRequestCreateRequest createReq(Long itemId, LocalDate from, LocalDate to) {

@@ -89,6 +89,15 @@ export interface Loan {
   requestedAt: string;
   respondedAt: string | null;
   returnedAt: string | null;
+  hasReviewed?: boolean;
+  canReview?: boolean;
+}
+
+export interface BookedPeriod {
+  loanId: number;
+  borrowFrom: string;
+  dueDate: string;
+  status: LoanStatus;
 }
 
 export interface Review {

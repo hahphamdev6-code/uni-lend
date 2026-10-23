@@ -15,6 +15,7 @@ import com.unilend.backend.entity.Notification.NotificationType;
 import com.unilend.backend.entity.User;
 import com.unilend.backend.repository.ItemRepository;
 import com.unilend.backend.repository.LoanRequestRepository;
+import com.unilend.backend.repository.ReviewRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +41,7 @@ public class LoanRequestService {
 
     private final LoanRequestRepository loanRequestRepository;
     private final ItemRepository itemRepository;
+    private final ReviewRepository reviewRepository;
     private final EntityManager entityManager;
     private final NotificationService notificationService;
 
@@ -206,7 +210,7 @@ public class LoanRequestService {
                 "Chủ đồ đã xác nhận bạn đã trả món đồ \"%s\"".formatted(item.getTitle()),
                 "/loans/" + loan.getId()
         );
-        return LoanRequestResponse.from(loan);
+        return toResponse(loan, actor);
     }
 
     @Transactional(readOnly = true)
@@ -215,7 +219,7 @@ public class LoanRequestService {
         Page<LoanRequest> page = (status == null)
                 ? loanRequestRepository.findByBorrowerId(borrower.getId(), boundedPageable)
                 : loanRequestRepository.findByBorrowerIdAndStatus(borrower.getId(), status, boundedPageable);
-        return PageResponse.from(page, LoanRequestResponse::from);
+        return toPageResponse(page, borrower);
     }
 
     @Transactional(readOnly = true)
@@ -224,7 +228,7 @@ public class LoanRequestService {
         Page<LoanRequest> page = (status == null)
                 ? loanRequestRepository.findByItemOwnerId(owner.getId(), boundedPageable)
                 : loanRequestRepository.findByItemOwnerIdAndStatus(owner.getId(), status, boundedPageable);
-        return PageResponse.from(page, LoanRequestResponse::from);
+        return toPageResponse(page, owner);
     }
 
     // Khoảng ngày lọc theo requestedAt, gồm cả ngày kết thúc tại múi giờ Việt Nam.
@@ -235,7 +239,7 @@ public class LoanRequestService {
         Page<LoanRequest> page = loanRequestRepository.findBorrowerHistory(
                 borrower.getId(), status, historyStart(fromDate), historyEndExclusive(toDate),
                 boundedPageable(pageable));
-        return PageResponse.from(page, LoanRequestResponse::from);
+        return toPageResponse(page, borrower);
     }
 
     @Transactional(readOnly = true)
@@ -245,7 +249,7 @@ public class LoanRequestService {
         Page<LoanRequest> page = loanRequestRepository.findOwnerHistory(
                 owner.getId(), status, historyStart(fromDate), historyEndExclusive(toDate),
                 boundedPageable(pageable));
-        return PageResponse.from(page, LoanRequestResponse::from);
+        return toPageResponse(page, owner);
     }
 
     @Transactional(readOnly = true)
@@ -268,9 +272,8 @@ public class LoanRequestService {
         if (!item.getOwner().getId().equals(actor.getId()) && !isAdmin(actor)) {
             throw new BusinessException(ErrorCode.FORBIDDEN, "Chỉ chủ món đồ mới được xem lịch mượn chi tiết");
         }
-        return loanRequestRepository.findApprovedScheduleByItemId(itemId, fromDate, toDate).stream()
-                .map(LoanRequestResponse::from)
-                .toList();
+        List<LoanRequest> loans = loanRequestRepository.findApprovedScheduleByItemId(itemId, fromDate, toDate);
+        return toResponseList(loans, actor);
     }
 
     private boolean isPeriodActive(LocalDate borrowFrom, LocalDate dueDate, LocalDate today) {
@@ -316,7 +319,7 @@ public class LoanRequestService {
         if (!isBorrower && !isOwner && !isAdmin(actor)) {
             throw new BusinessException(ErrorCode.FORBIDDEN);
         }
-        return LoanRequestResponse.from(loan);
+        return toResponse(loan, actor);
     }
 
     @Transactional(readOnly = true)
@@ -324,9 +327,61 @@ public class LoanRequestService {
         if (!isAdmin(actor)) {
             throw new BusinessException(ErrorCode.FORBIDDEN);
         }
-        return PageResponse.from(
+        return toPageResponse(
                 loanRequestRepository.findOverdue(LocalDate.now(LOAN_ZONE), boundedPageable(pageable)),
-                LoanRequestResponse::from);
+                actor);
+    }
+
+    private LoanRequestResponse toResponse(LoanRequest loan, User actor) {
+        boolean isParticipant = actor != null && (
+                loan.getBorrower().getId().equals(actor.getId())
+                        || loan.getItem().getOwner().getId().equals(actor.getId())
+        );
+        if (!isParticipant || loan.getStatus() != LoanStatus.RETURNED) {
+            return LoanRequestResponse.from(loan, false, false);
+        }
+        boolean hasReviewed = loan.getId() != null
+                && reviewRepository.existsByLoanIdAndReviewerId(loan.getId(), actor.getId());
+        return LoanRequestResponse.from(loan, hasReviewed, !hasReviewed);
+    }
+
+    private PageResponse<LoanRequestResponse> toPageResponse(Page<LoanRequest> page, User actor) {
+        Set<Long> reviewedLoanIds = resolveReviewedLoanIds(page.getContent(), actor);
+        return PageResponse.from(page, loan -> mapWithReviewFlags(loan, actor, reviewedLoanIds));
+    }
+
+    private List<LoanRequestResponse> toResponseList(List<LoanRequest> loans, User actor) {
+        Set<Long> reviewedLoanIds = resolveReviewedLoanIds(loans, actor);
+        return loans.stream()
+                .map(loan -> mapWithReviewFlags(loan, actor, reviewedLoanIds))
+                .toList();
+    }
+
+    private Set<Long> resolveReviewedLoanIds(List<LoanRequest> loans, User actor) {
+        if (actor == null || loans == null || loans.isEmpty()) {
+            return Collections.emptySet();
+        }
+        List<Long> returnedIds = loans.stream()
+                .filter(l -> l.getStatus() == LoanStatus.RETURNED && l.getId() != null)
+                .map(LoanRequest::getId)
+                .toList();
+        if (returnedIds.isEmpty()) {
+            return Collections.emptySet();
+        }
+        Set<Long> reviewed = reviewRepository.findReviewedLoanIdsByReviewerIdAndLoanIds(actor.getId(), returnedIds);
+        return reviewed == null ? Collections.emptySet() : reviewed;
+    }
+
+    private LoanRequestResponse mapWithReviewFlags(LoanRequest loan, User actor, Set<Long> reviewedLoanIds) {
+        boolean isParticipant = actor != null && (
+                loan.getBorrower().getId().equals(actor.getId())
+                        || loan.getItem().getOwner().getId().equals(actor.getId())
+        );
+        if (!isParticipant || loan.getStatus() != LoanStatus.RETURNED) {
+            return LoanRequestResponse.from(loan, false, false);
+        }
+        boolean hasReviewed = loan.getId() != null && reviewedLoanIds.contains(loan.getId());
+        return LoanRequestResponse.from(loan, hasReviewed, !hasReviewed);
     }
 
     private Pageable boundedPageable(Pageable pageable) {

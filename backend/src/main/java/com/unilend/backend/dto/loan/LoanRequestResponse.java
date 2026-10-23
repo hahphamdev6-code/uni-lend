@@ -19,7 +19,9 @@ public record LoanRequestResponse(
         Instant returnedAt,
         ItemSummary item,
         UserSummary borrower,
-        UserSummary owner
+        UserSummary owner,
+        boolean hasReviewed,
+        boolean canReview
 ) {
 
     public record ItemSummary(Long id, String title) {
@@ -29,6 +31,10 @@ public record LoanRequestResponse(
     }
 
     public static LoanRequestResponse from(LoanRequest loan) {
+        return from(loan, false, false);
+    }
+
+    public static LoanRequestResponse from(LoanRequest loan, boolean hasReviewed, boolean canReview) {
         Item item = loan.getItem();
         User borrower = loan.getBorrower();
         User owner = item.getOwner();
@@ -43,7 +49,9 @@ public record LoanRequestResponse(
                 loan.getReturnedAt(),
                 new ItemSummary(item.getId(), item.getTitle()),
                 new UserSummary(borrower.getId(), borrower.getFullName()),
-                new UserSummary(owner.getId(), owner.getFullName())
+                new UserSummary(owner.getId(), owner.getFullName()),
+                hasReviewed,
+                canReview
         );
     }
 }
