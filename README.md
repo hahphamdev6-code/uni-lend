@@ -93,7 +93,8 @@ defaults to `http://localhost:3000`. Keep credentials and signing keys in
 
 `POST /api/auth/login` accepts an email and password and returns a bearer token.
 The account must already exist, be enabled, and have a BCrypt-encoded password
-in the database. Registration is not currently provided. Send the returned
+in the database. For registration, email verification, password reset, and the
+frontend API inventory, see [`docs/API-FRONTEND.md`](docs/API-FRONTEND.md). Send the returned
 token in the `Authorization` header as `Bearer <token>` for authenticated
 endpoints.
 Unauthenticated access is limited to `POST /api/auth/login`, public item and

@@ -55,6 +55,14 @@ public class User extends BaseEntity {
     @Builder.Default
     private boolean emailVerified = false;
 
+    @Column(name = "token_version", nullable = false)
+    @Builder.Default
+    private int tokenVersion = 0;
+
+    public void incrementTokenVersion() {
+        this.tokenVersion++;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

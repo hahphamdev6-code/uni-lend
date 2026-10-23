@@ -19,10 +19,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -52,7 +57,8 @@ class AuthServiceTest {
             return saved;
         });
         when(accountTokenService.createEmailVerificationToken(any(User.class))).thenReturn("verification-token");
-        when(jwtService.generateToken(eq(7L), eq("person@example.test"), any())).thenReturn("signed-token");
+        when(jwtService.generateToken(eq(7L), eq("person@example.test"), any(), eq(0)))
+                .thenReturn("signed-token");
 
         AuthResponse response = authService.register(
                 new RegisterRequest(" PERSON@example.test ", "password123", " Person "));
@@ -86,13 +92,17 @@ class AuthServiceTest {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(new UsernamePasswordAuthenticationToken("person@example.test", "password123"));
         when(userRepository.findByEmail("person@example.test")).thenReturn(Optional.of(user));
-        when(jwtService.generateToken(eq(9L), eq("person@example.test"), any())).thenReturn("signed-token");
+        user.setTokenVersion(3);
+        when(jwtService.generateToken(
+                eq(9L), eq("person@example.test"), eq(List.of("USER")), eq(3)))
+                .thenReturn("signed-token");
 
         AuthResponse response = authService.login(new LoginRequest(" PERSON@example.test ", "password123"));
 
         assertEquals("signed-token", response.token());
         verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
         verify(rateLimitService).checkLoginRateLimit("person@example.test");
+        verify(jwtService).generateToken(9L, "person@example.test", List.of("USER"), 3);
     }
 
     @Test
@@ -104,5 +114,25 @@ class AuthServiceTest {
                 () -> authService.login(new LoginRequest("person@example.test", "wrong")));
 
         assertEquals(ErrorCode.UNAUTHORIZED, exception.getErrorCode());
+    }
+
+    @Test
+    void loginRejectsDisabledAccountEvenIfAuthenticationManagerReturnsSuccess() {
+        User disabledUser = User.builder()
+                .id(10L)
+                .email("disabled@example.test")
+                .fullName("Disabled User")
+                .enabled(false)
+                .build();
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn(new UsernamePasswordAuthenticationToken("disabled@example.test", "password123"));
+        when(userRepository.findByEmail("disabled@example.test")).thenReturn(Optional.of(disabledUser));
+
+        BusinessException exception = assertThrows(BusinessException.class,
+                () -> authService.login(new LoginRequest("disabled@example.test", "password123")));
+
+        assertEquals(ErrorCode.FORBIDDEN, exception.getErrorCode());
+        verify(jwtService, org.mockito.Mockito.never())
+                .generateToken(anyLong(), anyString(), anyList(), anyInt());
     }
 }

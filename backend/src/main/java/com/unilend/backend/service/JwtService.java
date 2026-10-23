@@ -1,7 +1,6 @@
 package com.unilend.backend.service;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -25,15 +24,20 @@ public class JwtService {
     }
 
     public String generateToken(Long userId, String email) {
-        return generateToken(userId, email, List.of("USER"));
+        return generateToken(userId, email, List.of("USER"), 0);
     }
 
     public String generateToken(Long userId, String email, List<String> roles) {
+        return generateToken(userId, email, roles, 0);
+    }
+
+    public String generateToken(Long userId, String email, List<String> roles, int tokenVersion) {
         Date now = new Date();
         return Jwts.builder()
                 .setSubject(email)
                 .claim("uid", userId)
                 .claim("roles", roles)
+                .claim("tv", tokenVersion)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + expirationMs))
                 .signWith(key)
@@ -44,10 +48,13 @@ public class JwtService {
         return parseClaims(token).getSubject();
     }
 
+    public int extractTokenVersion(String token) {
+        Number tv = parseClaims(token).get("tv", Number.class);
+        return tv == null ? 0 : tv.intValue();
+    }
+
     private Claims parseClaims(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token).getBody();
     }
-
-    
 }

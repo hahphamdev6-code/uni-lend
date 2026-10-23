@@ -77,7 +77,12 @@ class AdminUserServiceTest {
 
     @Test
     void lockUserDisablesTargetAccount() {
-        User target = User.builder().id(2L).email("user@example.test").fullName("User").build();
+        User target = User.builder()
+                .id(2L)
+                .email("user@example.test")
+                .fullName("User")
+                .tokenVersion(4)
+                .build();
         when(userRepository.findById(2L)).thenReturn(Optional.of(target));
         when(userRepository.save(target)).thenReturn(target);
 
@@ -85,6 +90,7 @@ class AdminUserServiceTest {
 
         assertFalse(target.isEnabled());
         assertFalse(response.enabled());
+        assertEquals(5, target.getTokenVersion());
         verify(userRepository).save(target);
     }
 
@@ -120,6 +126,7 @@ class AdminUserServiceTest {
                 .email("user@example.test")
                 .fullName("User")
                 .enabled(false)
+                .tokenVersion(4)
                 .build();
         when(userRepository.findById(2L)).thenReturn(Optional.of(target));
         when(userRepository.save(target)).thenReturn(target);
@@ -128,6 +135,7 @@ class AdminUserServiceTest {
 
         assertTrue(target.isEnabled());
         assertTrue(response.enabled());
+        assertEquals(5, target.getTokenVersion());
         verify(userRepository).save(target);
     }
 
