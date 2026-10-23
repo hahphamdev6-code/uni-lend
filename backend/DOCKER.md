@@ -27,3 +27,12 @@ The API listens on `http://localhost:8080`. Swagger UI is available at
 `http://localhost:8080/v3/api-docs`.
 
 Persistent Docker volumes keep MySQL data and uploaded item images across restarts.
+
+## Runtime profiles
+
+Local development defaults to `dev` and imports `.env` from the backend working
+folder. Set `SPRING_PROFILES_ACTIVE=prod` explicitly for production and inject the
+required environment variables into the container. The prod profile does not
+import `.env` inside Spring, disables SQL logging and validates the Flyway schema.
+Compose may still use an env file to supply container variables. See
+`docs/PROFILE_CONFIG.md` for variables, isolated tests and V1-to-V2 upgrade steps.

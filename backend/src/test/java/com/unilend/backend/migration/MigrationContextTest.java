@@ -2,11 +2,13 @@ package com.unilend.backend.migration;
 
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 /** Flyway creates the schema first; Hibernate must validate every entity without update/create. */
+@ActiveProfiles("test")
 @SpringBootTest(properties = {
         "app.jwt.secret=dW5pbGVuZC10ZXN0LWp3dC1zZWNyZXQta2V5LWF0LWxlYXN0LTMyLWJ5dGVz",
         "spring.datasource.url=jdbc:h2:mem:flyway-entity-check;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1",
@@ -26,7 +28,7 @@ class MigrationContextTest {
     void migrationsAndEntityMappingsAgree() {
         flyway.validate();
         assertNotNull(flyway.info().current());
-        assertEquals("1", flyway.info().current().getVersion().toString());
+        assertEquals("2", flyway.info().current().getVersion().toString());
         assertEquals(0, flyway.info().pending().length);
     }
 }
