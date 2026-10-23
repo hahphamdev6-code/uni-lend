@@ -37,6 +37,8 @@ class AuthServiceTest {
     @Mock private CurrentUserService currentUserService;
     @Mock private ReviewService reviewService;
     @Mock private AccountTokenService accountTokenService;
+    @Mock private EmailService emailService;
+    @Mock private RateLimitService rateLimitService;
 
     @InjectMocks private AuthService authService;
 
@@ -49,6 +51,7 @@ class AuthServiceTest {
             saved.setId(7L);
             return saved;
         });
+        when(accountTokenService.createEmailVerificationToken(any(User.class))).thenReturn("verification-token");
         when(jwtService.generateToken(eq(7L), eq("person@example.test"), any())).thenReturn("signed-token");
 
         AuthResponse response = authService.register(
@@ -58,6 +61,9 @@ class AuthServiceTest {
         assertEquals("Person", response.fullName());
         assertEquals("signed-token", response.token());
         verify(passwordEncoder).encode("password123");
+        verify(rateLimitService).checkEmailRateLimit("register", "person@example.test");
+        verify(emailService).sendVerificationEmail(
+                "person@example.test", "Person", "verification-token");
     }
 
     @Test
@@ -86,6 +92,7 @@ class AuthServiceTest {
 
         assertEquals("signed-token", response.token());
         verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verify(rateLimitService).checkLoginRateLimit("person@example.test");
     }
 
     @Test

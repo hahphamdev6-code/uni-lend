@@ -1,4 +1,3 @@
-
 spring:
   config:
     import: optional:file:.env[.properties]
@@ -21,6 +20,17 @@ spring:
         format_sql: true
         default_batch_fetch_size: 16
 
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${SMTP_AUTH:false}
+          starttls:
+            enable: ${SMTP_STARTTLS:false}
 
 app:
   jwt:
@@ -32,6 +42,19 @@ app:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
   upload:
     dir: ${UPLOAD_DIR:uploads}
+  frontend:
+    url: ${FRONTEND_URL:http://localhost:3000}
+  mail:
+    enabled: ${MAIL_ENABLED:false}
+    from: ${MAIL_FROM:no-reply@unilend.local}
+  security:
+    verify-email-ttl-minutes: ${VERIFY_EMAIL_TTL_MINUTES:1440}
+    reset-password-ttl-minutes: ${RESET_PASSWORD_TTL_MINUTES:15}
+  rate-limit:
+    login-max-attempts: ${RATE_LIMIT_LOGIN_MAX:5}
+    login-window-seconds: ${RATE_LIMIT_LOGIN_WINDOW_SECONDS:60}
+    email-max-attempts: ${RATE_LIMIT_EMAIL_MAX:3}
+    email-window-seconds: ${RATE_LIMIT_EMAIL_WINDOW_SECONDS:900}
 
 server:
   port: 8080
