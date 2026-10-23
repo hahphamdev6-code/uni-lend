@@ -1,3 +1,13 @@
+# Docker deployment
+
+For the complete frontend + backend + MySQL stack, use the root `compose.yaml`
+and follow [docs/DOCKER.md](../docs/DOCKER.md). Run commands from the repository
+root with the generated `.env.docker` file.
+
+The older `backend/docker-compose.yml` below remains a backend/MySQL-only setup.
+It uses different Compose project volumes. Do not run both stacks on port 8080
+at the same time or assume they share database data.
+
 # Run the backend with Docker Compose
 
 From this directory, create the local environment file and set private values:
@@ -19,7 +29,7 @@ backend process, so multi-instance deployments need a shared rate-limit store.
 Start the API and MySQL:
 
 ```sh
-docker compose up --build
+docker compose -f docker-compose.yml up --build
 ```
 
 The API listens on `http://localhost:8080`. Swagger UI is available at
