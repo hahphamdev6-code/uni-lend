@@ -1,0 +1,8 @@
+# Optional override: never used by the normal compose.yaml command.
+services:
+  backend:
+    environment:
+      SPRING_PROFILES_ACTIVE: demo
+      SEED_ENABLED: "true"
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:?Set a private demo ADMIN password of at least 12 characters}
+      SEED_USER_PASSWORD: ${SEED_USER_PASSWORD:?Set a private demo USER password of at least 12 characters}

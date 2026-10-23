@@ -1,0 +1,19 @@
+# Isolated demo environment. Activation alone does not enable fixtures.
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/uni_lend_demo}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+app:
+  mail:
+    enabled: false
+  seed:
+    enabled: ${SEED_ENABLED:false}
+    admin-password: ${SEED_ADMIN_PASSWORD:}
+    user-password: ${SEED_USER_PASSWORD:}
