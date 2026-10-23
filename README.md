@@ -103,3 +103,12 @@ endpoints require a valid bearer token. Tokens must have a valid HS256
 signature, issuer (default `http://unilend.local`), and expiration, and their
 `sub` claim must match the user's email in the database. Item ownership and
 admin role checks continue to use the user record in the database.
+
+
+## Docker stack
+
+Run frontend, backend and MySQL together from the repository root using
+`compose.yaml`. Follow [the Docker guide](docs/DOCKER.md) to generate private
+configuration, build, check service health and preserve database/upload volumes.
+The provided frontend snapshot still uses mock authentication; the guide records
+this integration limitation. No demo or ADMIN account is automatically seeded.

@@ -44,4 +44,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Optional<Item> findByIdForImageUpload(@Param("id") Long id);
 
     long countByOwnerId(Long ownerId);
+
+    boolean existsByOwnerIdAndTitleIgnoreCase(Long ownerId, String title);
 }
