@@ -47,17 +47,79 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
     // Người dùng đã có yêu cầu PENDING cho món đồ này chưa (tránh gửi trùng)
     boolean existsByItemIdAndBorrowerIdAndStatus(Long itemId, Long borrowerId, LoanStatus status);
 
-    // Kiểm tra trùng lịch với các yêu cầu đã được duyệt
+    // Kiểm tra trùng lịch với các yêu cầu đang chiếm giữ lịch (APPROVED hoặc OVERDUE)
     @Query("""
             SELECT COUNT(l) > 0 FROM LoanRequest l
             WHERE l.item.id = :itemId
-              AND l.status = com.unilend.backend.entity.LoanRequest.LoanStatus.APPROVED
+              AND l.status IN (
+                  com.unilend.backend.entity.LoanRequest.LoanStatus.APPROVED,
+                  com.unilend.backend.entity.LoanRequest.LoanStatus.OVERDUE
+              )
               AND l.borrowFrom <= :to
               AND l.dueDate >= :from
             """)
     boolean existsOverlappingApproved(@Param("itemId") Long itemId,
                                       @Param("from") LocalDate from,
                                       @Param("to") LocalDate to);
+
+    // Kiểm tra món đồ có đang trong kỳ cho mượn tại ngày today hay không
+    @Query("""
+            SELECT COUNT(l) > 0 FROM LoanRequest l
+            WHERE l.item.id = :itemId
+              AND (
+                  l.status = com.unilend.backend.entity.LoanRequest.LoanStatus.OVERDUE
+                  OR (
+                      l.status = com.unilend.backend.entity.LoanRequest.LoanStatus.APPROVED
+                      AND l.borrowFrom <= :today
+                      AND l.dueDate >= :today
+                  )
+              )
+            """)
+    boolean existsActiveLoanOnDate(@Param("itemId") Long itemId, @Param("today") LocalDate today);
+
+    // Danh sách các kỳ mượn đã duyệt (từ hôm nay trở đi hoặc đang quá hạn) để hiển thị lịch khả dụng
+    @Query("""
+            SELECT l FROM LoanRequest l
+            WHERE l.item.id = :itemId
+              AND (
+                  l.status = com.unilend.backend.entity.LoanRequest.LoanStatus.OVERDUE
+                  OR (
+                      l.status = com.unilend.backend.entity.LoanRequest.LoanStatus.APPROVED
+                      AND l.dueDate >= :fromDate
+                  )
+              )
+            ORDER BY l.borrowFrom ASC, l.dueDate ASC, l.id ASC
+            """)
+    List<LoanRequest> findActiveOrUpcomingApprovedByItemId(@Param("itemId") Long itemId,
+                                                           @Param("fromDate") LocalDate fromDate);
+
+    // Danh sách các lượt mượn đã duyệt theo thời gian dành cho chủ đồ
+    @EntityGraph(attributePaths = {"item", "item.owner", "borrower"})
+    @Query("""
+            SELECT l FROM LoanRequest l
+            WHERE l.item.id = :itemId
+              AND l.status IN (
+                  com.unilend.backend.entity.LoanRequest.LoanStatus.APPROVED,
+                  com.unilend.backend.entity.LoanRequest.LoanStatus.OVERDUE
+              )
+              AND (:fromDate IS NULL OR l.dueDate >= :fromDate)
+              AND (:toDate IS NULL OR l.borrowFrom <= :toDate)
+            ORDER BY l.borrowFrom ASC, l.dueDate ASC, l.id ASC
+            """)
+    List<LoanRequest> findApprovedScheduleByItemId(@Param("itemId") Long itemId,
+                                                   @Param("fromDate") LocalDate fromDate,
+                                                   @Param("toDate") LocalDate toDate);
+
+    // Các khoản mượn bắt đầu đến kỳ cho mượn vào ngày today
+    @EntityGraph(attributePaths = {"item"})
+    @Query("""
+            SELECT l FROM LoanRequest l
+            WHERE l.status = com.unilend.backend.entity.LoanRequest.LoanStatus.APPROVED
+              AND l.borrowFrom <= :today
+              AND l.dueDate >= :today
+              AND l.item.status = com.unilend.backend.entity.Item.ItemStatus.AVAILABLE
+            """)
+    List<LoanRequest> findStartingLoansForAvailableItems(@Param("today") LocalDate today);
 
     // Các khoản mượn quá hạn
     @EntityGraph(attributePaths = {"item", "borrower", "item.owner"})

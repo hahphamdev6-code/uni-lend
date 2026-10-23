@@ -66,6 +66,7 @@ public class SecurityConfig {
                                 "/categories", "/categories/*",
                                 "/api/items", "/api/items/*",
                                 "/items", "/items/*",
+                                "/api/items/*/booked-dates", "/items/*/booked-dates",
                                 "/api/users/*/reviews", "/users/*/reviews").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex

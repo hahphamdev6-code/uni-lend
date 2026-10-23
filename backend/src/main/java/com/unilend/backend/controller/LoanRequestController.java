@@ -69,6 +69,15 @@ public class LoanRequestController {
                 loanRequestService.getOverdue(currentUserService.getCurrentUser(), pageable));
     }
 
+    @GetMapping("/item/{itemId}/approved")
+    public ApiResponse< java.util.List<LoanRequestResponse>> getApprovedByItem(
+            @PathVariable Long itemId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+        return ApiResponse.ok(loanRequestService.getApprovedScheduleForItem(
+                itemId, currentUserService.getCurrentUser(), fromDate, toDate));
+    }
+
     @GetMapping("/{id}")
     public ApiResponse<LoanRequestResponse> getById(@PathVariable Long id) {
         return ApiResponse.ok(loanRequestService.getById(id, currentUserService.getCurrentUser()));
