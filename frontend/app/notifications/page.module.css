@@ -107,6 +107,13 @@
   background: var(--green-dark);
 }
 
+.secondaryButton:disabled,
+.titleButton:disabled,
+.readButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .notificationList {
   display: grid;
   gap: 10px;

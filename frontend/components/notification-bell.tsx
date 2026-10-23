@@ -28,6 +28,7 @@ export function NotificationBell() {
   const {
     notifications,
     unreadCount,
+    actionInProgress,
     loading,
     error,
     authenticated,
@@ -119,7 +120,12 @@ export function NotificationBell() {
               {authenticated && <span>{unreadCount} chưa đọc</span>}
             </div>
             {authenticated && unreadCount > 0 && (
-              <button className={styles.textButton} onClick={handleMarkAllRead} type="button">
+              <button
+                className={styles.textButton}
+                disabled={actionInProgress}
+                onClick={handleMarkAllRead}
+                type="button"
+              >
                 Đánh dấu đã đọc
               </button>
             )}
@@ -149,6 +155,7 @@ export function NotificationBell() {
                 <li key={notification.id}>
                   <button
                     className={`${styles.notification}${notification.read ? "" : ` ${styles.unread}`}`}
+                    disabled={actionInProgress}
                     onClick={() =>
                       void openNotification(
                         notification.id,

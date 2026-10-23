@@ -83,11 +83,11 @@ export default function AdminUsersPage() {
       setResult((current) =>
         current
           ? {
-              ...current,
-              content: current.content.map((user) =>
-                user.id === updatedUser.id ? updatedUser : user,
-              ),
-            }
+            ...current,
+            content: current.content.map((user) =>
+              user.id === updatedUser.id ? updatedUser : user,
+            ),
+          }
           : current,
       );
       showToast("success", updatedUser.enabled ? "Đã mở khóa tài khoản." : "Đã khóa tài khoản.");

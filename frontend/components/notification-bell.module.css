@@ -107,6 +107,15 @@
   text-decoration: underline;
 }
 
+.textButton:disabled,
+.notification:disabled {
+  cursor: not-allowed;
+}
+
+.textButton:disabled {
+  opacity: 0.6;
+}
+
 .list {
   max-height: min(430px, 65vh);
   overflow-y: auto;

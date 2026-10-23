@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNotifications } from "../../components/notifications-provider";
 import {
   notificationService,
@@ -27,13 +27,16 @@ function getNotificationHref(link?: string | null): string | null {
 }
 
 export default function NotificationsPage() {
-  const { authenticated, markRead, markAllRead } = useNotifications();
+  const { authenticated, unreadCount, actionInProgress, markRead, markAllRead } = useNotifications();
   const [page, setPage] = useState(0);
   const [result, setResult] = useState<PageResponse<Notification> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
   const [actionError, setActionError] = useState("");
+  const actionLock = useRef(false);
+  const [localActionInProgress, setLocalActionInProgress] = useState(false);
+  const isActionInProgress = actionInProgress || localActionInProgress;
 
   useEffect(() => {
     if (!authenticated) return;
@@ -44,10 +47,11 @@ export default function NotificationsPage() {
       setLoading(true);
       setError("");
       try {
-        const response = await notificationService.list({
-          page,
-          size: PAGE_SIZE,
-        });
+        const response = await notificationService.list(
+          { page, size: PAGE_SIZE },
+          { signal: controller.signal },
+        );
+        if (controller.signal.aborted) return;
         setResult(response);
       } catch (requestError) {
         if (controller.signal.aborted) return;
@@ -71,7 +75,9 @@ export default function NotificationsPage() {
   }, []);
 
   async function handleMarkRead(notification: Notification) {
-    if (notification.read) return;
+    if (notification.read || actionLock.current || actionInProgress) return;
+    actionLock.current = true;
+    setLocalActionInProgress(true);
     setActionError("");
     setResult((current) =>
       current
@@ -101,11 +107,16 @@ export default function NotificationsPage() {
           ? requestError.message
           : "Không thể cập nhật trạng thái thông báo.",
       );
+    } finally {
+      actionLock.current = false;
+      setLocalActionInProgress(false);
     }
   }
 
   async function handleMarkAllRead() {
-    if (!result?.content.some((notification) => !notification.read)) return;
+    if (!result || unreadCount === 0 || actionLock.current || actionInProgress) return;
+    actionLock.current = true;
+    setLocalActionInProgress(true);
     const previous = result;
     setActionError("");
     setResult((current) =>
@@ -126,6 +137,9 @@ export default function NotificationsPage() {
           ? requestError.message
           : "Không thể đánh dấu tất cả đã đọc.",
       );
+    } finally {
+      actionLock.current = false;
+      setLocalActionInProgress(false);
     }
   }
 
@@ -148,12 +162,19 @@ export default function NotificationsPage() {
             <h1 id="notifications-title">Thông báo</h1>
             <p>Theo dõi các cập nhật mới nhất liên quan đến hoạt động của bạn.</p>
           </div>
-          {authenticated && result?.content.some((notification) => !notification.read) && (
-            <button className={styles.secondaryButton} onClick={handleMarkAllRead} type="button">
+          {authenticated && result && unreadCount > 0 && (
+            <button
+              className={styles.secondaryButton}
+              disabled={isActionInProgress}
+              onClick={handleMarkAllRead}
+              type="button"
+            >
               Đánh dấu tất cả đã đọc
             </button>
           )}
         </div>
+
+        {actionError && <p className={styles.actionError} role="alert">{actionError}</p>}
 
         {!authenticated ? (
           <div className={styles.statePanel}>
@@ -177,7 +198,6 @@ export default function NotificationsPage() {
           </div>
         ) : result?.content.length ? (
           <>
-            {actionError && <p className={styles.actionError} role="alert">{actionError}</p>}
             <ul className={styles.notificationList}>
               {result.content.map((notification) => (
                 <li key={notification.id}>
@@ -187,6 +207,7 @@ export default function NotificationsPage() {
                       <h2>
                         <button
                           className={styles.titleButton}
+                          disabled={isActionInProgress || notification.read}
                           onClick={() => void handleMarkRead(notification)}
                           type="button"
                         >
@@ -201,6 +222,7 @@ export default function NotificationsPage() {
                     {!notification.read && (
                       <button
                         className={styles.readButton}
+                        disabled={isActionInProgress}
                         onClick={() => void handleMarkRead(notification)}
                         type="button"
                       >
@@ -219,7 +241,7 @@ export default function NotificationsPage() {
             {pageCount > 1 && (
               <nav className={styles.pagination} aria-label="Phân trang thông báo">
                 <button
-                  disabled={page === 0}
+                  disabled={page === 0 || isActionInProgress}
                   onClick={() => setPage((current) => Math.max(0, current - 1))}
                   type="button"
                 >
@@ -227,7 +249,7 @@ export default function NotificationsPage() {
                 </button>
                 <span aria-live="polite">Trang {page + 1} / {pageCount}</span>
                 <button
-                  disabled={page >= pageCount - 1}
+                  disabled={page >= pageCount - 1 || isActionInProgress}
                   onClick={() => setPage((current) => Math.min(pageCount - 1, current + 1))}
                   type="button"
                 >

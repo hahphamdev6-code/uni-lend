@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig } from "axios";
 import apiClient from "./apiClient";
 import type { ApiResponse, PageResponse } from "./types";
 
@@ -16,10 +17,13 @@ export interface NotificationListParams {
 }
 
 export const notificationService = {
-  async list(params: NotificationListParams = {}): Promise<PageResponse<Notification>> {
+  async list(
+    params: NotificationListParams = {},
+    config?: Pick<AxiosRequestConfig, "signal">,
+  ): Promise<PageResponse<Notification>> {
     const response = await apiClient.get<ApiResponse<PageResponse<Notification>>>(
       "/notifications",
-      { params },
+      { ...config, params },
     );
     return response.data.data;
   },
@@ -32,10 +36,12 @@ export const notificationService = {
     await apiClient.patch<ApiResponse<void>>("/notifications/read-all");
   },
 
-  async unreadCount(): Promise<number> {
+  async unreadCount(
+    config?: Pick<AxiosRequestConfig, "signal">,
+  ): Promise<number> {
     const response = await apiClient.get<
       ApiResponse<number | { unreadCount: number }>
-    >("/notifications/unread-count");
+    >("/notifications/unread-count", config);
     const data = response.data.data;
     return typeof data === "number" ? data : data.unreadCount;
   },
