@@ -24,18 +24,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Slf4j
@@ -45,21 +43,12 @@ public class ItemService {
 
     private static final int MAX_PAGE_SIZE = 50;
     private static final int MAX_IMAGES_PER_ITEM = 5;
-    private static final long MAX_FILE_SIZE_BYTES = 5L * 1024 * 1024; // 5 MB
-
-    private static final Map<String, String> ALLOWED_CONTENT_TYPES = Map.of(
-            "image/jpeg", ".jpg",
-            "image/jpg", ".jpg",
-            "image/png", ".png",
-            "image/webp", ".webp"
-    );
-    private static final Set<String> ALLOWED_EXTENSIONS = Set.of(".jpg", ".jpeg", ".png", ".webp");
-
     private final ItemRepository itemRepository;
     private final ItemImageRepository itemImageRepository;
     private final CategoryRepository categoryRepository;
     private final LoanRequestRepository loanRequestRepository;
     private final CurrentUserService currentUserService;
+    private final ImageUploadValidator imageUploadValidator;
 
     @Value("${app.upload.dir:uploads}")
     private String uploadDir;
@@ -115,33 +104,49 @@ public class ItemService {
 
     @Transactional
     public ItemResponse uploadImages(Long itemId, List<MultipartFile> files) {
-        Item item = getWithDetailsOrThrow(itemId);
+        // Serialize uploads of the same item before counting its existing images.
+        Item item = itemRepository.findByIdForImageUpload(itemId)
+                .orElseThrow(() -> new ResourceNotFoundException("món đồ", itemId));
         assertOwner(item);
 
-        if (files == null || files.isEmpty() || files.stream().allMatch(MultipartFile::isEmpty)) {
+        if (files == null || files.isEmpty()) {
             throw new BusinessException(ErrorCode.BAD_REQUEST, "Vui lòng chọn ít nhất 1 file ảnh");
         }
-
         long currentCount = itemImageRepository.countByItemId(itemId);
-        if (currentCount + files.size() > MAX_IMAGES_PER_ITEM) {
+        if (files.size() > MAX_IMAGES_PER_ITEM || currentCount + files.size() > MAX_IMAGES_PER_ITEM) {
             throw new BusinessException(ErrorCode.BAD_REQUEST,
                     "Mỗi món đồ chỉ được tối đa %d ảnh (hiện có %d ảnh)".formatted(MAX_IMAGES_PER_ITEM, currentCount));
         }
 
-        for (MultipartFile file : files) {
-            validateImageFile(file);
+        // Validate the whole batch before writing any file; never trust client MIME or suffix.
+        List<ImageUploadValidator.ValidatedImage> validated = files.stream()
+                .map(imageUploadValidator::validate).toList();
+        List<String> createdUrls = new ArrayList<>();
+        if (!TransactionSynchronizationManager.isSynchronizationActive()) {
+            throw new IllegalStateException("Upload ảnh phải chạy trong giao dịch");
         }
-
-        for (MultipartFile file : files) {
-            String imageUrl = storeFile(itemId, file);
-            ItemImage itemImage = ItemImage.builder()
-                    .item(item)
-                    .imageUrl(imageUrl)
-                    .build();
-            item.getImages().add(itemImageRepository.save(itemImage));
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCompletion(int status) {
+                if (status != STATUS_COMMITTED) {
+                    createdUrls.forEach(ItemService.this::deletePhysicalFileQuietly);
+                }
+            }
+        });
+        try {
+            for (ImageUploadValidator.ValidatedImage image : validated) {
+                String imageUrl = storeFile(itemId, image);
+                createdUrls.add(imageUrl);
+                ItemImage itemImage = ItemImage.builder().item(item).imageUrl(imageUrl).build();
+                item.getImages().add(itemImageRepository.save(itemImage));
+            }
+            // Surface constraint failures now; afterCompletion also covers failures at commit.
+            itemImageRepository.flush();
+            return ItemResponse.from(item);
+        } catch (RuntimeException ex) {
+            createdUrls.forEach(this::deletePhysicalFileQuietly);
+            throw ex;
         }
-
-        return ItemResponse.from(item);
     }
 
     @Transactional
@@ -184,44 +189,20 @@ public class ItemService {
 
     // ---- helpers ----
 
-    private void validateImageFile(MultipartFile file) {
-        if (file == null || file.isEmpty()) {
-            throw new BusinessException(ErrorCode.BAD_REQUEST, "File ảnh không được rỗng");
-        }
-        if (file.getSize() > MAX_FILE_SIZE_BYTES) {
-            throw new BusinessException(ErrorCode.BAD_REQUEST, "Kích thước mỗi ảnh không được vượt quá 5MB");
-        }
-        String contentType = file.getContentType() == null
-                ? ""
-                : file.getContentType().toLowerCase(Locale.ROOT);
-        if (!ALLOWED_CONTENT_TYPES.containsKey(contentType)) {
-            throw new BusinessException(ErrorCode.BAD_REQUEST,
-                    "Chỉ chấp nhận định dạng ảnh JPG, PNG hoặc WEBP");
-        }
-        String originalFilename = file.getOriginalFilename();
-        if (originalFilename != null && originalFilename.contains(".")) {
-            String ext = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase(Locale.ROOT);
-            if (!ALLOWED_EXTENSIONS.contains(ext)) {
-                throw new BusinessException(ErrorCode.BAD_REQUEST,
-                        "Đuôi file không hợp lệ. Chỉ chấp nhận .jpg, .jpeg, .png, .webp");
-            }
-        }
-    }
-
-    private String storeFile(Long itemId, MultipartFile file) {
-        String contentType = file.getContentType().toLowerCase(Locale.ROOT);
-        String ext = ALLOWED_CONTENT_TYPES.getOrDefault(contentType, ".jpg");
-        String filename = UUID.randomUUID() + ext;
-
+    private String storeFile(Long itemId, ImageUploadValidator.ValidatedImage image) {
+        String filename = UUID.randomUUID() + image.extension();
         Path itemDir = Paths.get(uploadDir, "items", String.valueOf(itemId)).toAbsolutePath().normalize();
+        Path target = itemDir.resolve(filename);
         try {
             Files.createDirectories(itemDir);
-            Path target = itemDir.resolve(filename).normalize();
-            try (InputStream in = file.getInputStream()) {
-                Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
-            }
+            Files.write(target, image.bytes(), java.nio.file.StandardOpenOption.CREATE_NEW);
             return "/uploads/items/" + itemId + "/" + filename;
         } catch (IOException e) {
+            try {
+                Files.deleteIfExists(target);
+            } catch (IOException cleanupFailure) {
+                e.addSuppressed(cleanupFailure);
+            }
             log.error("Không thể lưu file ảnh cho item {}", itemId, e);
             throw new BusinessException(ErrorCode.INTERNAL_ERROR, "Không thể lưu file ảnh");
         }
@@ -232,7 +213,12 @@ public class ItemService {
             return;
         }
         String relativePath = imageUrl.substring("/uploads/".length());
-        Path filePath = Paths.get(uploadDir).resolve(relativePath).toAbsolutePath().normalize();
+        Path root = Paths.get(uploadDir).toAbsolutePath().normalize();
+        Path filePath = root.resolve(relativePath).normalize();
+        if (!filePath.startsWith(root)) {
+            log.warn("Từ chối xoá file ngoài thư mục upload");
+            return;
+        }
         try {
             Files.deleteIfExists(filePath);
         } catch (IOException e) {

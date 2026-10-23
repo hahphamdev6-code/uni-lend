@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping({"/api/items", "/items"})
@@ -70,7 +71,9 @@ public class ItemController {
             @PathVariable Long id,
             @RequestParam(value = "files", required = false) List<MultipartFile> files,
             @RequestParam(value = "images", required = false) List<MultipartFile> images) {
-        List<MultipartFile> payload = (files != null && !files.isEmpty()) ? files : images;
+        List<MultipartFile> payload = new ArrayList<>();
+        if (files != null) payload.addAll(files);
+        if (images != null) payload.addAll(images);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok("Tải ảnh lên thành công", itemService.uploadImages(id, payload)));
     }

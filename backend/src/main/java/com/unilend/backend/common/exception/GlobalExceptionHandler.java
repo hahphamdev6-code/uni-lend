@@ -87,7 +87,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<ApiResponse<Void>> handleMaxSizeException(MaxUploadSizeExceededException ex) {
-        return build(ErrorCode.BAD_REQUEST, "Dung lượng file vượt quá giới hạn cho phép (tối đa 5MB)");
+        return build(ErrorCode.BAD_REQUEST, "Vượt giới hạn upload: mỗi ảnh tối đa 5MB, toàn bộ request tối đa 26MB");
     }
 
     // Bắt mọi lỗi còn lại, không lộ chi tiết nội bộ ra client

@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
+import jakarta.persistence.LockModeType;
+import org.springframework.data.jpa.repository.Lock;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
@@ -36,6 +38,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
                       @Param("categoryId") Long categoryId,
                       @Param("status") ItemStatus status,
                       Pageable pageable);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT i FROM Item i WHERE i.id = :id")
+    Optional<Item> findByIdForImageUpload(@Param("id") Long id);
 
     long countByOwnerId(Long ownerId);
 }

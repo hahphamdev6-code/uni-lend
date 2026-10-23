@@ -4,6 +4,7 @@ spring:
     import: optional:file:.env[.properties]
   servlet:
     multipart:
+      # 5 images x 5MB plus multipart headers; enforced by the servlet parser.
       max-file-size: 5MB
       max-request-size: 26MB
   datasource:
