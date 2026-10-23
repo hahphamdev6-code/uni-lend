@@ -19,3 +19,6 @@ backend/target/
 # OS
 .DS_Store
 Thumbs.db
+
+# Local Docker secrets
+.env.docker

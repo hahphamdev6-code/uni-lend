@@ -1,0 +1,10 @@
+target
+uploads
+.git
+.env
+.env.*
+!.env.example
+*.env
+*.log
+*.zip
+*.rar
