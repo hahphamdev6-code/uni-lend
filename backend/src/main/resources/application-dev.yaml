@@ -14,3 +14,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+app:
+  seed:
+    enabled: ${SEED_ENABLED:false}
+    admin-password: ${SEED_ADMIN_PASSWORD:}
+    user-password: ${SEED_USER_PASSWORD:}

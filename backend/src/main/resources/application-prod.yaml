@@ -30,6 +30,8 @@ spring:
             enable: ${SMTP_STARTTLS:true}
 
 app:
+  seed:
+    enabled: false
   jwt:
     secret: ${JWT_SECRET}
     issuer: ${JWT_ISSUER}
