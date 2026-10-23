@@ -211,7 +211,8 @@ class LoanRequestServiceTest {
         assertNotNull(loan.getRespondedAt());
         assertEquals(ItemStatus.LENT_OUT, item.getStatus());
         verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
-        verify(entityManager).refresh(item, LockModeType.PESSIMISTIC_WRITE);
+        verify(entityManager).lock(item, LockModeType.PESSIMISTIC_WRITE);
+        verify(entityManager).refresh(item);
         verify(notificationService).notify(eq(2L), eq(NotificationType.LOAN_APPROVED), anyString(), eq("/loans/100"));
     }
 
@@ -265,7 +266,31 @@ class LoanRequestServiceTest {
     }
 
     @Test
+    void approve_autoRejectsOverlappingPendingRequests() {
+        LoanRequest loan = givenLoan(LoanStatus.PENDING);
+        User borrower2 = User.builder().id(3L).email("b2@unilend.test").fullName("Người mượn 2").build();
+        LoanRequest conflicting = LoanRequest.builder()
+                .id(101L)
+                .item(item)
+                .borrower(borrower2)
+                .status(LoanStatus.PENDING)
+                .borrowFrom(today.plusDays(1))
+                .dueDate(today.plusDays(4))
+                .build();
+        when(loanRequestRepository.findOverlappingPendingForUpdate(10L, 100L, today, today.plusDays(3)))
+                .thenReturn(List.of(conflicting));
+
+        LoanRequestResponse response = service.approve(100L, owner);
+
+        assertEquals(LoanStatus.APPROVED, response.status());
+        assertEquals(LoanStatus.REJECTED, conflicting.getStatus());
+        assertNotNull(conflicting.getRespondedAt());
+        verify(notificationService).notify(eq(3L), eq(NotificationType.LOAN_REJECTED), anyString(), eq("/loans/101"));
+    }
+
+    @Test
     void approve_loanNotFound_throwsResourceNotFound() {
+        when(loanRequestRepository.findWithDetailsById(404L)).thenReturn(Optional.empty());
         when(loanRequestRepository.findWithDetailsByIdForUpdate(404L)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> service.approve(404L, owner));
