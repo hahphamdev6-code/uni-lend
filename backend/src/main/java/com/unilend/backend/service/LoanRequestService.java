@@ -4,6 +4,7 @@ import com.unilend.backend.common.exception.BusinessException;
 import com.unilend.backend.common.exception.ErrorCode;
 import com.unilend.backend.common.exception.ResourceNotFoundException;
 import com.unilend.backend.common.response.PageResponse;
+import com.unilend.backend.dto.loan.BookedPeriodResponse;
 import com.unilend.backend.dto.loan.LoanRequestCreateRequest;
 import com.unilend.backend.dto.loan.LoanRequestResponse;
 import com.unilend.backend.entity.Item;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +56,11 @@ public class LoanRequestService {
         if (item.getOwner().getId().equals(borrower.getId())) {
             throw new BusinessException(ErrorCode.BAD_REQUEST, "Bạn không thể mượn đồ của chính mình");
         }
-        if (item.getStatus() != ItemStatus.AVAILABLE) {
+        if (item.getStatus() == ItemStatus.UNAVAILABLE) {
+            throw new BusinessException(ErrorCode.CONFLICT, "Món đồ hiện không sẵn sàng để mượn");
+        }
+        LocalDate today = LocalDate.now(LOAN_ZONE);
+        if (item.getStatus() == ItemStatus.LENT_OUT && !req.borrowFrom().isAfter(today)) {
             throw new BusinessException(ErrorCode.CONFLICT, "Món đồ hiện không sẵn sàng để mượn");
         }
         if (loanRequestRepository.existsByItemIdAndBorrowerIdAndStatus(
@@ -92,7 +98,11 @@ public class LoanRequestService {
         Item item = loan.getItem();
         lockAndRefresh(item);
 
-        if (item.getStatus() != ItemStatus.AVAILABLE) {
+        if (item.getStatus() == ItemStatus.UNAVAILABLE) {
+            throw new BusinessException(ErrorCode.CONFLICT, "Món đồ hiện không sẵn sàng để cho mượn");
+        }
+        LocalDate today = LocalDate.now(LOAN_ZONE);
+        if (item.getStatus() == ItemStatus.LENT_OUT && !loan.getBorrowFrom().isAfter(today)) {
             throw new BusinessException(ErrorCode.CONFLICT, "Món đồ hiện không sẵn sàng để cho mượn");
         }
         if (loanRequestRepository.existsOverlappingApproved(item.getId(), loan.getBorrowFrom(), loan.getDueDate())) {
@@ -101,7 +111,9 @@ public class LoanRequestService {
 
         loan.setStatus(LoanStatus.APPROVED);
         loan.setRespondedAt(Instant.now());
-        item.setStatus(ItemStatus.LENT_OUT);
+        if (isPeriodActive(loan.getBorrowFrom(), loan.getDueDate(), today)) {
+            item.setStatus(ItemStatus.LENT_OUT);
+        }
 
         notificationService.notify(
                 loan.getBorrower().getId(),
@@ -160,7 +172,9 @@ public class LoanRequestService {
 
         loan.setStatus(LoanStatus.RETURNED);
         loan.setReturnedAt(Instant.now());
-        if (item.getStatus() == ItemStatus.LENT_OUT) {
+        LocalDate today = LocalDate.now(LOAN_ZONE);
+        if (item.getStatus() == ItemStatus.LENT_OUT
+                && !loanRequestRepository.existsActiveLoanOnDate(item.getId(), today)) {
             item.setStatus(ItemStatus.AVAILABLE);
         }
 
@@ -210,6 +224,36 @@ public class LoanRequestService {
                 owner.getId(), status, historyStart(fromDate), historyEndExclusive(toDate),
                 boundedPageable(pageable));
         return PageResponse.from(page, LoanRequestResponse::from);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookedPeriodResponse> getBookedPeriods(Long itemId) {
+        if (!itemRepository.existsById(itemId)) {
+            throw new ResourceNotFoundException("Item", itemId);
+        }
+        LocalDate today = LocalDate.now(LOAN_ZONE);
+        return loanRequestRepository.findActiveOrUpcomingApprovedByItemId(itemId, today).stream()
+                .map(BookedPeriodResponse::from)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<LoanRequestResponse> getApprovedScheduleForItem(
+            Long itemId, User actor, LocalDate fromDate, LocalDate toDate) {
+        validateHistoryRange(fromDate, toDate);
+        Item item = itemRepository.findWithDetailsById(itemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Item", itemId));
+        if (!item.getOwner().getId().equals(actor.getId()) && !isAdmin(actor)) {
+            throw new BusinessException(ErrorCode.FORBIDDEN, "Chỉ chủ món đồ mới được xem lịch mượn chi tiết");
+        }
+        return loanRequestRepository.findApprovedScheduleByItemId(itemId, fromDate, toDate).stream()
+                .map(LoanRequestResponse::from)
+                .toList();
+    }
+
+    private boolean isPeriodActive(LocalDate borrowFrom, LocalDate dueDate, LocalDate today) {
+        return borrowFrom != null && dueDate != null
+                && !borrowFrom.isAfter(today) && !dueDate.isBefore(today);
     }
 
     private void validateLoanDates(LocalDate borrowFrom, LocalDate dueDate) {

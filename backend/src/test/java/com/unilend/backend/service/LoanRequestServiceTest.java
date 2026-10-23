@@ -115,7 +115,39 @@ class LoanRequestServiceTest {
     }
 
     @Test
-    void create_itemNotAvailable_conflict() {
+    void create_itemUnavailable_conflict() {
+        item.setStatus(ItemStatus.UNAVAILABLE);
+        when(entityManager.find(Item.class, 10L, LockModeType.PESSIMISTIC_WRITE)).thenReturn(item);
+        when(itemRepository.findWithDetailsById(10L)).thenReturn(Optional.of(item));
+
+        assertCode(ErrorCode.CONFLICT,
+                () -> service.create(borrower, createReq(10L, today, today.plusDays(1))));
+    }
+
+    @Test
+    void create_itemLentOut_futureDateAllowed() {
+        item.setStatus(ItemStatus.LENT_OUT);
+        LocalDate futureStart = today.plusDays(5);
+        LocalDate futureEnd = today.plusDays(7);
+        when(entityManager.find(Item.class, 10L, LockModeType.PESSIMISTIC_WRITE)).thenReturn(item);
+        when(itemRepository.findWithDetailsById(10L)).thenReturn(Optional.of(item));
+        when(loanRequestRepository.existsByItemIdAndBorrowerIdAndStatus(10L, 2L, LoanStatus.PENDING))
+                .thenReturn(false);
+        when(loanRequestRepository.existsOverlappingApproved(10L, futureStart, futureEnd))
+                .thenReturn(false);
+        when(loanRequestRepository.save(any(LoanRequest.class))).thenAnswer(inv -> {
+            LoanRequest saved = inv.getArgument(0);
+            saved.setId(101L);
+            return saved;
+        });
+
+        LoanRequestResponse res = service.create(borrower, createReq(10L, futureStart, futureEnd));
+        assertEquals(101L, res.id());
+        assertEquals(LoanStatus.PENDING, res.status());
+    }
+
+    @Test
+    void create_itemLentOut_todayDate_conflict() {
         item.setStatus(ItemStatus.LENT_OUT);
         when(entityManager.find(Item.class, 10L, LockModeType.PESSIMISTIC_WRITE)).thenReturn(item);
         when(itemRepository.findWithDetailsById(10L)).thenReturn(Optional.of(item));
@@ -170,7 +202,7 @@ class LoanRequestServiceTest {
     }
 
     @Test
-    void approve_success_marksItemLentOut() {
+    void approve_success_marksItemLentOutWhenStartingToday() {
         LoanRequest loan = givenLoan(LoanStatus.PENDING);
 
         LoanRequestResponse response = service.approve(100L, owner);
@@ -181,6 +213,32 @@ class LoanRequestServiceTest {
         verify(loanRequestRepository).findWithDetailsByIdForUpdate(100L);
         verify(entityManager).refresh(item, LockModeType.PESSIMISTIC_WRITE);
         verify(notificationService).notify(eq(2L), eq(NotificationType.LOAN_APPROVED), anyString(), eq("/loans/100"));
+    }
+
+    @Test
+    void approve_futureLoan_keepsItemAvailableUntilBorrowPeriod() {
+        LoanRequest loan = givenLoan(LoanStatus.PENDING);
+        loan.setBorrowFrom(today.plusDays(3));
+        loan.setDueDate(today.plusDays(6));
+
+        LoanRequestResponse response = service.approve(100L, owner);
+
+        assertEquals(LoanStatus.APPROVED, response.status());
+        assertEquals(ItemStatus.AVAILABLE, item.getStatus());
+    }
+
+    @Test
+    void getApprovedScheduleForItem_onlyOwnerOrAdminAllowed() {
+        when(itemRepository.findWithDetailsById(10L)).thenReturn(Optional.of(item));
+        LoanRequest approvedLoan = givenLoan(LoanStatus.APPROVED);
+        when(loanRequestRepository.findApprovedScheduleByItemId(10L, null, null))
+                .thenReturn(List.of(approvedLoan));
+
+        List<LoanRequestResponse> schedule = service.getApprovedScheduleForItem(10L, owner, null, null);
+        assertEquals(1, schedule.size());
+        assertEquals(100L, schedule.get(0).id());
+
+        assertCode(ErrorCode.FORBIDDEN, () -> service.getApprovedScheduleForItem(10L, borrower, null, null));
     }
 
     @Test

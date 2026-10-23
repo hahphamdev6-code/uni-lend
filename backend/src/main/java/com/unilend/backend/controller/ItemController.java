@@ -2,18 +2,24 @@ package com.unilend.backend.controller;
 
 import com.unilend.backend.common.response.ApiResponse;
 import com.unilend.backend.common.response.PageResponse;
+import com.unilend.backend.common.security.CurrentUserService;
 import com.unilend.backend.dto.item.ItemRequest;
 import com.unilend.backend.dto.item.ItemResponse;
+import com.unilend.backend.dto.loan.BookedPeriodResponse;
+import com.unilend.backend.dto.loan.LoanRequestResponse;
 import com.unilend.backend.entity.Item.ItemStatus;
 import com.unilend.backend.service.ItemService;
+import com.unilend.backend.service.LoanRequestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -22,6 +28,8 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
+    private final LoanRequestService loanRequestService;
+    private final CurrentUserService currentUserService;
 
     // Danh sách + tìm kiếm + phân trang (công khai)
     @GetMapping
@@ -45,6 +53,22 @@ public class ItemController {
     @GetMapping("/{id}")
     public ApiResponse<ItemResponse> get(@PathVariable Long id) {
         return ApiResponse.ok(itemService.findById(id));
+    }
+
+    // Lịch các khoảng ngày đã được duyệt của món đồ (công khai cho trang chi tiết đồ)
+    @GetMapping("/{id}/booked-dates")
+    public ApiResponse<List<BookedPeriodResponse>> getBookedDates(@PathVariable Long id) {
+        return ApiResponse.ok(loanRequestService.getBookedPeriods(id));
+    }
+
+    // Danh sách chi tiết các lượt mượn đã duyệt theo thời gian (chỉ chủ đồ hoặc ADMIN)
+    @GetMapping("/{id}/loans")
+    public ApiResponse<List<LoanRequestResponse>> getItemApprovedLoans(
+            @PathVariable Long id,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+        return ApiResponse.ok(loanRequestService.getApprovedScheduleForItem(
+                id, currentUserService.getCurrentUser(), fromDate, toDate));
     }
 
     @PostMapping

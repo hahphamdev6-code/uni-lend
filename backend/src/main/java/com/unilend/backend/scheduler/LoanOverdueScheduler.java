@@ -1,5 +1,7 @@
 package com.unilend.backend.scheduler;
 
+import com.unilend.backend.entity.Item;
+import com.unilend.backend.entity.Item.ItemStatus;
 import com.unilend.backend.entity.LoanRequest;
 import com.unilend.backend.entity.LoanRequest.LoanStatus;
 import com.unilend.backend.entity.Notification.NotificationType;
@@ -36,8 +38,22 @@ public class LoanOverdueScheduler {
     public void updateOverdueLoans() {
         LocalDate today = LocalDate.now(ZONE);
 
+        markStartingLoansLentOut(today);
         sendDueSoonReminders(today.plusDays(1));
         markOverdueLoans(today);
+    }
+
+    private void markStartingLoansLentOut(LocalDate today) {
+        List<LoanRequest> startingLoans = loanRequestRepository.findStartingLoansForAvailableItems(today);
+        if (startingLoans == null || startingLoans.isEmpty()) {
+            return;
+        }
+        for (LoanRequest loan : startingLoans) {
+            Item item = loan.getItem();
+            if (item != null && item.getStatus() == ItemStatus.AVAILABLE) {
+                item.setStatus(ItemStatus.LENT_OUT);
+            }
+        }
     }
 
     private void sendDueSoonReminders(LocalDate dueDate) {
