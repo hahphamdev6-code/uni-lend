@@ -26,14 +26,15 @@ class DatabaseMigrationTest {
     void createsAllTablesAndMigratesOnlyOnce() throws Exception {
         String url = url();
         Flyway flyway = flyway(url);
-        assertEquals(2, flyway.migrate().migrationsExecuted);
+        assertEquals(4, flyway.migrate().migrationsExecuted);
         flyway.validate();
         try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
             for (String table : new String[]{"users", "user_roles", "categories", "items",
-                    "item_images", "loan_requests", "notifications", "reviews", "account_tokens", "audit_logs"}) {
+                    "item_images", "loan_requests", "notifications", "reviews", "account_tokens",
+                    "reports", "audit_logs"}) {
                 assertEquals(0, scalar(connection, "SELECT COUNT(*) FROM " + table));
             }
-            assertEquals(17, scalar(connection, "SELECT COUNT(*) FROM information_schema.indexes "
+            assertEquals(22, scalar(connection, "SELECT COUNT(*) FROM information_schema.indexes "
                     + "WHERE index_name LIKE 'idx_%' AND table_schema = 'public'"));
             insertOwner(connection);
             connection.createStatement().executeUpdate("INSERT INTO user_roles(user_id, role) VALUES (1, 'USER')");
