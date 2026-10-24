@@ -51,6 +51,13 @@ public class Item extends BaseEntity {
     @Builder.Default
     private List<ItemImage> images = new ArrayList<>();
 
+    @Column(name = "hidden_by_admin", nullable = false)
+    @Builder.Default
+    private boolean hiddenByAdmin = false;
+
+    @Column(name = "moderation_reason", length = 500)
+    private String moderationReason;
+
     public enum ItemStatus {
         AVAILABLE, LENT_OUT, UNAVAILABLE
     }
