@@ -4,6 +4,7 @@ import com.unilend.backend.common.response.ApiResponse;
 import com.unilend.backend.common.response.PageResponse;
 import com.unilend.backend.dto.report.ReportResponse;
 import com.unilend.backend.dto.report.ReportUpdateStatusRequest;
+import com.unilend.backend.entity.Report.ReportReason;
 import com.unilend.backend.entity.Report.ReportStatus;
 import com.unilend.backend.entity.Report.ReportTargetType;
 import com.unilend.backend.service.ReportService;
@@ -22,9 +23,11 @@ public class AdminReportController {
     public ApiResponse<PageResponse<ReportResponse>> list(
             @RequestParam(required = false) ReportStatus status,
             @RequestParam(required = false) ReportTargetType targetType,
+            @RequestParam(required = false) ReportReason reason,
+            @RequestParam(required = false) String keyword,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        return ApiResponse.ok(reportService.findAllForAdmin(status, targetType, page, size));
+        return ApiResponse.ok(reportService.findAllForAdmin(status, targetType, reason, keyword, page, size));
     }
 
     @GetMapping("/{id}")

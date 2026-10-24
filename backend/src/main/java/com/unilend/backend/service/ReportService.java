@@ -10,6 +10,7 @@ import com.unilend.backend.dto.report.ReportResponse;
 import com.unilend.backend.dto.report.ReportUpdateStatusRequest;
 import com.unilend.backend.entity.Item;
 import com.unilend.backend.entity.Report;
+import com.unilend.backend.entity.Report.ReportReason;
 import com.unilend.backend.entity.Report.ReportStatus;
 import com.unilend.backend.entity.Report.ReportTargetType;
 import com.unilend.backend.entity.User;
@@ -17,7 +18,6 @@ import com.unilend.backend.repository.ItemRepository;
 import com.unilend.backend.repository.ReportRepository;
 import com.unilend.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,12 +25,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ReportService {
 
     private static final int MAX_PAGE_SIZE = 50;
+    private static final List<ReportStatus> ACTIVE_REPORT_STATUSES =
+            List.of(ReportStatus.OPEN, ReportStatus.IN_REVIEW);
 
     private final ReportRepository reportRepository;
     private final ItemRepository itemRepository;
@@ -48,6 +51,11 @@ public class ReportService {
             if (item.getOwner().getId().equals(reporter.getId())) {
                 throw new BusinessException(ErrorCode.BAD_REQUEST, "Bạn không thể tự báo cáo món đồ của chính mình");
             }
+            if (reportRepository.existsByReporterIdAndTargetTypeAndReportedItemIdAndStatusIn(
+                    reporter.getId(), ReportTargetType.ITEM, item.getId(), ACTIVE_REPORT_STATUSES)) {
+                throw new BusinessException(ErrorCode.CONFLICT,
+                        "Bạn đã có báo cáo đang chờ xử lý cho món đồ này");
+            }
             Report report = Report.builder()
                     .reporter(reporter)
                     .targetType(ReportTargetType.ITEM)
@@ -64,6 +72,11 @@ public class ReportService {
             }
             User reportedUser = userRepository.findById(target.targetId)
                     .orElseThrow(() -> new ResourceNotFoundException("người dùng", target.targetId));
+            if (reportRepository.existsByReporterIdAndTargetTypeAndReportedUserIdAndStatusIn(
+                    reporter.getId(), ReportTargetType.USER, reportedUser.getId(), ACTIVE_REPORT_STATUSES)) {
+                throw new BusinessException(ErrorCode.CONFLICT,
+                        "Bạn đã có báo cáo đang chờ xử lý cho người dùng này");
+            }
             Report report = Report.builder()
                     .reporter(reporter)
                     .targetType(ReportTargetType.USER)
@@ -79,19 +92,22 @@ public class ReportService {
     @Transactional(readOnly = true)
     public PageResponse<ReportResponse> findAllForAdmin(
             ReportStatus status, ReportTargetType targetType, int page, int size) {
+        return findAllForAdmin(status, targetType, null, null, page, size);
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<ReportResponse> findAllForAdmin(
+            ReportStatus status,
+            ReportTargetType targetType,
+            ReportReason reason,
+            String keyword,
+            int page,
+            int size) {
         currentUserService.requireAdmin();
-        Pageable pageable = pageable(page, size);
-        Page<Report> result;
-        if (status != null && targetType != null) {
-            result = reportRepository.findByStatusAndTargetType(status, targetType, pageable);
-        } else if (status != null) {
-            result = reportRepository.findByStatus(status, pageable);
-        } else if (targetType != null) {
-            result = reportRepository.findByTargetType(targetType, pageable);
-        } else {
-            result = reportRepository.findAllBy(pageable);
-        }
-        return PageResponse.from(result, ReportResponse::from);
+        String kw = (keyword == null || keyword.isBlank()) ? null : keyword.trim();
+        return PageResponse.from(
+                reportRepository.searchAdminQueue(status, targetType, reason, kw, pageable(page, size)),
+                ReportResponse::from);
     }
 
     @Transactional(readOnly = true)
