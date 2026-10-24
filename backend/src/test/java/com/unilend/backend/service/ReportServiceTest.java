@@ -182,4 +182,46 @@ class ReportServiceTest {
         assertNull(res.resolvedBy());
         assertNull(res.resolvedAt());
     }
+    @Test
+    void create_duplicateActiveItemReport_throwsConflict() {
+        when(currentUserService.getCurrentUser()).thenReturn(reporter);
+        when(itemRepository.findWithDetailsById(10L)).thenReturn(Optional.of(item));
+        when(reportRepository.existsByReporterIdAndTargetTypeAndReportedItemIdAndStatusIn(
+                org.mockito.ArgumentMatchers.eq(1L),
+                org.mockito.ArgumentMatchers.eq(ReportTargetType.ITEM),
+                org.mockito.ArgumentMatchers.eq(10L),
+                org.mockito.ArgumentMatchers.anyCollection())).thenReturn(true);
+
+        ReportCreateRequest req = new ReportCreateRequest(
+                ReportTargetType.ITEM, 10L, null, null, ReportReason.SPAM, "Báo cáo trùng");
+
+        BusinessException ex = assertThrows(BusinessException.class, () -> reportService.create(req));
+        assertEquals(ErrorCode.CONFLICT, ex.getErrorCode());
+    }
+
+    @Test
+    void create_duplicateActiveUserReport_throwsConflict() {
+        when(currentUserService.getCurrentUser()).thenReturn(reporter);
+        when(userRepository.findById(2L)).thenReturn(Optional.of(owner));
+        when(reportRepository.existsByReporterIdAndTargetTypeAndReportedUserIdAndStatusIn(
+                org.mockito.ArgumentMatchers.eq(1L),
+                org.mockito.ArgumentMatchers.eq(ReportTargetType.USER),
+                org.mockito.ArgumentMatchers.eq(2L),
+                org.mockito.ArgumentMatchers.anyCollection())).thenReturn(true);
+
+        ReportCreateRequest req = new ReportCreateRequest(
+                ReportTargetType.USER, 2L, null, null, ReportReason.HARASSMENT, "Báo cáo trùng người dùng");
+
+        BusinessException ex = assertThrows(BusinessException.class, () -> reportService.create(req));
+        assertEquals(ErrorCode.CONFLICT, ex.getErrorCode());
+    }
+
+    @Test
+    void findAllForAdmin_requiresAdminRole() {
+        when(currentUserService.requireAdmin()).thenThrow(new BusinessException(ErrorCode.FORBIDDEN));
+
+        BusinessException ex = assertThrows(BusinessException.class,
+                () -> reportService.findAllForAdmin(ReportStatus.OPEN, null, null, null, 0, 10));
+        assertEquals(ErrorCode.FORBIDDEN, ex.getErrorCode());
+    }
 }
