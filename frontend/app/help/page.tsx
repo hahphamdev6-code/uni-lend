@@ -21,7 +21,7 @@ const questions = [
     category: "Đồ hư hỏng",
     question: "Nếu đồ bị hư hỏng hoặc thất lạc thì sao?",
     answer:
-      "Báo ngay cho chủ sở hữu và quản trị viên, mô tả tình trạng, thời điểm phát hiện và gửi ảnh nếu có. Tạm ngừng sử dụng món đồ; đừng tự sửa chữa khi chưa thống nhất với chủ sở hữu.",
+      "Mở lượt mượn trong mục Quản lý cá nhân, chọn Chi tiết & báo sự cố rồi gửi loại vấn đề và mô tả. Bạn và chủ đồ có thể theo dõi lịch sử cập nhật ngay tại chi tiết lượt mượn. Tạm ngừng sử dụng món đồ nếu có nguy cơ mất an toàn.",
   },
 ];
 
