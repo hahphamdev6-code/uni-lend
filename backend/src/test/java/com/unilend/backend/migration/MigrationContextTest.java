@@ -26,7 +26,7 @@ class MigrationContextTest {
     void migrationsAndEntityMappingsAgree() {
         flyway.validate();
         assertNotNull(flyway.info().current());
-        assertEquals("4", flyway.info().current().getVersion().toString());
+        assertEquals("5", flyway.info().current().getVersion().toString());
         assertEquals(0, flyway.info().pending().length);
     }
 }

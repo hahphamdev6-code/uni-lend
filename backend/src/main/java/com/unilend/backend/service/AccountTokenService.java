@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.HexFormat;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +35,9 @@ public class AccountTokenService {
     @Value("${app.security.reset-password-ttl-minutes:15}")
     private long resetPasswordTtlMinutes;
 
+    @Value("${app.security.account-deletion-confirmation-ttl-minutes:15}")
+    private long accountDeletionConfirmationTtlMinutes;
+
     @Transactional
     public String createEmailVerificationToken(User user) {
         return createToken(user, TokenType.EMAIL_VERIFICATION, Duration.ofMinutes(verifyEmailTtlMinutes));
@@ -45,29 +49,58 @@ public class AccountTokenService {
     }
 
     @Transactional
+    public String createAccountDeletionConfirmationToken(User user) {
+        return createToken(user, TokenType.ACCOUNT_DELETION_CONFIRMATION,
+                Duration.ofMinutes(accountDeletionConfirmationTtlMinutes));
+    }
+
+    @Transactional
     public User consumeToken(String rawToken, TokenType expectedType) {
+        return consumeToken(rawToken, expectedType, null);
+    }
+
+    @Transactional
+    public User consumeToken(String rawToken, TokenType expectedType, Long expectedUserId) {
         if (rawToken == null || rawToken.isBlank()) {
             throw new BusinessException(ErrorCode.BAD_REQUEST, "Token không hợp lệ");
         }
         String hash = hashToken(rawToken.trim());
         Instant now = Instant.now();
-        if (accountTokenRepository.consumeValidToken(hash, expectedType, now) == 0) {
-            AccountToken accountToken = accountTokenRepository.findByTokenHashAndType(hash, expectedType)
+        int consumed = expectedUserId == null
+                ? accountTokenRepository.consumeValidToken(hash, expectedType, now)
+                : accountTokenRepository.consumeValidTokenForUser(hash, expectedType, expectedUserId, now);
+        if (consumed == 0) {
+            Optional<AccountToken> accountToken = expectedUserId == null
+                    ? accountTokenRepository.findByTokenHashAndType(hash, expectedType)
+                    : accountTokenRepository.findByTokenHashAndTypeAndUser_Id(hash, expectedType, expectedUserId);
+            AccountToken existing = accountToken
                     .orElseThrow(() -> new BusinessException(
                             ErrorCode.BAD_REQUEST, "Token không hợp lệ hoặc không tồn tại"));
-            if (accountToken.isUsed()) {
+            if (existing.isUsed()) {
                 throw new BusinessException(ErrorCode.BAD_REQUEST, "Token này đã được sử dụng");
             }
-            if (accountToken.isExpired()) {
+            if (existing.isExpired()) {
                 throw new BusinessException(ErrorCode.BAD_REQUEST, "Token đã hết hạn");
             }
             throw new BusinessException(ErrorCode.BAD_REQUEST, "Token không hợp lệ");
         }
 
-        return accountTokenRepository.findByTokenHashAndType(hash, expectedType)
+        Optional<AccountToken> consumedToken = expectedUserId == null
+                ? accountTokenRepository.findByTokenHashAndType(hash, expectedType)
+                : accountTokenRepository.findByTokenHashAndTypeAndUser_Id(hash, expectedType, expectedUserId);
+        return consumedToken
                 .orElseThrow(() -> new BusinessException(
                         ErrorCode.BAD_REQUEST, "Token không hợp lệ hoặc không tồn tại"))
                 .getUser();
+    }
+
+    @Transactional
+    public boolean tryConsumeTokenForUser(String rawToken, TokenType expectedType, Long expectedUserId) {
+        if (rawToken == null || rawToken.isBlank() || expectedUserId == null) {
+            return false;
+        }
+        return accountTokenRepository.consumeValidTokenForUser(
+                hashToken(rawToken.trim()), expectedType, expectedUserId, Instant.now()) > 0;
     }
 
     private String createToken(User user, TokenType type, Duration ttl) {

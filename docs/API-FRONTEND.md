@@ -68,6 +68,14 @@ are valid for 15 minutes by default. Both are single-use.
 | `PUT` | `/api/users/me` | Authenticated | JSON: `fullName`, `phone`, `university`, `avatarUrl` |
 | `PATCH` | `/api/users/me/password` | Authenticated | JSON: `oldPassword`, `newPassword`; requires current password and invalidates existing tokens |
 | `GET` | `/api/users/{id}/reviews?page=0&size=10` | Public | Paginated reviews for a user |
+| `POST` | `/api/users/me/deletion-requests` | Authenticated | JSON `currentPassword`; sends a one-use confirmation code, never returns the code |
+| `POST` | `/api/users/me/deletion-requests/{id}/confirm` | Authenticated | JSON `code`; confirms request only, does not delete or anonymize |
+| `GET` | `/api/users/me/deletion-requests/current` | Authenticated | Own latest request and live operational blockers; `anonymizationPermitted` remains false |
+| `POST` | `/api/users/me/deletion-requests/{id}/cancel` | Authenticated | Cancels only the caller's own unfinished request |
+
+Deletion requests are intake-only. A unique active-account key and account-row lock prevent duplicate active requests. Confirmation codes are hashed, expire, are single-use, and have bounded attempts. Readiness checks current `PENDING`, `APPROVED`, and `OVERDUE` loans for both borrower and item owner; unavailable/unknown incident checks block readiness. Policy approval and anonymization execution are not implemented.
+
+Verification status: 53 targeted tests passed on H2, including concurrent request/confirmation/cancellation tests. Flyway V5 for MySQL has not been verified against a MySQL test database. No account data is deleted or anonymized, and login sessions/tokens are not revoked by this intake workflow.
 
 ## Admin APIs
 

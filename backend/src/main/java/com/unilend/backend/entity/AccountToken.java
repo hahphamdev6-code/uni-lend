@@ -44,7 +44,8 @@ public class AccountToken extends BaseEntity {
 
     public enum TokenType {
         EMAIL_VERIFICATION,
-        PASSWORD_RESET
+        PASSWORD_RESET,
+        ACCOUNT_DELETION_CONFIRMATION
     }
 
     public boolean isExpired() {

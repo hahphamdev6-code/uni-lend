@@ -65,6 +65,7 @@ app:
   security:
     verify-email-ttl-minutes: ${VERIFY_EMAIL_TTL_MINUTES:1440}
     reset-password-ttl-minutes: ${RESET_PASSWORD_TTL_MINUTES:15}
+    account-deletion-confirmation-ttl-minutes: ${ACCOUNT_DELETION_CONFIRMATION_TTL_MINUTES:15}
   rate-limit:
     login-max-attempts: ${RATE_LIMIT_LOGIN_MAX:5}
     login-window-seconds: ${RATE_LIMIT_LOGIN_WINDOW_SECONDS:60}

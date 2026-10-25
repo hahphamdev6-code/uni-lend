@@ -20,6 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
 
 @ExtendWith(MockitoExtension.class)
 class AccountTokenServiceTest {
@@ -83,5 +84,31 @@ class AccountTokenServiceTest {
 
         assertThrows(BusinessException.class,
                 () -> accountTokenService.consumeToken(rawToken, TokenType.PASSWORD_RESET));
+    }
+
+    @Test
+    void deletionCodeConsumptionIsAtomicAndBoundToExpectedUser() {
+        String rawCode = "deletion-confirmation-code";
+        String hash = accountTokenService.hashToken(rawCode);
+        when(accountTokenRepository.consumeValidTokenForUser(
+                eq(hash), eq(TokenType.ACCOUNT_DELETION_CONFIRMATION), eq(9L), any(Instant.class)))
+                .thenReturn(1);
+
+        assertEquals(true, accountTokenService.tryConsumeTokenForUser(
+                rawCode, TokenType.ACCOUNT_DELETION_CONFIRMATION, 9L));
+        verify(accountTokenRepository).consumeValidTokenForUser(
+                eq(hash), eq(TokenType.ACCOUNT_DELETION_CONFIRMATION), eq(9L), any(Instant.class));
+    }
+
+    @Test
+    void failedDeletionCodeConsumptionReturnsFalseWithoutThrowingOrReadingOtherAccounts() {
+        String rawCode = "wrong-deletion-code";
+        when(accountTokenRepository.consumeValidTokenForUser(
+                any(), eq(TokenType.ACCOUNT_DELETION_CONFIRMATION), eq(9L), any(Instant.class)))
+                .thenReturn(0);
+
+        assertEquals(false, accountTokenService.tryConsumeTokenForUser(
+                rawCode, TokenType.ACCOUNT_DELETION_CONFIRMATION, 9L));
+        verify(accountTokenRepository, never()).findByTokenHashAndType(any(), any());
     }
 }

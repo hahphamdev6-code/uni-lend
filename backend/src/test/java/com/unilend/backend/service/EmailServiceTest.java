@@ -69,4 +69,15 @@ class EmailServiceTest {
                         "user@example.test", "Test User", "raw-token"));
         verify(mailSender, never()).send(any(SimpleMailMessage.class));
     }
+
+    @Test
+    void sendsDeletionConfirmationCodeOnlyInTheEmailBody() {
+        String code = "private-deletion-code";
+        emailService.sendAccountDeletionConfirmationEmail("user@example.test", "Test User", code);
+
+        var captor = org.mockito.ArgumentCaptor.forClass(SimpleMailMessage.class);
+        verify(mailSender).send(captor.capture());
+        assertTrue(captor.getValue().getText().contains(code));
+        assertEquals("user@example.test", captor.getValue().getTo()[0]);
+    }
 }

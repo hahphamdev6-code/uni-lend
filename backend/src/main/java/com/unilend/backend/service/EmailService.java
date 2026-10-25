@@ -59,6 +59,20 @@ public class EmailService {
         sendEmail(toEmail, subject, body, "RESET_PASSWORD");
     }
 
+    public void sendAccountDeletionConfirmationEmail(String toEmail, String fullName, String rawToken) {
+        String subject = "[Uni-Lend] Xác nhận yêu cầu đóng tài khoản";
+        String body = """
+                Xin chào %s,
+
+                Nhập mã xác nhận dưới đây để xác nhận yêu cầu đóng tài khoản.
+                Mã chỉ dùng một lần và có thời hạn ngắn.
+                %s
+
+                Nếu bạn không thực hiện yêu cầu này, hãy bỏ qua email này.
+                """.formatted(fullName, rawToken);
+        sendEmail(toEmail, subject, body, "ACCOUNT_DELETION_CONFIRMATION");
+    }
+
     private void sendEmail(String toEmail, String subject, String text, String type) {
         if (!mailEnabled) {
             log.info("[MAIL-DISABLED] type={}", type);

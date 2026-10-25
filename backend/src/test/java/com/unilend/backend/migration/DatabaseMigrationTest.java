@@ -26,15 +26,15 @@ class DatabaseMigrationTest {
     void createsAllTablesAndMigratesOnlyOnce() throws Exception {
         String url = url();
         Flyway flyway = flyway(url);
-        assertEquals(4, flyway.migrate().migrationsExecuted);
+        assertEquals(5, flyway.migrate().migrationsExecuted);
         flyway.validate();
         try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
             for (String table : new String[]{"users", "user_roles", "categories", "items",
                     "item_images", "loan_requests", "notifications", "reviews", "account_tokens",
-                    "reports", "audit_logs"}) {
+                    "reports", "audit_logs", "account_deletion_requests"}) {
                 assertEquals(0, scalar(connection, "SELECT COUNT(*) FROM " + table));
             }
-            assertEquals(22, scalar(connection, "SELECT COUNT(*) FROM information_schema.indexes "
+            assertEquals(23, scalar(connection, "SELECT COUNT(*) FROM information_schema.indexes "
                     + "WHERE index_name LIKE 'idx_%' AND table_schema = 'public'"));
             insertOwner(connection);
             connection.createStatement().executeUpdate("INSERT INTO user_roles(user_id, role) VALUES (1, 'USER')");
@@ -75,6 +75,22 @@ class DatabaseMigrationTest {
     }
 
     @Test
+    void enforcesOneActiveDeletionRequestPerUser() throws Exception {
+        String url = url();
+        flyway(url).migrate();
+        try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
+            insertOwner(connection);
+            String insert = "INSERT INTO account_deletion_requests(created_at, user_id, active_user_id, status, "
+                    + "requested_at, confirmation_expires_at, failed_confirmation_attempts) "
+                    + "VALUES (CURRENT_TIMESTAMP, 1, 1, 'AWAITING_CONFIRMATION', CURRENT_TIMESTAMP, "
+                    + "DATEADD('MINUTE', 15, CURRENT_TIMESTAMP), 0)";
+            connection.createStatement().executeUpdate(insert);
+            assertThrows(SQLException.class, () -> connection.createStatement().executeUpdate(insert));
+            assertEquals(1, scalar(connection, "SELECT COUNT(*) FROM account_deletion_requests"));
+        }
+    }
+
+    @Test
     void refusesUnknownExistingSchemaWithoutModifyingItsData() throws Exception {
         String url = url();
         try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
@@ -94,6 +110,7 @@ class DatabaseMigrationTest {
         flyway(url).migrate();
         try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
             insertOwner(connection);
+            connection.createStatement().execute("DROP TABLE account_deletion_requests");
             // Test database only: simulate pre-Flyway ownership by removing only its history.
             connection.createStatement().execute("DROP TABLE \"flyway_schema_history\"");
         }
@@ -101,11 +118,14 @@ class DatabaseMigrationTest {
                 .locations("classpath:db/migration/h2").baselineVersion("4")
                 .baselineOnMigrate(false).cleanDisabled(true).load();
         adoption.baseline();
-        assertEquals(0, adoption.migrate().migrationsExecuted);
+        assertEquals(1, adoption.migrate().migrationsExecuted);
         try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
             assertEquals(1, scalar(connection, "SELECT COUNT(*) FROM users"));
             assertEquals(1, scalar(connection, "SELECT COUNT(*) FROM \"flyway_schema_history\" "
                     + "WHERE \"type\" = 'BASELINE' AND \"version\" = '4'"));
+            assertEquals(1, scalar(connection, "SELECT COUNT(*) FROM \"flyway_schema_history\" "
+                    + "WHERE \"type\" = 'SQL' AND \"version\" = '5'"));
+            assertEquals(0, scalar(connection, "SELECT COUNT(*) FROM account_deletion_requests"));
         }
     }
 

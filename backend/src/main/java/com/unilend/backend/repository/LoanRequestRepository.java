@@ -47,6 +47,17 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
     // Người dùng đã có yêu cầu PENDING cho món đồ này chưa (tránh gửi trùng)
     boolean existsByItemIdAndBorrowerIdAndStatus(Long itemId, Long borrowerId, LoanStatus status);
 
+    @Query("""
+            SELECT COUNT(l) > 0 FROM LoanRequest l
+            WHERE (l.borrower.id = :userId OR l.item.owner.id = :userId)
+              AND l.status IN (
+                  com.unilend.backend.entity.LoanRequest.LoanStatus.PENDING,
+                  com.unilend.backend.entity.LoanRequest.LoanStatus.APPROVED,
+                  com.unilend.backend.entity.LoanRequest.LoanStatus.OVERDUE
+              )
+            """)
+    boolean hasDeletionBlockingLoan(@Param("userId") Long userId);
+
     // Kiểm tra trùng lịch với các yêu cầu đang chiếm giữ lịch (APPROVED hoặc OVERDUE)
     @Query("""
             SELECT COUNT(l) > 0 FROM LoanRequest l

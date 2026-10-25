@@ -16,6 +16,8 @@ public interface AccountTokenRepository extends JpaRepository<AccountToken, Long
     @EntityGraph(attributePaths = {"user"})
     Optional<AccountToken> findByTokenHashAndType(String tokenHash, TokenType type);
 
+    Optional<AccountToken> findByTokenHashAndTypeAndUser_Id(String tokenHash, TokenType type, Long userId);
+
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("""
             UPDATE AccountToken t
@@ -28,6 +30,21 @@ public interface AccountTokenRepository extends JpaRepository<AccountToken, Long
     int consumeValidToken(@Param("tokenHash") String tokenHash,
                           @Param("type") TokenType type,
                           @Param("now") Instant now);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("""
+            UPDATE AccountToken t
+               SET t.usedAt = :now
+             WHERE t.tokenHash = :tokenHash
+               AND t.type = :type
+               AND t.user.id = :userId
+               AND t.usedAt IS NULL
+               AND t.expiresAt > :now
+            """)
+    int consumeValidTokenForUser(@Param("tokenHash") String tokenHash,
+                                 @Param("type") TokenType type,
+                                 @Param("userId") Long userId,
+                                 @Param("now") Instant now);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("""
