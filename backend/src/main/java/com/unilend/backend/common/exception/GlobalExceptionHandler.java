@@ -2,11 +2,13 @@ package com.unilend.backend.common.exception;
 
 import com.unilend.backend.common.response.ApiResponse;
 import com.unilend.backend.common.response.FieldErrorDetail;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -83,6 +85,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleDataIntegrity(DataIntegrityViolationException ex) {
         log.warn("Data integrity violation: {}", ex.getMostSpecificCause().getMessage());
         return build(ErrorCode.CONFLICT, "Dữ liệu bị trùng hoặc vi phạm ràng buộc");
+    }
+
+    // Xung đột cập nhật đồng thời (Optimistic locking)
+    @ExceptionHandler({ObjectOptimisticLockingFailureException.class, OptimisticLockException.class})
+    public ResponseEntity<ApiResponse<Void>> handleOptimisticLocking(Exception ex) {
+        log.warn("Optimistic locking conflict: {}", ex.getMessage());
+        return build(ErrorCode.CONFLICT, "Dữ liệu đã bị cập nhật bởi phiên làm việc khác. Vui lòng tải lại trang và thử lại.");
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
