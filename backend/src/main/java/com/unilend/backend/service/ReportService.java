@@ -39,6 +39,7 @@ public class ReportService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
     private final CurrentUserService currentUserService;
+    private final AuditLogService auditLogService;
 
     @Transactional
     public ReportResponse create(ReportCreateRequest req) {
@@ -124,10 +125,17 @@ public class ReportService {
         Report report = reportRepository.findWithDetailsById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("báo cáo", id));
 
-        report.setStatus(req.status());
         String note = (req.resolutionNote() == null || req.resolutionNote().isBlank())
                 ? null
                 : req.resolutionNote().trim();
+        ReportStatus previousStatus = report.getStatus();
+        String previousNote = report.getResolutionNote();
+        boolean changed = previousStatus != req.status() || !java.util.Objects.equals(previousNote, note);
+        if (!changed) {
+            return ReportResponse.from(report);
+        }
+
+        report.setStatus(req.status());
         report.setResolutionNote(note);
 
         if (req.status() == ReportStatus.RESOLVED || req.status() == ReportStatus.DISMISSED) {
@@ -138,7 +146,10 @@ public class ReportService {
             report.setResolvedAt(null);
         }
 
-        return ReportResponse.from(reportRepository.save(report));
+        reportRepository.save(report);
+        auditLogService.record(admin, "REPORT_STATUS_UPDATED", "REPORT", report.getId(),
+                previousStatus + " -> " + req.status());
+        return ReportResponse.from(report);
     }
 
     private TargetResolution resolveTarget(ReportCreateRequest req) {

@@ -6,6 +6,9 @@
 - Không lưu email, họ tên, mật khẩu, token, nội dung hồ sơ hoặc dữ liệu bí mật khác.
 - API xem log: `GET /api/admin/audit-logs?page=0&size=20`; route admin và service đều yêu cầu quyền `ADMIN`.
 - Khóa/mở tài khoản ghi `USER_LOCKED` hoặc `USER_UNLOCKED` với actor lấy từ `SecurityContext`.
+- Ẩn/khôi phục tin ghi `ITEM_HIDDEN`/`ITEM_RESTORED`; cập nhật trạng thái báo cáo ghi `REPORT_STATUS_UPDATED`.
+- Audit kiểm duyệt chỉ lưu lý do cố định, không chép ghi chú tự do của admin; audit báo cáo chỉ lưu chuyển trạng thái, không lưu resolution note.
+- Thay đổi tin, báo cáo, audit và thông báo kiểm duyệt cùng transaction; thao tác lặp không tạo audit/thông báo trùng.
 - Không ghi audit và không gọi `save` khi thao tác không làm thay đổi trạng thái.
 - `AuditLogService.record` yêu cầu transaction đang tồn tại (`MANDATORY`); lỗi ghi audit được ném lên để transaction nghiệp vụ rollback.
 
@@ -22,6 +25,5 @@ V4 không sửa V1. Không triển khai V4 riêng trên database chỉ có V1; t
 
 ## Chưa hoàn thành
 
-- Chưa tích hợp các nhánh báo cáo/queue/kiểm duyệt vào nhánh này.
-- Audit cho ẩn/khôi phục tin, xử lý báo cáo và sự cố sẽ được thêm sau khi chốt API và trạng thái nghiệp vụ của các nhánh đó.
+- Chưa có code/API xử lý sự cố trong workspace/những nhánh remote đã rà soát; chưa thể tích hợp audit sự cố nếu chưa có phụ thuộc nghiệp vụ.
 - Yêu cầu xóa/ẩn danh tài khoản vẫn cần nhóm chốt chính sách lưu lịch sử trước khi triển khai.

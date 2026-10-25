@@ -1,8 +1,10 @@
 package com.unilend.backend.service;
 
 import com.unilend.backend.entity.AuditLog;
+import com.unilend.backend.entity.Item;
 import com.unilend.backend.entity.User;
 import com.unilend.backend.repository.AuditLogRepository;
+import com.unilend.backend.repository.ItemRepository;
 import com.unilend.backend.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +43,12 @@ class AuditTransactionTest {
 
     @Autowired
     private AdminUserService adminUserService;
+
+    @Autowired
+    private AdminModerationService moderationService;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     @Autowired
     private TransactionTemplate transactionTemplate;
@@ -86,6 +94,29 @@ class AuditTransactionTest {
 
         assertTrue(userRepository.findByEmail("rollback-target@example.test").isEmpty());
         assertTrue(userRepository.findByEmail("rollback-admin@example.test").isEmpty());
+    }
+
+    @Test
+    void moderationAuditFailureRollsBackItemChange() {
+        Long itemId = transactionTemplate.execute(status -> {
+            User admin = userRepository.save(User.builder().email("item-admin@example.test")
+                    .password("hash").fullName("Admin").roles(Set.of("ADMIN")).build());
+            User owner = userRepository.save(User.builder().email("item-owner@example.test")
+                    .password("hash").fullName("Owner").build());
+            Item item = itemRepository.save(Item.builder().title("Item").owner(owner).build());
+            authenticate(admin.getEmail());
+            return item.getId();
+        });
+
+        assertThrows(DataIntegrityViolationException.class, () -> transactionTemplate.executeWithoutResult(status -> {
+            authenticate("item-admin@example.test");
+            moderationService.hideItem(itemId, new com.unilend.backend.dto.admin.ModerationActionRequest(
+                    "x".repeat(501)));
+        }));
+
+        Item unchanged = itemRepository.findById(itemId).orElseThrow();
+        assertFalse(unchanged.isHiddenByAdmin());
+        assertTrue(unchanged.getStatus() == Item.ItemStatus.AVAILABLE);
     }
 
     private void authenticate(String email) {

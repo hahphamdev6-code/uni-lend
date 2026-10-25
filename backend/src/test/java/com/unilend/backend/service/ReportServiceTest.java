@@ -44,6 +44,9 @@ class ReportServiceTest {
     @Mock
     private CurrentUserService currentUserService;
 
+    @Mock
+    private AuditLogService auditLogService;
+
     @InjectMocks
     private ReportService reportService;
 
@@ -155,6 +158,8 @@ class ReportServiceTest {
         assertEquals("Đã kiểm tra và khóa tài khoản", res.resolutionNote());
         assertNotNull(res.resolvedAt());
         assertEquals(99L, res.resolvedBy().id());
+        org.mockito.Mockito.verify(auditLogService).record(
+                admin, "REPORT_STATUS_UPDATED", "REPORT", 100L, "OPEN -> RESOLVED");
     }
 
     @Test
@@ -181,6 +186,24 @@ class ReportServiceTest {
         assertEquals(ReportStatus.IN_REVIEW, res.status());
         assertNull(res.resolvedBy());
         assertNull(res.resolvedAt());
+        org.mockito.Mockito.verify(auditLogService).record(
+                admin, "REPORT_STATUS_UPDATED", "REPORT", 100L, "RESOLVED -> IN_REVIEW");
+    }
+
+    @Test
+    void updateStatusWithoutAnyChangeDoesNotSaveOrAudit() {
+        Report report = Report.builder()
+                .id(100L).reporter(reporter).targetType(ReportTargetType.USER).reportedUser(owner)
+                .reason(ReportReason.FRAUD).description("Lừa đảo")
+                .status(ReportStatus.IN_REVIEW).build();
+        when(currentUserService.requireAdmin()).thenReturn(admin);
+        when(reportRepository.findWithDetailsById(100L)).thenReturn(Optional.of(report));
+
+        reportService.updateStatus(100L, new ReportUpdateStatusRequest(ReportStatus.IN_REVIEW, null));
+
+        org.mockito.Mockito.verify(reportRepository, org.mockito.Mockito.never()).save(any(Report.class));
+        org.mockito.Mockito.verify(auditLogService,
+                org.mockito.Mockito.never()).record(any(), any(), any(), any(), any());
     }
     @Test
     void create_duplicateActiveItemReport_throwsConflict() {
