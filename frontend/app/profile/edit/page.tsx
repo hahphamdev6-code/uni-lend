@@ -116,6 +116,10 @@ export default function EditProfilePage() {
     if (profileState.status === "unauthenticated") router.replace("/login");
   }, [profileState.status, router]);
 
+  if (profileState.status === "error") {
+    return <main className="profile-loading" role="alert">{profileState.message}</main>;
+  }
+
   function handleProfileSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const errors = validateProfile(currentProfileValues);
@@ -168,10 +172,6 @@ export default function EditProfilePage() {
       title="Chỉnh sửa hồ sơ"
       description="Cập nhật thông tin cá nhân và giữ an toàn cho tài khoản của bạn."
     >
-      {profileState.status === "error" && (
-        <p className="form-alert" role="alert">{profileState.message}</p>
-      )}
-
       <section className="profile-edit-section" aria-labelledby="profile-information-title">
         <h2 id="profile-information-title">Thông tin cá nhân</h2>
         <form className="auth-form" onSubmit={handleProfileSubmit} noValidate>

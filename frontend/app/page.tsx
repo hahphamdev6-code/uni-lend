@@ -180,6 +180,7 @@ export default function Home() {
           <a className="nav-link active" href="#items">Khám phá</a>
           <a className="nav-link" href="#how-it-works">Cách hoạt động</a>
           <a className="nav-link" href="#community">Cộng đồng</a>
+          <Link className="nav-link" href="/help">Trợ giúp</Link>
         </nav>
         <div className="header-auth-links">
           <NotificationBell />
@@ -342,6 +343,7 @@ export default function Home() {
       <footer className="site-footer">
         <a className="brand footer-brand" href="#home"><span className="brand-mark"><Icon name="box" size={19} /></span><span>uni<span className="brand-accent">lend</span></span></a>
         <p>Mượn một món đồ. Kết nối một cộng đồng.</p>
+        <Link className="footer-top-link" href="/help">Trợ giúp / FAQ</Link>
         <a className="footer-top-link" href="#home">Về đầu trang ↑</a>
       </footer>
     </main>

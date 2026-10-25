@@ -395,6 +395,9 @@ export function PersonalManagement() {
                       <span>Mượn từ <strong>{formatDate(loan.borrowFrom)}</strong></span>
                       <span>Hạn trả <strong>{formatDate(loan.dueDate)}</strong></span>
                     </div>
+                    <div className={styles.loanActions}>
+                      <Link className={styles.editLink} href={`/loans/${loan.id}`}>Chi tiết & báo sự cố</Link>
+                    </div>
                     {loan.note && <p className={styles.loanNote}>“{loan.note}”</p>}
                     {tab === "incoming" && (
                       <div className={styles.loanActions}>

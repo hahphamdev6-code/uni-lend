@@ -37,9 +37,12 @@ export default function ProfilePage() {
     if (profileState.status === "unauthenticated") router.replace("/login");
   }, [profileState, router]);
 
+  if (profileState.status === "error") {
+    return <main className="profile-loading" role="alert">{profileState.message}</main>;
+  }
+
   const user: UserProfile | null =
     profileState.status === "authenticated" ? profileState.user : null;
-  const error = profileState.status === "error" ? profileState.message : logoutError;
 
   function handleLogout() {
     try {
@@ -74,7 +77,7 @@ export default function ProfilePage() {
             <p>Thành viên cộng đồng UniLend</p>
           </div>
         </div>
-        {error && <p className="form-alert" role="alert">{error}</p>}
+        {logoutError && <p className="form-alert" role="alert">{logoutError}</p>}
         <dl className="profile-details">
           <div><dt>Họ và tên</dt><dd>{user?.fullName}</dd></div>
           <div><dt>Email</dt><dd>{user?.email}</dd></div>
