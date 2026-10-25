@@ -30,7 +30,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @EntityGraph(attributePaths = {"owner", "category"})
     @Query("""
             SELECT i FROM Item i
-            WHERE (:keyword IS NULL OR LOWER(i.title) LIKE LOWER(CONCAT('%', :keyword, '%')))
+            WHERE i.hiddenByAdmin = false
+              AND (:keyword IS NULL OR LOWER(i.title) LIKE LOWER(CONCAT('%', :keyword, '%')))
               AND (:categoryId IS NULL OR i.category.id = :categoryId)
               AND (:status IS NULL OR i.status = :status)
             """)
@@ -44,4 +45,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Optional<Item> findByIdForImageUpload(@Param("id") Long id);
 
     long countByOwnerId(Long ownerId);
+    
 }

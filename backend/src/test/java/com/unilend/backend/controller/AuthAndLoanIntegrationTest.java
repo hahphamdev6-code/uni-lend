@@ -17,12 +17,13 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @SpringBootTest(properties = {
         "app.jwt.secret=dW5pbGVuZC10ZXN0LWp3dC1zZWNyZXQta2V5LWF0LWxlYXN0LTMyLWJ5dGVz",
-        "spring.datasource.url=jdbc:h2:mem:unilend-integration;MODE=MySQL;DB_CLOSE_DELAY=-1",
+        "spring.datasource.url=jdbc:h2:mem:unilend-integration;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1",
         "spring.datasource.username=sa",
         "spring.datasource.password=",
         "spring.datasource.driver-class-name=org.h2.Driver",
         "spring.jpa.hibernate.ddl-auto=validate",
-        "spring.jpa.show-sql=false"
+        "spring.jpa.show-sql=false",
+        "spring.flyway.locations=classpath:db/migration/h2"
 })
 class AuthAndLoanIntegrationTest {
 
