@@ -1,3 +1,5 @@
 ALTER TABLE items
-    ADD COLUMN hidden_by_admin BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN hidden_by_admin BOOLEAN NOT NULL DEFAULT FALSE;
+
+ALTER TABLE items
     ADD COLUMN moderation_reason VARCHAR(500);
