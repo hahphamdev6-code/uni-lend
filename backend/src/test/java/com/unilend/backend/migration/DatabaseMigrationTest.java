@@ -26,17 +26,20 @@ class DatabaseMigrationTest {
     void createsAllTablesAndMigratesOnlyOnce() throws Exception {
         String url = url();
         Flyway flyway = flyway(url);
-        assertEquals(1, flyway.migrate().migrationsExecuted);
+        assertEquals(2, flyway.migrate().migrationsExecuted);
         flyway.validate();
         try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
             for (String table : new String[]{"users", "user_roles", "categories", "items",
-                    "item_images", "loan_requests", "notifications", "reviews", "account_tokens"}) {
+                    "item_images", "loan_requests", "notifications", "reviews", "account_tokens", "audit_logs"}) {
                 assertEquals(0, scalar(connection, "SELECT COUNT(*) FROM " + table));
             }
-            assertEquals(14, scalar(connection, "SELECT COUNT(*) FROM information_schema.indexes "
+            assertEquals(17, scalar(connection, "SELECT COUNT(*) FROM information_schema.indexes "
                     + "WHERE index_name LIKE 'idx_%' AND table_schema = 'public'"));
             insertOwner(connection);
             connection.createStatement().executeUpdate("INSERT INTO user_roles(user_id, role) VALUES (1, 'USER')");
+            connection.createStatement().executeUpdate("INSERT INTO audit_logs(id, created_at, actor_user_id, action, "
+                    + "target_type, target_id, reason) VALUES (1, CURRENT_TIMESTAMP, 1, 'USER_LOCKED', 'USER', 1, 'test')");
+            assertEquals(1, scalar(connection, "SELECT COUNT(*) FROM audit_logs"));
         }
         assertEquals(0, flyway.migrate().migrationsExecuted);
         try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
@@ -94,14 +97,14 @@ class DatabaseMigrationTest {
             connection.createStatement().execute("DROP TABLE \"flyway_schema_history\"");
         }
         Flyway adoption = Flyway.configure().dataSource(url, "sa", "")
-                .locations("classpath:db/migration/h2").baselineVersion("1")
+                .locations("classpath:db/migration/h2").baselineVersion("4")
                 .baselineOnMigrate(false).cleanDisabled(true).load();
         adoption.baseline();
         assertEquals(0, adoption.migrate().migrationsExecuted);
         try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
             assertEquals(1, scalar(connection, "SELECT COUNT(*) FROM users"));
             assertEquals(1, scalar(connection, "SELECT COUNT(*) FROM \"flyway_schema_history\" "
-                    + "WHERE \"type\" = 'BASELINE' AND \"version\" = '1'"));
+                    + "WHERE \"type\" = 'BASELINE' AND \"version\" = '4'"));
         }
     }
 

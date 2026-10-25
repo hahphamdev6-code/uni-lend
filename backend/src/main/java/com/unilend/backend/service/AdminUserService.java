@@ -23,6 +23,7 @@ public class AdminUserService {
 
     private final UserRepository userRepository;
     private final CurrentUserService currentUserService;
+    private final AuditLogService auditLogService;
 
     @Transactional(readOnly = true)
     public PageResponse<UserProfileResponse> findAll(String keyword, Boolean enabled, int page, int size) {
@@ -35,6 +36,11 @@ public class AdminUserService {
 
     @Transactional
     public UserProfileResponse lockUser(Long targetUserId) {
+        return lockUser(targetUserId, null);
+    }
+
+    @Transactional
+    public UserProfileResponse lockUser(Long targetUserId, String reason) {
         User admin = currentUserService.requireAdmin();
         if (admin.getId().equals(targetUserId)) {
             throw new BusinessException(ErrorCode.BAD_REQUEST, "Không thể tự khóa tài khoản của chính mình");
@@ -45,27 +51,35 @@ public class AdminUserService {
                     .anyMatch(user -> !user.getId().equals(targetUserId)
                             && user.getRoles().contains("ADMIN"));
             if (!anotherEnabledAdminExists) {
-                throw new BusinessException(
-                        ErrorCode.BAD_REQUEST,
+                throw new BusinessException(ErrorCode.BAD_REQUEST,
                         "Không thể khóa quản trị viên đang hoạt động cuối cùng");
             }
         }
         if (target.isEnabled()) {
             target.setEnabled(false);
             target.incrementTokenVersion();
+            auditLogService.record(admin, "USER_LOCKED", "USER", target.getId(), reason);
+            userRepository.save(target);
         }
-        return UserProfileResponse.from(userRepository.save(target));
+        return UserProfileResponse.from(target);
     }
 
     @Transactional
     public UserProfileResponse unlockUser(Long targetUserId) {
-        currentUserService.requireAdmin();
+        return unlockUser(targetUserId, null);
+    }
+
+    @Transactional
+    public UserProfileResponse unlockUser(Long targetUserId, String reason) {
+        User admin = currentUserService.requireAdmin();
         User target = getOrThrow(targetUserId);
         if (!target.isEnabled()) {
             target.setEnabled(true);
             target.incrementTokenVersion();
+            auditLogService.record(admin, "USER_UNLOCKED", "USER", target.getId(), reason);
+            userRepository.save(target);
         }
-        return UserProfileResponse.from(userRepository.save(target));
+        return UserProfileResponse.from(target);
     }
 
     private User getOrThrow(Long id) {
