@@ -3,6 +3,8 @@ package com.unilend.backend.controller;
 import com.unilend.backend.common.response.ApiResponse;
 import com.unilend.backend.common.response.PageResponse;
 import com.unilend.backend.dto.user.UserProfileResponse;
+import com.unilend.backend.dto.admin.AdminAccountActionRequest;
+import jakarta.validation.Valid;
 import com.unilend.backend.service.AdminUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +26,16 @@ public class AdminUserController {
     }
 
     @PatchMapping("/{id}/lock")
-    public ApiResponse<UserProfileResponse> lock(@PathVariable Long id) {
-        return ApiResponse.ok("Đã khóa tài khoản người dùng", adminUserService.lockUser(id));
+    public ApiResponse<UserProfileResponse> lock(@PathVariable Long id,
+                                                  @RequestBody(required = false) @Valid AdminAccountActionRequest request) {
+        return ApiResponse.ok("Đã khóa tài khoản người dùng",
+                adminUserService.lockUser(id, request == null ? null : request.reason()));
     }
 
     @PatchMapping("/{id}/unlock")
-    public ApiResponse<UserProfileResponse> unlock(@PathVariable Long id) {
-        return ApiResponse.ok("Đã mở khóa tài khoản người dùng", adminUserService.unlockUser(id));
+    public ApiResponse<UserProfileResponse> unlock(@PathVariable Long id,
+                                                    @RequestBody(required = false) @Valid AdminAccountActionRequest request) {
+        return ApiResponse.ok("Đã mở khóa tài khoản người dùng",
+                adminUserService.unlockUser(id, request == null ? null : request.reason()));
     }
 }

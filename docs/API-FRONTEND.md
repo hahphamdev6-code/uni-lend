@@ -64,7 +64,7 @@ are valid for 15 minutes by default. Both are single-use.
 | Method | Path | Access | Request / notes |
 |---|---|---|---|
 | `GET` | `/api/users/me` | Authenticated | Current user's profile |
-| `GET` | `/api/users/{id}` | Authenticated | View another user's profile |
+| `GET` | `/api/users/{id}` | Authenticated | Public profile fields only (name, avatar, rating); omits email, phone, university, roles, and account state |
 | `PUT` | `/api/users/me` | Authenticated | JSON: `fullName`, `phone`, `university`, `avatarUrl` |
 | `PATCH` | `/api/users/me/password` | Authenticated | JSON: `oldPassword`, `newPassword`; requires current password and invalidates existing tokens |
 | `GET` | `/api/users/{id}/reviews?page=0&size=10` | Public | Paginated reviews for a user |

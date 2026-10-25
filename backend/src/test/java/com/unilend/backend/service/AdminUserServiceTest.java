@@ -41,6 +41,9 @@ class AdminUserServiceTest {
     @Mock
     private CurrentUserService currentUserService;
 
+    @Mock
+    private AuditLogService auditLogService;
+
     @InjectMocks
     private AdminUserService adminUserService;
 
@@ -137,6 +140,44 @@ class AdminUserServiceTest {
         assertTrue(response.enabled());
         assertEquals(5, target.getTokenVersion());
         verify(userRepository).save(target);
+    }
+
+    @Test
+    void lockUserRecordsAuditWithActorAndReason() {
+        User target = User.builder().id(2L).email("user@example.test").fullName("User").build();
+        when(userRepository.findById(2L)).thenReturn(Optional.of(target));
+        when(userRepository.save(target)).thenReturn(target);
+
+        String privateReason = "violation user@example.test 0912345678 bearer-secret";
+        adminUserService.lockUser(2L, privateReason);
+
+        verify(auditLogService).record(admin, "USER_LOCKED", "USER", 2L,
+                "Admin account moderation action");
+        verify(auditLogService, never()).record(admin, "USER_LOCKED", "USER", 2L, privateReason);
+        assertFalse(target.isEnabled());
+    }
+
+    @Test
+    void unchangedLockDoesNotWriteAuditOrSave() {
+        User target = User.builder().id(2L).email("user@example.test").fullName("User")
+                .enabled(false).build();
+        when(userRepository.findById(2L)).thenReturn(Optional.of(target));
+
+        adminUserService.lockUser(2L, "Không đổi trạng thái");
+
+        verify(auditLogService, never()).record(any(), any(), any(), any(), any());
+        verify(userRepository, never()).save(any());
+    }
+
+    @Test
+    void auditFailurePropagatesAndLeavesTargetChangedOnlyInsideTransaction() {
+        User target = User.builder().id(2L).email("user@example.test").fullName("User").build();
+        when(userRepository.findById(2L)).thenReturn(Optional.of(target));
+        when(auditLogService.record(any(), any(), any(), any(), any()))
+                .thenThrow(new IllegalStateException("audit unavailable"));
+
+        assertThrows(IllegalStateException.class, () -> adminUserService.lockUser(2L, "rollback"));
+        verify(userRepository, never()).save(any());
     }
 
     @Test

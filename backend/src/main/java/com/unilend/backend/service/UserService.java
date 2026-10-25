@@ -5,6 +5,7 @@ import com.unilend.backend.common.exception.ErrorCode;
 import com.unilend.backend.common.exception.ResourceNotFoundException;
 import com.unilend.backend.common.security.CurrentUserService;
 import com.unilend.backend.dto.user.ChangePasswordRequest;
+import com.unilend.backend.dto.user.PublicUserProfileResponse;
 import com.unilend.backend.dto.user.UpdateProfileRequest;
 import com.unilend.backend.dto.user.UserProfileResponse;
 import com.unilend.backend.entity.User;
@@ -30,10 +31,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserProfileResponse getById(Long id) {
+    public PublicUserProfileResponse getById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", id));
-        return toProfileResponse(user);
+        return PublicUserProfileResponse.from(user,
+                reviewService.getAverageRating(user.getId()), reviewService.getReviewCount(user.getId()));
     }
 
     @Transactional

@@ -243,6 +243,9 @@ class LoanRequestServiceTest {
         assertEquals(1, schedule.size());
         assertEquals(100L, schedule.get(0).id());
 
+        User admin = User.builder().id(99L).email("admin@unilend.test")
+                .roles(java.util.Set.of("ADMIN")).build();
+        assertEquals(1, service.getApprovedScheduleForItem(10L, admin, null, null).size());
         assertCode(ErrorCode.FORBIDDEN, () -> service.getApprovedScheduleForItem(10L, borrower, null, null));
     }
 

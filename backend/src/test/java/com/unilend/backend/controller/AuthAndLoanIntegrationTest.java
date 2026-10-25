@@ -17,12 +17,13 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @SpringBootTest(properties = {
         "app.jwt.secret=dW5pbGVuZC10ZXN0LWp3dC1zZWNyZXQta2V5LWF0LWxlYXN0LTMyLWJ5dGVz",
-        "spring.datasource.url=jdbc:h2:mem:unilend-integration;MODE=MySQL;DB_CLOSE_DELAY=-1",
+        "spring.datasource.url=jdbc:h2:mem:unilend-integration;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1",
         "spring.datasource.username=sa",
         "spring.datasource.password=",
         "spring.datasource.driver-class-name=org.h2.Driver",
         "spring.jpa.hibernate.ddl-auto=validate",
-        "spring.jpa.show-sql=false"
+        "spring.jpa.show-sql=false",
+        "spring.flyway.locations=classpath:db/migration/h2"
 })
 class AuthAndLoanIntegrationTest {
 
@@ -85,6 +86,48 @@ class AuthAndLoanIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.content").isArray());
+    }
+
+    @Test
+    void publicUserProfileOmitsPrivateAccountFieldsAndAdminAuditRequiresAdmin() throws Exception {
+        String targetToken = registerAndGetToken("profile-target@example.test", "Profile Target");
+        String targetJson = mockMvc.perform(get("/users/me")
+                        .header("Authorization", "Bearer " + targetToken))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        long targetId = ((Number) com.jayway.jsonpath.JsonPath.read(targetJson, "$.data.id")).longValue();
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put("/users/me")
+                        .header("Authorization", "Bearer " + targetToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"fullName":"Profile Target","phone":"0912345678","university":"Private University"}
+                                """))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/users/me").header("Authorization", "Bearer " + targetToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.email").value("profile-target@example.test"))
+                .andExpect(jsonPath("$.data.phone").value("0912345678"));
+
+        String viewerToken = registerAndGetToken("profile-viewer@example.test", "Profile Viewer");
+        mockMvc.perform(get("/users/" + targetId))
+                .andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/users/" + targetId).header("Authorization", "Bearer " + viewerToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.id").value(targetId))
+                .andExpect(jsonPath("$.data.fullName").value("Profile Target"))
+                .andExpect(jsonPath("$.data.email").doesNotExist())
+                .andExpect(jsonPath("$.data.phone").doesNotExist())
+                .andExpect(jsonPath("$.data.university").doesNotExist())
+                .andExpect(jsonPath("$.data.roles").doesNotExist())
+                .andExpect(jsonPath("$.data.enabled").doesNotExist())
+                .andExpect(jsonPath("$.data.emailVerified").doesNotExist());
+
+        mockMvc.perform(get("/api/admin/audit-logs"))
+                .andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/api/admin/audit-logs").header("Authorization", "Bearer " + viewerToken))
+                .andExpect(status().isForbidden());
     }
 
     @Test

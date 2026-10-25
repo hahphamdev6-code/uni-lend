@@ -2,6 +2,7 @@ package com.unilend.backend.controller;
 
 import com.unilend.backend.common.response.ApiResponse;
 import com.unilend.backend.dto.user.ChangePasswordRequest;
+import com.unilend.backend.dto.user.PublicUserProfileResponse;
 import com.unilend.backend.dto.user.UpdateProfileRequest;
 import com.unilend.backend.dto.user.UserProfileResponse;
 import com.unilend.backend.service.UserService;
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<UserProfileResponse> getById(@PathVariable Long id) {
+    public ApiResponse<PublicUserProfileResponse> getById(@PathVariable Long id) {
         return ApiResponse.ok(userService.getById(id));
     }
 
