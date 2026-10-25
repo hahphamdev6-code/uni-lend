@@ -89,6 +89,48 @@ class AuthAndLoanIntegrationTest {
     }
 
     @Test
+    void publicUserProfileOmitsPrivateAccountFieldsAndAdminAuditRequiresAdmin() throws Exception {
+        String targetToken = registerAndGetToken("profile-target@example.test", "Profile Target");
+        String targetJson = mockMvc.perform(get("/users/me")
+                        .header("Authorization", "Bearer " + targetToken))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        long targetId = ((Number) com.jayway.jsonpath.JsonPath.read(targetJson, "$.data.id")).longValue();
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put("/users/me")
+                        .header("Authorization", "Bearer " + targetToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"fullName":"Profile Target","phone":"0912345678","university":"Private University"}
+                                """))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/users/me").header("Authorization", "Bearer " + targetToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.email").value("profile-target@example.test"))
+                .andExpect(jsonPath("$.data.phone").value("0912345678"));
+
+        String viewerToken = registerAndGetToken("profile-viewer@example.test", "Profile Viewer");
+        mockMvc.perform(get("/users/" + targetId))
+                .andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/users/" + targetId).header("Authorization", "Bearer " + viewerToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.id").value(targetId))
+                .andExpect(jsonPath("$.data.fullName").value("Profile Target"))
+                .andExpect(jsonPath("$.data.email").doesNotExist())
+                .andExpect(jsonPath("$.data.phone").doesNotExist())
+                .andExpect(jsonPath("$.data.university").doesNotExist())
+                .andExpect(jsonPath("$.data.roles").doesNotExist())
+                .andExpect(jsonPath("$.data.enabled").doesNotExist())
+                .andExpect(jsonPath("$.data.emailVerified").doesNotExist());
+
+        mockMvc.perform(get("/api/admin/audit-logs"))
+                .andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/api/admin/audit-logs").header("Authorization", "Bearer " + viewerToken))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     void openApiDocsIncludeBearerAuthSecurityScheme() throws Exception {
         mockMvc.perform(get("/v3/api-docs"))
                 .andExpect(status().isOk())

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminUserService {
 
     private static final int MAX_PAGE_SIZE = 50;
+    private static final String AUDIT_REASON = "Admin account moderation action";
 
     private final UserRepository userRepository;
     private final CurrentUserService currentUserService;
@@ -58,7 +59,7 @@ public class AdminUserService {
         if (target.isEnabled()) {
             target.setEnabled(false);
             target.incrementTokenVersion();
-            auditLogService.record(admin, "USER_LOCKED", "USER", target.getId(), reason);
+            auditLogService.record(admin, "USER_LOCKED", "USER", target.getId(), AUDIT_REASON);
             userRepository.save(target);
         }
         return UserProfileResponse.from(target);
@@ -76,7 +77,7 @@ public class AdminUserService {
         if (!target.isEnabled()) {
             target.setEnabled(true);
             target.incrementTokenVersion();
-            auditLogService.record(admin, "USER_UNLOCKED", "USER", target.getId(), reason);
+            auditLogService.record(admin, "USER_UNLOCKED", "USER", target.getId(), AUDIT_REASON);
             userRepository.save(target);
         }
         return UserProfileResponse.from(target);

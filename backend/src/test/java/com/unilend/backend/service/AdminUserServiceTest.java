@@ -148,9 +148,12 @@ class AdminUserServiceTest {
         when(userRepository.findById(2L)).thenReturn(Optional.of(target));
         when(userRepository.save(target)).thenReturn(target);
 
-        adminUserService.lockUser(2L, "Vi phạm quy định");
+        String privateReason = "violation user@example.test 0912345678 bearer-secret";
+        adminUserService.lockUser(2L, privateReason);
 
-        verify(auditLogService).record(admin, "USER_LOCKED", "USER", 2L, "Vi phạm quy định");
+        verify(auditLogService).record(admin, "USER_LOCKED", "USER", 2L,
+                "Admin account moderation action");
+        verify(auditLogService, never()).record(admin, "USER_LOCKED", "USER", 2L, privateReason);
         assertFalse(target.isEnabled());
     }
 

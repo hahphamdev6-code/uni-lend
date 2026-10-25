@@ -4,6 +4,7 @@ import com.unilend.backend.common.security.CurrentUserService;
 import com.unilend.backend.common.exception.BusinessException;
 import com.unilend.backend.common.exception.ErrorCode;
 import com.unilend.backend.dto.user.ChangePasswordRequest;
+import com.unilend.backend.dto.user.PublicUserProfileResponse;
 import com.unilend.backend.dto.user.UserProfileResponse;
 import com.unilend.backend.entity.User;
 import com.unilend.backend.repository.UserRepository;
@@ -59,7 +60,7 @@ class UserServiceTest {
         when(reviewService.getAverageRating(1L)).thenReturn(4.5);
         when(reviewService.getReviewCount(1L)).thenReturn(8L);
 
-        UserProfileResponse profile = userService.getById(1L);
+        PublicUserProfileResponse profile = userService.getById(1L);
 
         assertEquals(1L, profile.id());
         assertEquals("Nguyễn Văn A", profile.fullName());
