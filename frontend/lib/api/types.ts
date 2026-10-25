@@ -100,6 +100,26 @@ export interface BookedPeriod {
   status: LoanStatus;
 }
 
+export type IncidentType = "DAMAGE" | "MISSING_PARTS" | "LATE_RETURN" | "SAFETY" | "OTHER";
+export type IncidentStatus = "OPEN" | "IN_REVIEW" | "RESOLVED" | "CLOSED";
+
+export interface LoanIncident {
+  id: number;
+  loanRequestId: number;
+  type: IncidentType;
+  description: string;
+  status: IncidentStatus;
+  reporter: { id: number; fullName: string };
+  createdAt: string;
+  updates: {
+    id: number;
+    status: IncidentStatus;
+    message: string;
+    actor: { id: number; fullName: string };
+    createdAt: string;
+  }[];
+}
+
 export interface Review {
   id: number;
   loanId: number | null;

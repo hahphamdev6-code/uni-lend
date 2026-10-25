@@ -24,6 +24,14 @@ export const loanService = {
     return response.data.data;
   },
 
+  async getById(
+    id: number,
+    config?: Pick<AxiosRequestConfig, "signal">,
+  ): Promise<Loan> {
+    const response = await apiClient.get<ApiResponse<Loan>>(`/loan-requests/${id}`, config);
+    return response.data.data;
+  },
+
   async listIncoming(
     params: { page?: number; size?: number } = {},
     config?: Pick<AxiosRequestConfig, "signal">,
