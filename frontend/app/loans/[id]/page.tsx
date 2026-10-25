@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { useAuth } from "../../../components/auth-provider";
 import { useAdminToast } from "../../../components/admin-toast";
+import { useNotifications } from "../../../components/notifications-provider";
 import { incidentService } from "../../../lib/api/incidentService";
 import { loanService } from "../../../lib/api/loanService";
 import type { IncidentStatus, IncidentType, Loan, LoanIncident } from "../../../lib/api/types";
@@ -51,14 +52,28 @@ function formatDate(value: string): string {
   }).format(date);
 }
 
+function getIncidentStatusClass(status: IncidentStatus): string {
+  const classes: Record<IncidentStatus, string> = {
+    OPEN: styles.statusOPEN,
+    IN_REVIEW: styles.statusIN_REVIEW,
+    RESOLVED: styles.statusRESOLVED,
+    CLOSED: styles.statusCLOSED,
+  };
+  return classes[status];
+}
+
 export default function LoanDetailPage() {
   const { id: rawId } = useParams<{ id: string }>();
   const loanId = Number(rawId);
   const router = useRouter();
   const auth = useAuth();
   const { showToast } = useAdminToast();
+  const { refresh: refreshNotifications } = useNotifications();
   const [loan, setLoan] = useState<Loan | null>(null);
   const [incidents, setIncidents] = useState<LoanIncident[]>([]);
+  const [statusDrafts, setStatusDrafts] = useState<Record<number, IncidentStatus>>({});
+  const [updateMessages, setUpdateMessages] = useState<Record<number, string>>({});
+  const [updatingIncidentId, setUpdatingIncidentId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [type, setType] = useState<IncidentType>("DAMAGE");
@@ -107,6 +122,7 @@ export default function LoanDetailPage() {
       setIncidents((current) => [created, ...current]);
       setDescription("");
       showToast("success", "Đã gửi báo cáo sự cố.");
+      await refreshNotifications();
     } catch (submitError) {
       showToast(
         "error",
@@ -117,7 +133,37 @@ export default function LoanDetailPage() {
     }
   }
 
+  async function updateIncidentStatus(event: FormEvent<HTMLFormElement>, incident: LoanIncident) {
+    event.preventDefault();
+    const message = updateMessages[incident.id]?.trim();
+    if (!message) return;
+
+    setUpdatingIncidentId(incident.id);
+    try {
+      const updated = await incidentService.updateStatus(incident.id, {
+        status: statusDrafts[incident.id] ?? incident.status,
+        message,
+      });
+      setIncidents((current) =>
+        current.map((currentIncident) =>
+          currentIncident.id === updated.id ? updated : currentIncident,
+        ),
+      );
+      setUpdateMessages((current) => ({ ...current, [incident.id]: "" }));
+      showToast("success", "Đã cập nhật trạng thái báo cáo và thông báo cho hai bên.");
+      await refreshNotifications();
+    } catch (updateError) {
+      showToast(
+        "error",
+        updateError instanceof Error ? updateError.message : "Không thể cập nhật trạng thái báo cáo.",
+      );
+    } finally {
+      setUpdatingIncidentId(null);
+    }
+  }
+
   const canReport = loan?.status === "APPROVED" || loan?.status === "OVERDUE";
+  const canManageIncidents = auth.status === "authenticated" && auth.user.roles.includes("ADMIN");
 
   return (
     <main className={styles.page}>
@@ -215,7 +261,11 @@ export default function LoanDetailPage() {
                           <span className={styles.incidentType}>{incidentTypeLabels[incident.type]}</span>
                           <p className={styles.reporter}>Báo bởi {incident.reporter.fullName} · {formatDate(incident.createdAt)}</p>
                         </div>
-                        <span className={styles.incidentStatus}>{incidentStatusLabels[incident.status]}</span>
+                        <span
+                          className={`${styles.incidentStatus} ${getIncidentStatusClass(incident.status)}`}
+                        >
+                          {incidentStatusLabels[incident.status]}
+                        </span>
                       </div>
                       <p className={styles.description}>{incident.description}</p>
                       <h3>Các cập nhật</h3>
@@ -230,13 +280,57 @@ export default function LoanDetailPage() {
                           </li>
                         ))}
                       </ol>
+                      {canManageIncidents && (
+                        <form
+                          className={styles.statusForm}
+                          onSubmit={(event) => void updateIncidentStatus(event, incident)}
+                        >
+                          <label htmlFor={`incident-status-${incident.id}`}>Cập nhật trạng thái</label>
+                          <select
+                            id={`incident-status-${incident.id}`}
+                            onChange={(event) =>
+                              setStatusDrafts((current) => ({
+                                ...current,
+                                [incident.id]: event.target.value as IncidentStatus,
+                              }))
+                            }
+                            value={statusDrafts[incident.id] ?? incident.status}
+                          >
+                            <option value="OPEN">Mới tiếp nhận</option>
+                            <option value="IN_REVIEW">Đang xử lý</option>
+                            <option value="RESOLVED">Đã giải quyết</option>
+                          </select>
+                          <label htmlFor={`incident-update-${incident.id}`}>Nội dung cập nhật</label>
+                          <textarea
+                            id={`incident-update-${incident.id}`}
+                            maxLength={1000}
+                            onChange={(event) =>
+                              setUpdateMessages((current) => ({
+                                ...current,
+                                [incident.id]: event.target.value,
+                              }))
+                            }
+                            placeholder="Cho hai bên biết tiến độ hoặc kết quả xử lý..."
+                            required
+                            rows={3}
+                            value={updateMessages[incident.id] ?? ""}
+                          />
+                          <button
+                            disabled={updatingIncidentId === incident.id || !updateMessages[incident.id]?.trim()}
+                            type="submit"
+                          >
+                            {updatingIncidentId === incident.id ? "Đang cập nhật..." : "Lưu cập nhật"}
+                          </button>
+                        </form>
+                      )}
                     </article>
                   ))}
                 </div>
               ) : (
                 <div className={styles.emptyState}>
                   <span aria-hidden="true">✓</span>
-                  <p>Chưa có báo cáo sự cố nào cho lượt mượn này.</p>
+                  <h3>Chưa có sự cố nào</h3>
+                  <p>Các báo cáo mới sẽ xuất hiện tại đây để hai bên cùng theo dõi tiến độ.</p>
                 </div>
               )}
             </section>
