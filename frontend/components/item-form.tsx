@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { useAdminToast } from "./admin-toast";
-import { ItemImageUpload } from "./item-image-upload";
+import { ImageUploader } from "./ImageUploader";
 import { NotificationBell } from "./notification-bell";
 import { useAuth } from "./auth-provider";
 import { categoryService } from "../lib/api/categoryService";
@@ -44,7 +44,7 @@ export function ItemForm({ itemId }: { itemId: number | null }) {
 
     async function loadCategories() {
       try {
-        setCategories(await categoryService.list({ signal: controller.signal }));
+        setCategories(await categoryService.listAll({ signal: controller.signal }));
       } catch (loadCategoriesError) {
         if (controller.signal.aborted) return;
         setCategoryError(
@@ -61,12 +61,13 @@ export function ItemForm({ itemId }: { itemId: number | null }) {
 
   useEffect(() => {
     if (!editing || itemId === null || !Number.isSafeInteger(itemId) || itemId < 1) return;
+    const requestedItemId = itemId;
     const controller = new AbortController();
 
     async function loadItem() {
       setLoadError("");
       try {
-        const result = await itemService.getById(itemId, { signal: controller.signal });
+        const result = await itemService.getById(requestedItemId, { signal: controller.signal });
         setItem(result);
         setTitle(result.title);
         setDescription(result.description ?? "");
@@ -288,19 +289,14 @@ export function ItemForm({ itemId }: { itemId: number | null }) {
             </div>
 
             <div className={styles.imageUpload}>
-              <ItemImageUpload
+              <ImageUploader
                 disabled={submitting}
-                existingImages={item?.imageUrls ?? []}
-                maxImages={5}
+                existingImages={(item?.images ?? []).map((image) => ({ id: image.id, url: image.imageUrl }))}
+                maxFiles={5}
                 onChange={setImageFiles}
-                onRemoveExisting={(imageUrl) => {
+                onRemoveExisting={(imageId) => {
                   if (!item) return;
-                  const image = item.images.find((entry) => entry.imageUrl === imageUrl);
-                  if (!image) {
-                    showToast("error", "Không tìm thấy thông tin ảnh để xóa. Vui lòng tải lại trang.");
-                    return;
-                  }
-                  void itemService.deleteImage(item.id, image.id)
+                  void itemService.deleteImage(item.id, imageId)
                     .then(setItem)
                     .catch((deleteError: unknown) => {
                       showToast(
