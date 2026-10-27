@@ -1,0 +1,31 @@
+{
+  "name": "projects/4503406842118902723",
+  "projectId": "4503406842118902723",
+  "title": "UniLend — Sky Athletic",
+  "visibility": "PRIVATE",
+  "projectType": "PROJECT_DESIGN",
+  "origin": "STITCH",
+  "deviceType": "DESKTOP",
+  "designTheme": {
+    "colorMode": "LIGHT",
+    "font": "BARLOW_CONDENSED",
+    "headlineFont": "BARLOW_CONDENSED",
+    "bodyFont": "BE_VIETNAM_PRO",
+    "roundness": "ROUND_FULL",
+    "customColor": "#0568b5"
+  },
+  "designSystem": "assets/6ccb26aec0da4d568fe7535ebbeb0a78",
+  "screens": {
+    "home": {
+      "id": "c7ffc0a5d571490c92e84426e805a81a",
+      "sourceScreen": "projects/4503406842118902723/screens/c7ffc0a5d571490c92e84426e805a81a",
+      "x": 0,
+      "y": 0,
+      "width": 1280,
+      "height": 4829
+    }
+  },
+  "metadata": {
+    "userRole": "OWNER"
+  }
+}

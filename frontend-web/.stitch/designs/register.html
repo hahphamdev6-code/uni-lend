@@ -1,0 +1,322 @@
+<!DOCTYPE html><html class="h-full bg-background" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>UniLend - Create Your Account</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration with exact design tokens -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-background": "#0b1c30",
+            "inverse-surface": "#213145",
+            "surface-container-low": "#eff4ff",
+            "primary-container": "#131b2e",
+            "tertiary-fixed": "#ffdada",
+            "surface-container-highest": "#d3e4fe",
+            "inverse-primary": "#bec6e0",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#5a00c6",
+            "on-primary-fixed": "#131b2e",
+            "inverse-on-surface": "#eaf1ff",
+            "outline": "#76777d",
+            "on-primary-container": "#7c839b",
+            "primary-fixed-dim": "#bec6e0",
+            "on-surface-variant": "#45464d",
+            "surface-container-lowest": "#ffffff",
+            "tertiary": "#000000",
+            "outline-variant": "#c6c6cd",
+            "tertiary-container": "#40000c",
+            "on-tertiary-fixed": "#40000c",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "on-primary": "#ffffff",
+            "surface-container": "#e5eeff",
+            "secondary-fixed-dim": "#d2bbff",
+            "surface-dim": "#cbdbf5",
+            "secondary": "#712ae2",
+            "primary-fixed": "#dae2fd",
+            "background": "#f8f9ff",
+            "surface-container-high": "#dce9ff",
+            "on-secondary-fixed": "#25005a",
+            "surface": "#f8f9ff",
+            "secondary-fixed": "#eaddff",
+            "on-tertiary-container": "#f83256",
+            "surface-variant": "#d3e4fe",
+            "on-error-container": "#93000a",
+            "secondary-container": "#8a4cfc",
+            "primary": "#000000",
+            "on-secondary-container": "#fffbff",
+            "tertiary-fixed-dim": "#ffb3b6",
+            "on-tertiary-fixed-variant": "#920028",
+            "surface-tint": "#565e74",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "surface-bright": "#f8f9ff",
+            "on-surface": "#0b1c30",
+            "on-primary-fixed-variant": "#3f465c"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-desktop": "3rem",
+            "space-2xl": "4rem",
+            "gutter-desktop": "2rem",
+            "margin": "2rem",
+            "space-3xl": "6rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "gutter-mobile": "1rem",
+            "margin-mobile": "1rem",
+            "space-xl": "2.5rem"
+          },
+          "fontFamily": {
+            "label-lg": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "label-numeric": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "title-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-lg": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "title-md": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "label-numeric": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "label-md": ["11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-sm": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-md": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-on-surface font-body-md text-body-md antialiased relative selection:bg-surface-container-highest selection:text-primary">
+<!-- Atmospheric Background Glow Elements (Subtle Pale Lavender, Cool Milky White, Faint Blush Pink) -->
+<div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden bg-[#fafbfe]">
+<div class="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[1100px] h-[750px] rounded-full bg-gradient-to-tr from-[#ede9fe]/40 via-[#ffffff] to-[#fce7f3]/45 blur-3xl opacity-80"></div>
+<div class="absolute top-[35%] -left-[10%] w-[650px] h-[650px] rounded-full bg-[#ede9fe]/30 blur-[130px]"></div>
+<div class="absolute top-[40%] -right-[10%] w-[600px] h-[600px] rounded-full bg-[#fdf2f8]/40 blur-[140px]"></div>
+<div class="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
+</div>
+<!-- Header Navigation: UniLend Top Navigation Bar matching Login Screen -->
+<header class="docked full-width top-0 sticky z-50 bg-surface-container-lowest/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm transition-all duration-200">
+<div class="flex justify-between items-center w-full px-gutter-desktop max-w-[1360px] mx-auto h-16">
+<!-- Brand Logo -->
+<div class="flex items-center gap-space-sm">
+<a class="text-title-lg font-title-lg tracking-tight font-bold text-on-surface hover:opacity-90 transition-opacity" href="#">
+          UNILEND.™
+        </a>
+</div>
+<!-- Center Navigation Links -->
+<nav class="hidden md:flex items-center gap-space-xl">
+<a class="text-on-surface-variant font-label-lg text-label-lg hover:text-on-surface transition-colors duration-150" href="#">Home</a>
+<a class="text-on-surface-variant font-label-lg text-label-lg hover:text-on-surface transition-colors duration-150" href="#">Categories</a>
+<a class="text-on-surface-variant font-label-lg text-label-lg hover:text-on-surface transition-colors duration-150" href="#">Rent</a>
+<a class="text-on-surface-variant font-label-lg text-label-lg hover:text-on-surface transition-colors duration-150" href="#">Explore</a>
+<a class="text-on-surface-variant font-label-lg text-label-lg hover:text-on-surface transition-colors duration-150" href="#">Contact us</a>
+</nav>
+<!-- Trailing Action Buttons -->
+<div class="flex items-center gap-space-sm">
+<a class="inline-flex items-center justify-center h-10 px-space-lg rounded-full border border-outline-variant/60 bg-surface-container-lowest/90 font-label-lg text-label-lg text-on-surface hover:bg-surface-container-low transition-colors duration-150" href="#">
+          Login
+        </a>
+<a class="inline-flex items-center justify-center h-10 px-space-lg rounded-full bg-primary font-label-lg text-label-lg text-on-primary ring-2 ring-primary/10 shadow-sm hover:bg-on-surface-variant transition-all duration-150" href="#">
+          Join
+        </a>
+</div>
+</div>
+</header>
+<!-- Main Viewport: Centered Registration Card with High Breathing Room -->
+<main class="flex-1 flex items-center justify-center px-4 py-space-2xl relative">
+<!-- Delicate Radial Aura Behind the Card -->
+<div class="absolute w-[560px] h-[680px] bg-gradient-to-b from-[#ede9fe]/60 via-[#fdf2f8]/40 to-transparent rounded-[3rem] blur-2xl -z-10 pointer-events-none"></div>
+<!-- Registration Card Container (~450px wide) -->
+<section class="w-full max-w-[452px] bg-surface-container-lowest/95 backdrop-blur-xl border border-outline-variant/40 rounded-3xl p-space-xl shadow-[0_12px_40px_-15px_rgba(15,23,42,0.06)] relative z-10 transition-all">
+<!-- Card Header -->
+<div class="text-center mb-space-lg">
+<h1 class="text-headline-md font-headline-md text-on-surface tracking-tight">
+          Create Your Account
+        </h1>
+<p class="text-on-surface-variant font-body-md text-body-md mt-1">
+          Join UniLend and discover a smarter way to rent.
+        </p>
+</div>
+<!-- Registration Form -->
+<form class="space-y-space-md" onsubmit="event.preventDefault();">
+<!-- Field: Full Name -->
+<div class="space-y-1.5">
+<label class="block text-label-md font-label-md text-on-surface tracking-wider uppercase" for="full_name">
+            FULL NAME
+          </label>
+<div class="relative">
+<input class="w-full h-11 px-3.5 rounded-lg border border-outline-variant/70 bg-surface-container-lowest text-on-surface placeholder:text-outline font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-150" id="full_name" name="full_name" placeholder="Enter your full name" required="" type="text">
+</div>
+</div>
+<!-- Field: Email Address -->
+<div class="space-y-1.5">
+<label class="block text-label-md font-label-md text-on-surface tracking-wider uppercase" for="email">
+            EMAIL ADDRESS
+          </label>
+<div class="relative">
+<input class="w-full h-11 px-3.5 rounded-lg border border-outline-variant/70 bg-surface-container-lowest text-on-surface placeholder:text-outline font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-150" id="email" name="email" placeholder="Enter your email address" required="" type="email">
+</div>
+</div>
+<!-- Field: Password -->
+<div class="space-y-1.5">
+<label class="block text-label-md font-label-md text-on-surface tracking-wider uppercase" for="password">
+            PASSWORD
+          </label>
+<div class="relative">
+<input class="w-full h-11 pl-3.5 pr-10 rounded-lg border border-outline-variant/70 bg-surface-container-lowest text-on-surface placeholder:text-outline font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-150" id="password" name="password" placeholder="Create a password" required="" type="password" value="VaultKey#2025">
+<button aria-label="Toggle password visibility" class="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-on-surface transition-colors" onclick="togglePasswordVisibility('password', this)" type="button">
+<span class="material-symbols-outlined text-[19px]">visibility</span>
+</button>
+</div>
+<!-- Password Guidance & Segmented Strength Bar -->
+<div class="pt-1 space-y-1.5">
+<div class="flex items-center gap-1.5 w-full">
+<span class="h-1 flex-1 rounded-full bg-emerald-600 transition-all duration-300"></span>
+<span class="h-1 flex-1 rounded-full bg-emerald-600 transition-all duration-300"></span>
+<span class="h-1 flex-1 rounded-full bg-emerald-600 transition-all duration-300"></span>
+<span class="h-1 flex-1 rounded-full bg-outline-variant/40 transition-all duration-300"></span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant flex items-center justify-between">
+<span>At least 8 characters with letters &amp; numbers</span>
+<span class="font-label-md text-label-md text-emerald-700 tracking-normal font-semibold">Strong</span>
+</p>
+</div>
+</div>
+<!-- Field: Confirm Password -->
+<div class="space-y-1.5">
+<label class="block text-label-md font-label-md text-on-surface tracking-wider uppercase" for="confirm_password">
+            CONFIRM PASSWORD
+          </label>
+<div class="relative">
+<input class="w-full h-11 pl-3.5 pr-10 rounded-lg border border-outline-variant/70 bg-surface-container-lowest text-on-surface placeholder:text-outline font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-150" id="confirm_password" name="confirm_password" placeholder="Re-enter your password" required="" type="password" value="VaultKey#2025">
+<button aria-label="Toggle password visibility" class="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-on-surface transition-colors" onclick="togglePasswordVisibility('confirm_password', this)" type="button">
+<span class="material-symbols-outlined text-[19px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Terms and Consent Checkbox -->
+<div class="pt-1">
+<label class="flex items-start gap-2.5 cursor-pointer select-none">
+<input checked="" class="mt-1 h-4 w-4 rounded border-outline-variant/80 text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer accent-primary" type="checkbox">
+<span class="text-body-sm font-body-sm text-on-surface-variant leading-snug">
+              I agree to the <a class="text-on-surface font-medium underline underline-offset-2 hover:text-primary transition-colors" href="#">Terms of Service</a> and <a class="text-on-surface font-medium underline underline-offset-2 hover:text-primary transition-colors" href="#">Privacy Policy</a>
+</span>
+</label>
+</div>
+<!-- Primary Call to Action -->
+<button class="w-full h-11 mt-space-sm bg-primary text-on-primary rounded-full font-label-lg text-label-lg flex items-center justify-center gap-1.5 hover:bg-on-surface-variant active:scale-[0.99] transition-all duration-150 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20" type="submit">
+<span>Create Account</span>
+<span class="text-base leading-none">→</span>
+</button>
+</form>
+<!-- Elegant Line Divider -->
+<div class="relative my-space-lg flex items-center justify-center">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant/30"></div>
+</div>
+<div class="relative bg-surface-container-lowest px-3">
+<span class="text-label-md font-label-md uppercase tracking-wider text-outline">
+            OR CONTINUE WITH
+          </span>
+</div>
+</div>
+<!-- Social Authentication: Google SSO -->
+<div>
+<button class="w-full h-11 rounded-lg border border-outline-variant/70 bg-surface-container-lowest hover:bg-surface-container-low font-label-lg text-label-lg text-on-surface flex items-center justify-center gap-2.5 transition-colors duration-150 shadow-none hover:border-outline" type="button">
+<!-- Authentic Multicolor Google G -->
+<svg aria-hidden="true" class="w-4 h-4" viewBox="0 0 24 24">
+<path d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z" fill="#4285F4"></path>
+<path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z" fill="#34A853"></path>
+<path d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.99 0 12s.45 3.83 1.25 5.42l4.03-3.15z" fill="#FBBC05"></path>
+<path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" fill="#EA4335"></path>
+</svg>
+<span>Continue with Google</span>
+</button>
+</div>
+<!-- Card Sub-Footer: Switch to Sign In -->
+<div class="mt-space-lg text-center">
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+          Already have an account? 
+          <a class="font-semibold text-on-surface underline underline-offset-2 hover:text-primary transition-colors ml-1" href="#">
+            Sign In
+          </a>
+</p>
+</div>
+<!-- Security Trust Indicator -->
+<div class="mt-space-md pt-space-sm border-t border-outline-variant/20 flex items-center justify-center gap-1.5 text-outline">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">lock</span>
+<span class="text-label-md font-label-md font-medium text-on-surface-variant/75">
+          Enterprise-grade 256-bit encryption
+        </span>
+</div>
+</section>
+</main>
+<!-- Page Footer: Minimal Web Baseline Footer -->
+<footer class="docked full-width bottom bg-surface border-t border-outline-variant/30 transition-colors duration-150">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-gutter-desktop py-space-md max-w-[1360px] mx-auto gap-space-md">
+<!-- Copyright / Architecture mark -->
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+        © 2025 UniLend Technologies Inc. All rights reserved.
+      </p>
+<!-- Minimal Institutional Links -->
+<div class="flex flex-wrap items-center gap-space-lg">
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors duration-150" href="#">Privacy Policy</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors duration-150" href="#">Terms of Service</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors duration-150" href="#">Security Architecture</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors duration-150" href="#">Status</a>
+</div>
+</div>
+</footer>
+<!-- Subtle Micro-Interactions Script -->
+<script>
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const icon = btn.querySelector('.material-symbols-outlined');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+      } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+      }
+    }
+  </script>
+</body></html>

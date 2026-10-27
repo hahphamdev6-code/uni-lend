@@ -1,0 +1,23 @@
+$kind: http-request
+name: http://localhost:8080/api/loans
+description: ""
+url: http://localhost:8080/api/loans
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"itemId\": 1,\r
+
+    \  \"borrowFrom\": \"2026-11-03\",\r
+
+    \  \"dueDate\": \"2026-11-07\",\r
+
+    \  \"note\": \"Test trùng lịch đã duyệt\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_016l}}"
+order: 8000

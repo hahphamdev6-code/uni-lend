@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { AuthShell } from "../../components/auth-shell";
-import { loginUser, MockAuthError } from "../../lib/mock-auth";
+import { ApiClientError } from "../../lib/api/apiClient";
+import { userService } from "../../lib/api/userService";
 
 type FormValues = {
   email: string;
@@ -19,6 +20,7 @@ export default function LoginPage() {
   const [values, setValues] = useState<FormValues>({ email: "", password: "" });
   const [errors, setErrors] = useState<FormErrors>({});
   const [formError, setFormError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   function updateField(field: FieldName, value: string) {
     setValues((current) => ({ ...current, [field]: value }));
@@ -26,8 +28,10 @@ export default function LoginPage() {
     setFormError("");
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submitting) return;
+
     const nextErrors: FormErrors = {};
 
     if (!values.email.trim()) nextErrors.email = "Vui lòng nhập email.";
@@ -40,15 +44,27 @@ export default function LoginPage() {
     setFormError("");
     if (Object.keys(nextErrors).length > 0) return;
 
+    setSubmitting(true);
     try {
-      loginUser(values.email, values.password);
+      await userService.login({
+        email: values.email.trim(),
+        password: values.password,
+      });
       router.push("/profile");
     } catch (error) {
+      if (error instanceof ApiClientError && error.fieldErrors) {
+        setErrors({
+          email: error.fieldErrors.email,
+          password: error.fieldErrors.password,
+        });
+      }
       setFormError(
-        error instanceof MockAuthError
+        error instanceof Error
           ? error.message
-          : "Không thể đăng nhập trên trình duyệt này. Vui lòng thử lại.",
+          : "Không thể đăng nhập. Vui lòng thử lại.",
       );
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -73,6 +89,7 @@ export default function LoginPage() {
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "email-error" : undefined}
             placeholder="ban@example.com"
+            disabled={submitting}
           />
           {errors.email && <span className="field-error" id="email-error">{errors.email}</span>}
         </div>
@@ -88,10 +105,13 @@ export default function LoginPage() {
             aria-invalid={Boolean(errors.password)}
             aria-describedby={errors.password ? "password-error" : undefined}
             placeholder="Nhập mật khẩu"
+            disabled={submitting}
           />
           {errors.password && <span className="field-error" id="password-error">{errors.password}</span>}
         </div>
-        <button className="auth-submit" type="submit">Đăng nhập</button>
+        <button className="auth-submit" disabled={submitting} type="submit">
+          {submitting ? "Đang đăng nhập..." : "Đăng nhập"}
+        </button>
         <p className="auth-switch">Chưa có tài khoản? <Link href="/register">Đăng ký ngay</Link></p>
       </form>
     </AuthShell>

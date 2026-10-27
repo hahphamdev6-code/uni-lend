@@ -24,7 +24,7 @@ export function AuthShell({ eyebrow, title, description, children }: AuthShellPr
         <p className="auth-description">{description}</p>
         {children}
       </section>
-      <p className="auth-disclaimer">UniLend đang ở giai đoạn thử nghiệm — dữ liệu chỉ lưu trên trình duyệt này. Không sử dụng mật khẩu thật.</p>
+      <p className="auth-disclaimer">UniLend — nền tảng chia sẻ đồ dùng dành cho cộng đồng sinh viên.</p>
     </main>
   );
 }

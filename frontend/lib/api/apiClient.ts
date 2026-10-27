@@ -19,11 +19,13 @@ const apiClient = axios.create({
 
 export class ApiClientError extends Error {
   readonly statusCode: number | undefined;
+  readonly fieldErrors: Record<string, string> | undefined;
 
-  constructor(message: string, statusCode?: number) {
+  constructor(message: string, statusCode?: number, fieldErrors?: Record<string, string>) {
     super(message);
     this.name = "ApiClientError";
     this.statusCode = statusCode;
+    this.fieldErrors = fieldErrors;
   }
 }
 
@@ -82,12 +84,26 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
+function extractFieldErrors(data: unknown): Record<string, string> | undefined {
+  if (!isRecord(data) || !Array.isArray(data.errors)) return undefined;
+
+  const fieldErrors: Record<string, string> = {};
+  for (const entry of data.errors) {
+    if (
+      isRecord(entry) &&
+      typeof entry.field === "string" &&
+      typeof entry.message === "string" &&
+      !fieldErrors[entry.field]
+    ) {
+      fieldErrors[entry.field] = entry.message;
+    }
+  }
+
+  return Object.keys(fieldErrors).length > 0 ? fieldErrors : undefined;
+}
+
 function responseMessage(data: unknown): string | undefined {
   if (!isRecord(data)) return undefined;
-
-  if (typeof data.message === "string" && data.message.trim()) {
-    return data.message;
-  }
 
   if (Array.isArray(data.errors)) {
     const firstError = data.errors.find(
@@ -95,6 +111,10 @@ function responseMessage(data: unknown): string | undefined {
         isRecord(error) && typeof error.message === "string",
     );
     if (firstError && typeof firstError.message === "string") return firstError.message;
+  }
+
+  if (typeof data.message === "string" && data.message.trim()) {
+    return data.message;
   }
 
   return undefined;
@@ -119,12 +139,18 @@ function friendlyMessage(statusCode?: number, serverMessage?: string): string {
   }
 }
 
+const PUBLIC_PATHS = new Set(["/", "/login", "/register", "/items"]);
+
+function isPublicPath(pathname: string): boolean {
+  return PUBLIC_PATHS.has(pathname) || /^\/items\/\d+$/.test(pathname);
+}
+
 function handleAuthorizationFailure(statusCode: number | undefined, message: string): void {
   if (typeof window === "undefined") return;
 
   if (statusCode === 401) {
     clearAuthToken();
-    if (window.location.pathname !== "/login") {
+    if (!isPublicPath(window.location.pathname)) {
       window.location.replace("/login");
     }
   } else if (statusCode === 403) {
@@ -154,10 +180,10 @@ apiClient.interceptors.response.use(
       if (!normalizedResponse.success) {
         const message = friendlyMessage(
           normalizedResponse.statusCode,
-          normalizedResponse.message,
+          responseMessage(data) ?? normalizedResponse.message,
         );
         handleAuthorizationFailure(normalizedResponse.statusCode, message);
-        throw new ApiClientError(message, normalizedResponse.statusCode);
+        throw new ApiClientError(message, normalizedResponse.statusCode, extractFieldErrors(data));
       }
 
       response.data = normalizedResponse;
@@ -167,7 +193,8 @@ apiClient.interceptors.response.use(
   },
   (error: AxiosError<unknown>) => {
     const statusCode = error.response?.status;
-    const serverMessage = responseMessage(error.response?.data);
+    const responseData = error.response?.data;
+    const serverMessage = responseMessage(responseData);
 
     const message =
       statusCode === undefined
@@ -178,7 +205,9 @@ apiClient.interceptors.response.use(
 
     handleAuthorizationFailure(statusCode, message);
 
-    return Promise.reject(new ApiClientError(message, statusCode));
+    return Promise.reject(
+      new ApiClientError(message, statusCode, extractFieldErrors(responseData)),
+    );
   },
 );
 

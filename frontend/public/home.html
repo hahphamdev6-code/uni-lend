@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UNILEND — Nền Tảng Chia Sẻ Đồ Dùng Sinh Viên</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700&amp;family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface": "#fcf9f8",
+            "on-error-container": "#93000a",
+            "on-error": "#ffffff",
+            "surface-bright": "#fcf9f8",
+            "primary": "#00508d",
+            "on-primary-fixed": "#001c38",
+            "error": "#ba1a1a",
+            "surface-tint": "#0060a9",
+            "surface-dim": "#dcd9d9",
+            "secondary-fixed": "#cbe6ff",
+            "primary-container": "#0568b5",
+            "on-tertiary-fixed": "#0e1d24",
+            "on-tertiary-container": "#d7e7f1",
+            "surface-container": "#f0edec",
+            "on-surface": "#1c1b1b",
+            "on-secondary": "#ffffff",
+            "on-primary-container": "#d7e6ff",
+            "on-tertiary": "#ffffff",
+            "on-primary": "#ffffff",
+            "secondary-container": "#44b7ff",
+            "primary-fixed": "#d3e4ff",
+            "tertiary-fixed": "#d5e5ef",
+            "surface-variant": "#e5e2e1",
+            "secondary": "#006494",
+            "outline": "#717782",
+            "on-surface-variant": "#414751",
+            "inverse-surface": "#313030",
+            "on-primary-fixed-variant": "#004881",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#004b71",
+            "on-secondary-fixed": "#001e30",
+            "on-background": "#1c1b1b",
+            "inverse-primary": "#a2c9ff",
+            "surface-container-highest": "#e5e2e1",
+            "surface-container-high": "#ebe7e7",
+            "background": "#fcf9f8",
+            "primary-fixed-dim": "#a2c9ff",
+            "tertiary-container": "#596871",
+            "surface-container-lowest": "#ffffff",
+            "inverse-on-surface": "#f3f0ef",
+            "tertiary": "#415058",
+            "on-tertiary-fixed-variant": "#3a4951",
+            "on-secondary-container": "#004669",
+            "tertiary-fixed-dim": "#b9c9d2",
+            "secondary-fixed-dim": "#8ecdff",
+            "surface-container-low": "#f6f3f2",
+            "outline-variant": "#c1c7d3"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "3rem",
+            "space-xs": "0.25rem",
+            "space-2xl": "4rem",
+            "gutter-sm": "1rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "margin-mobile": "1.25rem",
+            "space-xl": "2.5rem"
+          },
+          "fontFamily": {
+            "display-hero": ["Barlow Condensed"],
+            "headline-lg-mobile": ["Barlow Condensed"],
+            "body-md": ["Be Vietnam Pro"],
+            "body-sm": ["Be Vietnam Pro"],
+            "label-lg": ["Be Vietnam Pro"],
+            "headline-sm": ["Barlow Condensed"],
+            "label-md": ["Be Vietnam Pro"],
+            "label-caps": ["Barlow Condensed"],
+            "headline-lg": ["Barlow Condensed"],
+            "body-lg": ["Be Vietnam Pro"],
+            "display-hero-mobile": ["Barlow Condensed"],
+            "headline-md": ["Barlow Condensed"]
+          },
+          "fontSize": {
+            "display-hero": ["80px", { "lineHeight": "76px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "32px", "letterSpacing": "0em", "fontWeight": "700" }],
+            "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-sm": ["20px", { "lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "label-caps": ["14px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700" }],
+            "headline-lg": ["48px", { "lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "display-hero-mobile": ["44px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "800" }],
+            "headline-md": ["28px", { "lineHeight": "30px", "letterSpacing": "0.01em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body id="top" class="bg-surface text-on-surface antialiased font-body-md selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- 1. Promo Announcement Strip -->
+<aside aria-label="Announcement" class="w-full bg-surface-container-low border-b border-outline-variant py-2 px-margin-mobile md:px-margin text-center">
+<p class="font-label-caps text-label-caps tracking-widest text-on-surface uppercase inline-flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse inline-block"></span>
+      Mượn miễn phí trong khuôn viên — Hẹn gặp trong 5 phút
+    </p>
+</aside>
+<!-- 2. Header (TopNavBar) mapped directly from Shared Components JSON -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline docked full-width top-0 sticky z-50">
+<div class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin flex items-center justify-between h-16">
+<!-- Logo & Main Nav -->
+<div class="flex items-center gap-10">
+<a class="font-headline-md text-headline-md font-bold uppercase tracking-tight text-on-surface dark:text-inverse-on-surface hover:opacity-85 transition-opacity" href="#">
+          UNILEND
+        </a>
+<nav class="hidden md:flex items-center gap-8">
+<!-- Active State: Khám phá -->
+<a class="text-on-surface dark:text-inverse-on-surface font-label-lg text-label-lg border-b-2 border-primary dark:border-primary-fixed pb-1" href="#kham-pha">
+            Khám phá
+          </a>
+<a class="text-on-surface-variant dark:text-outline-variant font-label-lg text-label-lg hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors" href="#cach-hoat-dong">
+            Cách hoạt động
+          </a>
+<a class="text-on-surface-variant dark:text-outline-variant font-label-lg text-label-lg hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors" href="#cong-dong">
+            Cộng đồng
+          </a>
+</nav>
+</div>
+<!-- Right Search Pill & Action Cluster -->
+<div class="flex items-center gap-3">
+<!-- Search bar pill on right -->
+<div class="hidden lg:flex items-center bg-surface-container-low border border-outline-variant rounded-full px-4 py-2 w-64 hover:border-on-surface transition-colors">
+<span class="material-symbols-outlined text-outline text-lg mr-2 leading-none">search</span>
+<input class="bg-transparent border-none p-0 text-sm focus:outline-none focus:ring-0 placeholder:text-outline w-full text-on-surface" placeholder="Tìm kiếm đồ dùng..." type="text"/>
+</div>
+<!-- Trailing Icon Actions -->
+<button aria-label="Yêu thích" class="p-2 text-on-surface-variant hover:text-on-surface transition-colors rounded-full leading-none flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">favorite</span>
+</button>
+<div class="h-5 w-px bg-outline-variant mx-1 hidden sm:block"></div>
+<!-- Secondary action -->
+<button class="font-label-lg text-label-lg px-4 py-2 text-on-surface hover:opacity-85 transition-opacity">
+          Đăng nhập
+        </button>
+<!-- Primary action pill -->
+<button class="bg-on-surface text-surface-container-lowest font-label-lg text-label-lg px-6 py-2 rounded-full hover:opacity-85 active:scale-[0.98] transition-all">
+          Tham gia
+        </button>
+</div>
+</div>
+</header>
+<!-- 3. Athletic Editorial Hero Section -->
+<section class="relative bg-surface-container-lowest border-b border-outline-variant overflow-hidden">
+<!-- Visual Stage Container -->
+<div class="relative w-full h-[640px] md:h-[720px] bg-surface-container-low flex items-end">
+<!-- Full-bleed Authentic Campus Photo with crisp clean lighting -->
+<img class="absolute inset-0 w-full h-full object-cover object-center" data-alt="A candid, high-energy Vietnamese university student smiling warmly on an airy university campus quad, holding a silver analog camera in natural bright daylight. Clean athletic editorial framing with clear architectural concrete pillars and manicured grass in soft blur. Minimalist, modern aesthetic with high contrast, authentic lighting, and a palette of crisp white and ocean blue." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8lu1FZRhCmNK8bc1QWUg4XVwC_kH4yKf_ChLNSviI_kO4KIsafQip8UtgfpvVvRAb_cZnx2PA89IdVSR_OG0gRrObbYyQbxbwSbWZYQDxCDwXwj_4byXUcJWb9PZf8bgkR5HTYPVpsC_At73W6BOMXKsSo4KxanhkqLH6Dmpytdds_BZHUS6MsRPb90fwtpxzKfCgMZESJy_B7ZPqB7c7Jh7Q43VrED1WXi37xkptuJ5kw9z1eBFeiAZRzuV27RKEyOqfk_HxKyU"/>
+<!-- Editorial Gradient Protection Layer (hairline subtle contrast wash) -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent"></div>
+<!-- Hero Core Typography -->
+<div class="relative z-10 w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin pb-28 md:pb-36 text-surface-container-lowest">
+<div class="inline-block bg-secondary-container text-on-secondary-container px-3.5 py-1 rounded-full font-label-caps text-label-caps uppercase mb-4 tracking-wider">
+          MẠNG LƯỚI CAMPUS PEER-TO-PEER
+        </div>
+<h1 class="font-display-hero text-display-hero-mobile md:text-display-hero uppercase tracking-tight text-white max-w-4xl">
+          MƯỢN ĐIỀU BẠN CẦN.<br/>CHIA SẺ ĐIỀU BẠN CÓ.
+        </h1>
+<p class="font-body-lg text-body-lg text-surface-variant max-w-2xl mt-4 mb-8">
+          Nền tảng mượn đồ dùng học tập và đời sống sinh viên tiện lợi nhất ngay trong khuôn viên trường. Không mua sắm thừa thãi, kết nối bạn bè 5 phút nhận đồ.
+        </p>
+<!-- Dual Pill CTAs -->
+<div class="flex flex-wrap items-center gap-4">
+<a class="bg-primary-container text-surface-container-lowest font-label-lg text-label-lg px-8 py-3.5 rounded-full hover:bg-primary transition-colors active:scale-[0.98]" href="#kham-pha">
+            Khám phá ngay
+          </a>
+<button class="bg-transparent border-2 border-white text-white font-label-lg text-label-lg px-8 py-3.5 rounded-full hover:bg-white hover:text-on-surface transition-all active:scale-[0.98]">
+            Đăng món đồ
+          </button>
+</div>
+</div>
+</div>
+<!-- Floating Campus Search Card Overlay (Docked Over Hero Bottom) -->
+<div class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin -mt-20 md:-mt-24 relative z-20 pb-12">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 md:p-8 flex flex-col gap-6">
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-4">
+<!-- Main Search Input -->
+<div class="flex-1 flex items-center bg-surface-container-low border border-outline-variant rounded-full px-5 py-3.5 focus-within:border-primary-container transition-colors">
+<span class="material-symbols-outlined text-outline text-2xl mr-3 leading-none">search</span>
+<input class="w-full bg-transparent border-none p-0 font-body-md text-body-md focus:outline-none focus:ring-0 text-on-surface placeholder:text-outline" placeholder="Bạn đang cần tìm món gì? (thước vẽ, máy ảnh, tài liệu...)" type="text"/>
+</div>
+<!-- Location Badge Segmented -->
+<div class="flex items-center justify-between sm:justify-start gap-3 bg-surface-container-low border border-outline-variant rounded-full px-5 py-3.5">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary-container text-xl leading-none">near_me</span>
+<span class="font-label-lg text-label-lg whitespace-nowrap">Gần bạn · Bán kính 1km</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+</div>
+<!-- Search Button -->
+<button class="bg-on-surface text-surface-container-lowest font-label-lg text-label-lg px-8 py-3.5 rounded-full hover:opacity-85 transition-opacity active:scale-[0.98] whitespace-nowrap">
+            Tìm đồ mượn
+          </button>
+</div>
+<!-- Quick filter micro tags -->
+<div class="flex items-center gap-2 flex-wrap pt-2 border-t border-outline-variant">
+<span class="font-label-caps text-label-caps uppercase text-outline mr-2">Gợi ý nhanh:</span>
+<a class="bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm px-3.5 py-1.5 rounded-full border border-outline-variant transition-colors" href="#">
+            Máy tính khoa học
+          </a>
+<a class="bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm px-3.5 py-1.5 rounded-full border border-outline-variant transition-colors" href="#">
+            Bàn ủi cầm tay
+          </a>
+<a class="bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm px-3.5 py-1.5 rounded-full border border-outline-variant transition-colors" href="#">
+            Máy chiếu đồ án
+          </a>
+<a class="bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm px-3.5 py-1.5 rounded-full border border-outline-variant transition-colors" href="#">
+            Vợt cầu lông
+          </a>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Value Proposition Cards (3 Pillar Matrix) -->
+<section class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin py-space-xl">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="border border-outline-variant rounded-xl p-8 bg-surface-container-lowest hover:border-on-surface transition-colors flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center mb-6 text-primary-container">
+<span class="material-symbols-outlined text-2xl">location_on</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide mb-3">
+            GẦN NGAY TRONG TRƯỜNG
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Kết nối trực tiếp sinh viên cùng trường hoặc ký túc xá gần bạn nhất. Tiết kiệm thời gian di chuyển, chỉ mất 5 phút gặp mặt nhận đồ tại sảnh hay căng-tin.
+          </p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant flex items-center text-primary-container font-label-caps text-label-caps uppercase">
+<span>Bán kính đi bộ</span>
+<span class="material-symbols-outlined text-base ml-1">chevron_right</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="border border-outline-variant rounded-xl p-8 bg-surface-container-lowest hover:border-on-surface transition-colors flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center mb-6 text-primary-container">
+<span class="material-symbols-outlined text-2xl">schedule</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide mb-3">
+            DÙNG KHI CẦN
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Không cần mua mới — mượn ngay hàng trăm món đồ hữu ích từ bạn bè cùng trường, đúng lúc bạn cần.</p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant flex items-center text-primary-container font-label-caps text-label-caps uppercase">
+<span>Không phí hao tổn</span>
+<span class="material-symbols-outlined text-base ml-1">chevron_right</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="border border-outline-variant rounded-xl p-8 bg-surface-container-lowest hover:border-on-surface transition-colors flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center mb-6 text-primary-container">
+<span class="material-symbols-outlined text-2xl">eco</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide mb-3">
+            CHIA SẺ BỀN VỮNG
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Giảm lãng phí, tái sử dụng tài nguyên và xây dựng lối sống sinh viên văn minh, gắn kết cộng đồng học thuật tương thân tương ái.
+          </p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant flex items-center text-primary-container font-label-caps text-label-caps uppercase">
+<span>Cộng đồng xanh</span>
+<span class="material-symbols-outlined text-base ml-1">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Featured Section "ĐỒ HAY ĐANG ĐƯỢC SẺ CHIA" -->
+<section class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin py-space-xl border-t border-outline-variant" id="kham-pha">
+<!-- Section Header & Controls -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div>
+<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-widest block mb-1">
+          DANH MỤC TRONG CAMPUS
+        </span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase tracking-tight text-on-surface">
+          ĐỒ HAY ĐANG ĐƯỢC SẺ CHIA
+        </h2>
+</div>
+<!-- Category Filter Pills & View All Link -->
+<div class="flex flex-wrap items-center gap-3">
+<div class="flex items-center gap-2 p-1 bg-surface-container-low rounded-full border border-outline-variant">
+<button class="bg-on-surface text-surface-container-lowest font-label-caps text-label-caps uppercase px-4 py-1.5 rounded-full">
+            Tất cả
+          </button>
+<button class="text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps uppercase px-4 py-1.5 rounded-full transition-colors">
+            Học tập
+          </button>
+<button class="text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps uppercase px-4 py-1.5 rounded-full transition-colors">
+            Công nghệ
+          </button>
+<button class="text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps uppercase px-4 py-1.5 rounded-full transition-colors">
+            Đời sống
+          </button>
+</div>
+<a class="font-label-lg text-label-lg text-primary-container hover:underline ml-2 inline-flex items-center gap-1" href="#">
+          Khám phá tất cả <span class="material-symbols-outlined text-base">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- 3x2 Nike-Style Product Catalog Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Item Card 1 -->
+<article class="group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest flex flex-col justify-between hover:border-on-surface transition-all">
+<div>
+<!-- Image Stage 1:1 -->
+<div class="relative aspect-square bg-[#F5F8FB] overflow-hidden flex items-center justify-center p-6 border-b border-outline-variant">
+<span class="absolute top-4 left-4 z-10 bg-surface-container-lowest border border-outline-variant text-primary-container font-label-caps text-label-caps uppercase px-2.5 py-1 rounded-full">
+              Có sẵn hôm nay
+            </span>
+<button aria-label="Yêu thích" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant flex items-center justify-center text-on-surface hover:text-error transition-colors">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</button>
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="A premium black Ricoh GR1s 35mm compact film camera isolated crisply on a smooth neutral cloud white studio background with soft diffuse commercial athletic catalog lighting. Minimalist product photography, bold industrial design, rich matte black textures and clean metallic accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHxCDc13AAWCO0tcSTrUS6GFlQn11Nt2bEti18KHWMllBPVioKTZ8BPu7yjBSu6kh0x-qyLCyQ_VZ9-V0FJUBdlD0biF6rzFoPGcr2KPaza1ohzbr-eONlFs3RFOpvoW4i7VuVhOBzbvLU1naYCZV0mVPy9kAW_0AXJJWG8ZtJQqggs2dWpeSEpHn8gTju7G1HL34WRSU_5LBEvC9mbY81jFpRrHXYTcTdvDGIIAF9wzNxDVh4I4sQJfIeUZODH7vCUFFQ_fjmR-U"/>
+</div>
+<!-- Card Content -->
+<div class="p-5">
+<p class="font-label-caps text-label-caps uppercase text-outline mb-1">
+              Nhiếp ảnh · Cách 300m
+            </p>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface font-bold tracking-tight">
+              Máy ảnh film Ricoh GR1s
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Hoàng Long · Sinh viên năm 3
+            </p>
+</div>
+</div>
+<div class="px-5 pb-5 pt-0">
+<div class="w-full border-t border-outline-variant pt-3 flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-wider">
+              MƯỢN TỰ DO
+            </span>
+<button class="bg-surface-container-low hover:bg-on-surface hover:text-white text-on-surface font-label-caps text-label-caps uppercase px-4 py-2 rounded-full border border-outline-variant transition-colors">
+              Gửi yêu cầu
+            </button>
+</div>
+</div>
+</article>
+<!-- Item Card 2 -->
+<article class="group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest flex flex-col justify-between hover:border-on-surface transition-all">
+<div>
+<!-- Image Stage 1:1 -->
+<div class="relative aspect-square bg-[#F5F8FB] overflow-hidden flex items-center justify-center p-6 border-b border-outline-variant">
+<span class="absolute top-4 left-4 z-10 bg-surface-container-lowest border border-outline-variant text-primary-container font-label-caps text-label-caps uppercase px-2.5 py-1 rounded-full">
+              Có sẵn hôm nay
+            </span>
+<button aria-label="Yêu thích" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant flex items-center justify-center text-on-surface hover:text-error transition-colors">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</button>
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="A sleek Dangbei modern mini portable video projector positioned neatly on an ultra-clean cloud white surface. Bright studio lighting showcases its minimal compact form factor, premium front optical lens, and clean textured mesh speaker grill. Athletic editorial product styling with pure neutral tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDeND_m2hV272zaSaOVEY8eWHHTNE7dWBva-ShLXYGQqIEdmv1YVDf-TbEF9qVyr0u92H754Dw-QzDwJY-y37UMvMYvvs8ShCbIMjioVKVZwxO-PDnb6oo5T6rNjH2ie6k-sp-kbWLqs5xzLm091Q20H9YpqPbpS_jJLf4bkNZ6OtpEY9Yp0qwmiGXoaJzpcsec3yLSyeewWMYfB5Ed3QwWuzN3Bo0mGQRZKPx40KI6XUN4hsXqMZIZTE-b9uukcr_-xaBatWcnZg"/>
+</div>
+<!-- Card Content -->
+<div class="p-5">
+<p class="font-label-caps text-label-caps uppercase text-outline mb-1">
+              Công nghệ · Cách 500m
+            </p>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface font-bold tracking-tight">
+              Máy chiếu mini Dangbei
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Minh Thư · Sinh viên năm 2
+            </p>
+</div>
+</div>
+<div class="px-5 pb-5 pt-0">
+<div class="w-full border-t border-outline-variant pt-3 flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-wider">
+              MƯỢN TỰ DO
+            </span>
+<button class="bg-surface-container-low hover:bg-on-surface hover:text-white text-on-surface font-label-caps text-label-caps uppercase px-4 py-2 rounded-full border border-outline-variant transition-colors">
+              Gửi yêu cầu
+            </button>
+</div>
+</div>
+</article>
+<!-- Item Card 3 -->
+<article class="group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest flex flex-col justify-between hover:border-on-surface transition-all">
+<div>
+<!-- Image Stage 1:1 -->
+<div class="relative aspect-square bg-[#F5F8FB] overflow-hidden flex items-center justify-center p-6 border-b border-outline-variant">
+<span class="absolute top-4 left-4 z-10 bg-surface-container-lowest border border-outline-variant text-primary-container font-label-caps text-label-caps uppercase px-2.5 py-1 rounded-full">
+              Có sẵn hôm nay
+            </span>
+<button aria-label="Yêu thích" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant flex items-center justify-center text-on-surface hover:text-error transition-colors">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</button>
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="Matte black wireless Sony WH-1000XM4 over-ear noise-cancelling headphones resting gracefully on a clean white and pale-blue display block. Crisp high-key lighting highlighting subtle copper hardware accents and plush leather earcups. Clean high-contrast editorial equipment catalogue aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByvAOOI2rcmlZL9rHc2VtmBkP4sTKoZ5A9wbbslWKkMRf0k5mJuhUOYXQn7FLTl0LnhSjG57TWz01Xxn3sZO_RClLN1FAp3PE3HeDlBUI2Nk2zuwSiwAbRZJbUA55IJmNHUo5qmdTsZi6poXjaE3s3aAr1oKM-OOiTCPhzYSFrpIkchvpKAc6X4wyCir56QwtAOs-w7DaLpFx387DA-yicwg65Q3C02eYPHv9EPGlDI0F43F0qfN88y_pb9yfVU25nEO6BLSyTMNo"/>
+</div>
+<!-- Card Content -->
+<div class="p-5">
+<p class="font-label-caps text-label-caps uppercase text-outline mb-1">
+              Thiết bị · Cách 150m
+            </p>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface font-bold tracking-tight">
+              Tai nghe Sony WH-1000XM4
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Quốc Bảo · Ký túc xá khu B
+            </p>
+</div>
+</div>
+<div class="px-5 pb-5 pt-0">
+<div class="w-full border-t border-outline-variant pt-3 flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-wider">
+              MƯỢN TỰ DO
+            </span>
+<button class="bg-surface-container-low hover:bg-on-surface hover:text-white text-on-surface font-label-caps text-label-caps uppercase px-4 py-2 rounded-full border border-outline-variant transition-colors">
+              Gửi yêu cầu
+            </button>
+</div>
+</div>
+</article>
+<!-- Item Card 4 -->
+<article class="group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest flex flex-col justify-between hover:border-on-surface transition-all">
+<div>
+<!-- Image Stage 1:1 -->
+<div class="relative aspect-square bg-[#F5F8FB] overflow-hidden flex items-center justify-center p-6 border-b border-outline-variant">
+<span class="absolute top-4 left-4 z-10 bg-surface-container-lowest border border-outline-variant text-primary-container font-label-caps text-label-caps uppercase px-2.5 py-1 rounded-full">
+              Có sẵn hôm nay
+            </span>
+<button aria-label="Yêu thích" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant flex items-center justify-center text-on-surface hover:text-error transition-colors">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</button>
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="A neat stack of official Cambridge IELTS Academic practice test textbooks volumes 15 through 19 shown on a pristine white architectural desktop. Crisp high-angle composition with soft natural sunlight reflecting off clean paper edges. Clear academic focus with modern editorial precision and vibrant blue book spines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtAxHEjbWBwCpneXQcka2UAhGYndwZCpG601fPfS-pKeTJKshvjDOcyVcQNF1Nac62JN3F3lRVEFRhzhRPSji37vrvT-T_teHCbPxgFCGmE9vsg7jw07cTRVFmzj17X778t_w8_fhN7SdbyhDhcz-NYnDWOqq0-zf5pmxG_MXfQKmFBGH1VBufCXybP1El3nnFO62iQoRh_EBYYODVV9Xh0lspBs7Uz35ElfcLQ6AcBoFC8neGgk_V_o6aSRVs-j4PAtjp3rKCrb0"/>
+</div>
+<!-- Card Content -->
+<div class="p-5">
+<p class="font-label-caps text-label-caps uppercase text-outline mb-1">
+              Học tập · Cách 400m
+            </p>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface font-bold tracking-tight">
+              Bộ sách IELTS Cambridge 15–19
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Phương Anh · Sinh viên năm 4
+            </p>
+</div>
+</div>
+<div class="px-5 pb-5 pt-0">
+<div class="w-full border-t border-outline-variant pt-3 flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-wider">
+              MƯỢN TỰ DO
+            </span>
+<button class="bg-surface-container-low hover:bg-on-surface hover:text-white text-on-surface font-label-caps text-label-caps uppercase px-4 py-2 rounded-full border border-outline-variant transition-colors">
+              Gửi yêu cầu
+            </button>
+</div>
+</div>
+</article>
+<!-- Item Card 5 -->
+<article class="group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest flex flex-col justify-between hover:border-on-surface transition-all">
+<div>
+<!-- Image Stage 1:1 -->
+<div class="relative aspect-square bg-[#F5F8FB] overflow-hidden flex items-center justify-center p-6 border-b border-outline-variant">
+<span class="absolute top-4 left-4 z-10 bg-surface-container-lowest border border-outline-variant text-primary-container font-label-caps text-label-caps uppercase px-2.5 py-1 rounded-full">
+              Có sẵn hôm nay
+            </span>
+<button aria-label="Yêu thích" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant flex items-center justify-center text-on-surface hover:text-error transition-colors">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</button>
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="An architectural drafting kit with a professional A3 T-square ruler, clear acrylic triangular scales, and precision drafting compasses arranged geometrically on an off-white drafting surface. High-contrast modern industrial aesthetic, clean lines, and minimal athletic editorial lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWBDQH7TzgUPchRMppmnCJ82v3UP7rlpfuyhH_tQJorv0BwauDHyU4xGEipFlyRyk36HL19o1jBBEMacZZykv6_rXtJP4p2opHivlpL-QcaaQHJL0cEqYenYMtzWDPw5oGo8JfTJ7BIAWMkVlqeDBA9NfYaGiuu-L26CM5Kw50vZUT403i78O8KUlokGh1zExiPMo4ET1TCmgsh3XugBxAb8IwK2E_peN-HPB3nQ7SCEI0cbuzmKiPLVvb_Zg1VHYlhjuEuGNiMlo"/>
+</div>
+<!-- Card Content -->
+<div class="p-5">
+<p class="font-label-caps text-label-caps uppercase text-outline mb-1">
+              Đồ án · Cách 600m
+            </p>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface font-bold tracking-tight">
+              Bộ thước vẽ kỹ thuật A3
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Đức Huy · Khoa Kiến trúc
+            </p>
+</div>
+</div>
+<div class="px-5 pb-5 pt-0">
+<div class="w-full border-t border-outline-variant pt-3 flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-wider">
+              MƯỢN TỰ DO
+            </span>
+<button class="bg-surface-container-low hover:bg-on-surface hover:text-white text-on-surface font-label-caps text-label-caps uppercase px-4 py-2 rounded-full border border-outline-variant transition-colors">
+              Gửi yêu cầu
+            </button>
+</div>
+</div>
+</article>
+<!-- Item Card 6 -->
+<article class="group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest flex flex-col justify-between hover:border-on-surface transition-all">
+<div>
+<!-- Image Stage 1:1 -->
+<div class="relative aspect-square bg-[#F5F8FB] overflow-hidden flex items-center justify-center p-6 border-b border-outline-variant">
+<span class="absolute top-4 left-4 z-10 bg-surface-container-lowest border border-outline-variant text-primary-container font-label-caps text-label-caps uppercase px-2.5 py-1 rounded-full">
+              Có sẵn hôm nay
+            </span>
+<button aria-label="Yêu thích" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant flex items-center justify-center text-on-surface hover:text-error transition-colors">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</button>
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="A modern minimalist handheld garment clothes steamer in clean chalk white with subtle cobalt accents standing upright on a pale gray plinth. Soft commercial product lighting showcasing clean ergonomics, water tank silhouette, and premium vapor nozzle. Crisp, uncluttered aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHCpHwOBFjr6eVDne009tCIWV2w-VJpwFRKEO08ccnRJ59sIhx9zFpxzeG6VJrzyWPZqkC3Uyw7NRurIyEeXkJui5bXaMsJFp89IBxKjy6rPPWc2dYn-xl9x48aRcT4QWNv4q1_3uhzNEDYVCcwciqBRiDdpUHWhew5gAVW3duuVPLgh3_9Zp4Ra44-nTiRTNuQYHL92U_5xm08wzad2UdEEfEP6cUXetM83lCDW9O2_EcD9yZ26-OG_2htBQth6CWtC_E9R-CXc8"/>
+</div>
+<!-- Card Content -->
+<div class="p-5">
+<p class="font-label-caps text-label-caps uppercase text-outline mb-1">
+              Đời sống · Cách 200m
+            </p>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface font-bold tracking-tight">
+              Bàn ủi hơi nước cầm tay
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Mai Linh · Tòa nhà H2
+            </p>
+</div>
+</div>
+<div class="px-5 pb-5 pt-0">
+<div class="w-full border-t border-outline-variant pt-3 flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-wider">
+              MƯỢN TỰ DO
+            </span>
+<button class="bg-surface-container-low hover:bg-on-surface hover:text-white text-on-surface font-label-caps text-label-caps uppercase px-4 py-2 rounded-full border border-outline-variant transition-colors">
+              Gửi yêu cầu
+            </button>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- 6. Two Large Editorial Photographic Feature Tiles Side-by-Side -->
+<section class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin py-space-xl">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Feature Tile 1: Mùa Thi -->
+<div class="relative h-[480px] rounded-2xl overflow-hidden border border-outline-variant flex items-end p-8 md:p-12 group">
+<img class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" data-alt="Two focused Vietnamese college students studying collaboratively at a wide minimalist blond wood table inside an architectural library with tall windows and abundant natural daylight. Open textbooks, highlighters, and coffee tumblers neatly organized. Clean editorial athletic lifestyle photography, sharp details, candid energy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnRxJbVuEBKkOVVhuJq21B7boowwK0WvuLAQlJtAW5T4u2puB43IsShpbuYj5NZ9Q_nH8k5YnhLYvdumI6rZGaL9IowXI-cjVlT4Wqm75JVwwIJAVUvaz4lJOyTADoeYxGD-T4L6u0SxFTPw3v5AzFYOnnXqebgFNZQqf188BeidNmXFVMDq9-A5jeQXdl5autgkP_7LXppnYLKOvVbR1Yb2OVk24-Kz5UeEqeNhqtM9cdihy-GgwWgcdpURk1gL64cADbyL0NkMs"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+<div class="relative z-10 text-white">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary-fixed mb-2 block">
+            TUYỂN TẬP ĐẶC BIỆT
+          </span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase font-bold tracking-tight mb-4">
+            MÙA THI — SÁCH &amp; GIÁO TRÌNH
+          </h2>
+<p class="font-body-md text-body-md text-surface-variant max-w-md mb-6">
+            Mượn ngay đề thi cũ, giáo trình chuyên ngành và ghi chép học tập từ các thủ khoa khóa trên.
+          </p>
+<button class="bg-white text-on-surface font-label-lg text-label-lg px-7 py-3 rounded-full hover:opacity-90 active:scale-[0.98] transition-all">
+            Khám phá bộ sưu tập
+          </button>
+</div>
+</div>
+<!-- Feature Tile 2: Sáng Tạo -->
+<div class="relative h-[480px] rounded-2xl overflow-hidden border border-outline-variant flex items-end p-8 md:p-12 group">
+<img class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" data-alt="A dynamic student filmmaker holding a professional mirrorless camera rig and shotgun microphone while recording an outdoor student project against an architectural campus concrete amphitheater. Bright crisp daytime lighting, intense energetic focus, athletic documentary aesthetic with vivid sky blues and graphite grays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOI9Uwz50YsRvLuYQ-euzWO2m2IpbFFb0F5FkmMw1VNeL_COJb4H5WLTOtY6ndfrJs0FGK_Snq3XlAb7Sz51C50txPBQcAAh5Y003blJ_Ow9K2Vcg9qCW_BXZa5hkk0DXwR-h-LsIGZJdnXyjxVBlWBpICy9gZXBfpM-wKo1NJ55vhXk8lNURArtMZT7_5LBWoWcqbq38VO_3IynGzfbmnow3GTeVltWuOBHc-fYOiSuWQOOLco35XZ2Y6cZwtGUTb7zJdtdAUyMc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+<div class="relative z-10 text-white">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary-fixed mb-2 block">
+            THIẾT BỊ ĐỒ ÁN &amp; MEDIA
+          </span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase font-bold tracking-tight mb-4">
+            SÁNG TẠO — MÁY ẢNH &amp; THIẾT BỊ
+          </h2>
+<p class="font-body-md text-body-md text-surface-variant max-w-md mb-6">
+            Ống kính, gimbal chống rung, micro thu âm và đèn LED quay phim luôn sẵn sàng cho dự án của bạn.
+          </p>
+<button class="bg-white text-on-surface font-label-lg text-label-lg px-7 py-3 rounded-full hover:opacity-90 active:scale-[0.98] transition-all">
+            Xem thiết bị
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- 7. Process Section "MỘT MÓN ĐỒ, THÊM NHIỀU KẾT NỐI" -->
+<section id="cach-hoat-dong" class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin py-space-xl border-t border-outline-variant">
+<div class="text-center max-w-2xl mx-auto mb-14">
+<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-widest block mb-2">
+        QUY TRÌNH 3 BƯỚC ĐƠN GIẢN
+      </span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase tracking-tight text-on-surface">
+        MỘT MÓN ĐỒ, THÊM NHIỀU KẾT NỐI
+      </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-3">
+        Không thủ tục rườm rà. Mọi giao dịch diễn ra minh bạch, an toàn giữa những người bạn cùng trường.
+      </p>
+</div>
+<!-- 3 Structured Cards with Oversized Numerals -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Step 01 -->
+<div class="border border-outline-variant rounded-2xl p-8 bg-surface-container-lowest relative flex flex-col justify-between hover:border-on-surface transition-colors">
+<div>
+<div class="font-display-hero text-6xl text-[#2BA8F0] mb-6 select-none font-extrabold leading-none">
+            01
+          </div>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide mb-3">
+            TÌM MÓN BẠN CẦN
+          </h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Tìm kiếm nhanh chóng vật dụng phù hợp quanh khu vực giảng đường và ký túc xá. Lọc theo khoảng cách và danh mục tiện lợi.
+          </p>
+</div>
+<div class="mt-8 pt-4 border-t border-outline-variant flex items-center justify-between text-outline">
+<span class="font-label-caps text-label-caps uppercase">Thời gian: 1 phút</span>
+<span class="material-symbols-outlined text-lg">search</span>
+</div>
+</div>
+<!-- Step 02 -->
+<div class="border border-outline-variant rounded-2xl p-8 bg-surface-container-lowest relative flex flex-col justify-between hover:border-on-surface transition-colors">
+<div>
+<div class="font-display-hero text-6xl text-[#2BA8F0] mb-6 select-none font-extrabold leading-none">
+            02
+          </div>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide mb-3">
+            HẸN GẶP TRONG CAMPUS
+          </h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Nhắn tin trao đổi và nhận đồ trực tiếp tại điểm hẹn quen thuộc trong 5 phút. An tâm xác thực bằng thẻ sinh viên bạn bè.
+          </p>
+</div>
+<div class="mt-8 pt-4 border-t border-outline-variant flex items-center justify-between text-outline">
+<span class="font-label-caps text-label-caps uppercase">Gặp mặt: 5 phút</span>
+<span class="material-symbols-outlined text-lg">handshake</span>
+</div>
+</div>
+<!-- Step 03 -->
+<div class="border border-outline-variant rounded-2xl p-8 bg-surface-container-lowest relative flex flex-col justify-between hover:border-on-surface transition-colors">
+<div>
+<div class="font-display-hero text-6xl text-[#2BA8F0] mb-6 select-none font-extrabold leading-none">
+            03
+          </div>
+<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide mb-3">
+            DÙNG XONG, SẺ CHIA
+          </h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Hoàn trả đúng hẹn và sẵn sàng chia sẻ lại những đồ dùng bạn ít dùng đến cho các bạn sinh viên khóa sau cần dùng.
+          </p>
+</div>
+<div class="mt-8 pt-4 border-t border-outline-variant flex items-center justify-between text-outline">
+<span class="font-label-caps text-label-caps uppercase">Cộng đồng xanh</span>
+<span class="material-symbols-outlined text-lg">autorenew</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 8. Full-Width Sky Blue (#2BA8F0) Call-To-Action Banner -->
+<section class="w-full bg-[#2BA8F0] text-white py-20 px-margin-mobile md:px-margin border-y border-outline-variant" id="cong-dong">
+<div class="max-w-[1440px] mx-auto text-center flex flex-col items-center">
+<span class="font-label-caps text-label-caps uppercase tracking-widest bg-white/20 px-4 py-1.5 rounded-full mb-6">
+        GIA NHẬP MẠNG LƯỚI KHUÔN VIÊN TRƯỜNG
+      </span>
+<h2 class="font-display-hero text-display-hero-mobile md:text-display-hero uppercase tracking-tight text-white max-w-4xl leading-tight">
+        MÓN ĐỒ CỦA BẠN,<br/>NIỀM VUI CỦA AI ĐÓ
+      </h2>
+<p class="font-body-lg text-body-lg text-white/90 max-w-2xl mt-4 mb-10">
+        Đăng món đồ bạn ít dùng lên UniLend và giúp đỡ bạn bè cùng trường ngay hôm nay. Miễn phí, tiện lợi và văn minh.
+      </p>
+<button class="bg-surface-container-lowest text-on-surface font-label-lg text-label-lg px-10 py-4 rounded-full hover:bg-surface-container transition-all active:scale-[0.98] font-bold">
+        Đăng món đồ đầu tiên
+      </button>
+</div>
+</section>
+<!-- 9. Editorial Footer mapped directly from Shared Components JSON -->
+<footer class="bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant dark:border-outline docked full-width bottom">
+<div class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin py-space-2xl">
+<!-- Top Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-outline-variant dark:border-outline">
+<!-- Brand Statement Column -->
+<div class="md:col-span-5">
+<a class="font-headline-sm text-headline-sm font-bold uppercase text-on-surface dark:text-inverse-on-surface block mb-4" href="#">
+            UNILEND
+          </a>
+<p class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant max-w-sm mb-6">
+            Mạng lưới chia sẻ đồ dùng của sinh viên. Mượn điều bạn cần. Chia sẻ điều bạn có. Kết nối trường học thông minh hơn, tiết kiệm hơn.
+          </p>
+<div class="inline-flex items-center gap-2 bg-surface-container border border-outline-variant px-3 py-1.5 rounded-full font-label-caps text-label-caps text-on-surface">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            Hệ sinh thái dành riêng cho sinh viên
+          </div>
+</div>
+<!-- Links Columns mapped from JSON links array -->
+<div class="md:col-span-2">
+<h4 class="font-headline-sm text-headline-sm uppercase text-on-surface dark:text-inverse-on-surface mb-4">
+            Khám phá
+          </h4>
+<ul class="space-y-3 font-body-sm text-body-sm">
+<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Về UniLend</a></li>
+<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Quy định an toàn</a></li>
+<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Đồ dùng học tập</a></li>
+<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Thiết bị quay chụp</a></li>
+</ul>
+</div>
+<div class="md:col-span-2">
+<h4 class="font-headline-sm text-headline-sm uppercase text-on-surface dark:text-inverse-on-surface mb-4">
+            Cách hoạt động
+          </h4>
+<ul class="space-y-3 font-body-sm text-body-sm">
+<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Quy trình mượn đồ</a></li>
+<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Xác thực sinh viên</a></li>
+<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Điểm tín nhiệm</a></li>
+<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Trung tâm hỗ trợ</a></li>
+</ul>
+</div>
+<div class="md:col-span-3">
+<h4 class="font-headline-sm text-headline-sm uppercase text-on-surface dark:text-inverse-on-surface mb-4">
+            Cộng đồng
+          </h4>
+<ul class="space-y-3 font-body-sm text-body-sm mb-6">
+<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Điều khoản &amp; Dịch vụ</a></li>
+<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Bảo mật khuôn viên</a></li>
+<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Đại sứ sinh viên</a></li>
+</ul>
+<!-- Return to top anchor button -->
+<button class="inline-flex items-center gap-2 border border-outline-variant rounded-full px-4 py-2 font-label-caps text-label-caps uppercase text-on-surface hover:border-on-surface transition-colors" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+<span>Về đầu trang</span>
+<span class="material-symbols-outlined text-base">arrow_upward</span>
+</button>
+</div>
+</div>
+<!-- Bottom Legal Row from JSON: "© 2026 UniLend Vietnam. Mượn điều bạn cần. Chia sẻ điều bạn có." -->
+<div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">© 2026 UniLend Vietnam. Mượn điều bạn cần. Chia sẻ điều bạn có.</p>
+<div class="flex items-center gap-6 font-label-caps text-label-caps uppercase text-outline">
+<span>Khuôn viên trường</span>
+<span>·</span>
+<span>Ký túc xá</span>
+<span>·</span>
+<span>Giảng đường</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

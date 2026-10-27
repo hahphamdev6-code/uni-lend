@@ -2,57 +2,36 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../components/auth-provider";
 import { UserReviewSection } from "../../components/user-review-section";
-import {
-  getCurrentUser,
-  getSessionSnapshot,
-  logoutUser,
-  subscribeToAuth,
-  type UserProfile,
-} from "../../lib/mock-auth";
 
 export default function ProfilePage() {
   const router = useRouter();
+  const auth = useAuth();
   const [logoutError, setLogoutError] = useState("");
-  const sessionSnapshot = useSyncExternalStore(subscribeToAuth, getSessionSnapshot, () => "__loading__");
-  const profileState = useMemo(() => {
-    if (sessionSnapshot === "__loading__") return { status: "loading" as const };
-    if (sessionSnapshot === null) return { status: "unauthenticated" as const };
-
-    try {
-      const user = getCurrentUser();
-      return user
-        ? { status: "authenticated" as const, user }
-        : { status: "unauthenticated" as const };
-    } catch (loadError) {
-      return {
-        status: "error" as const,
-        message: loadError instanceof Error ? loadError.message : "Không thể tải hồ sơ.",
-      };
-    }
-  }, [sessionSnapshot]);
 
   useEffect(() => {
-    if (profileState.status === "unauthenticated") router.replace("/login");
-  }, [profileState, router]);
+    if (auth.status === "unauthenticated") router.replace("/login");
+  }, [auth.status, router]);
 
-  const user: UserProfile | null =
-    profileState.status === "authenticated" ? profileState.user : null;
-  const error = profileState.status === "error" ? profileState.message : logoutError;
+  const user = auth.status === "authenticated" ? auth.user : null;
+  const error = auth.status === "error" ? auth.error : logoutError;
 
   function handleLogout() {
     try {
-      logoutUser();
+      auth.logout();
       router.replace("/");
     } catch {
       setLogoutError("Không thể đăng xuất trên trình duyệt này. Vui lòng thử lại.");
     }
   }
 
-  if (profileState.status === "loading" || profileState.status === "unauthenticated") {
+  if (auth.status === "loading" || auth.status === "unauthenticated") {
     return <main className="profile-loading" role="status">Đang tải hồ sơ...</main>;
   }
+
+  const parsedUserId = user ? Number(user.id) : NaN;
 
   return (
     <main className="auth-page profile-page">
@@ -78,18 +57,23 @@ export default function ProfilePage() {
         <dl className="profile-details">
           <div><dt>Họ và tên</dt><dd>{user?.fullName}</dd></div>
           <div><dt>Email</dt><dd>{user?.email}</dd></div>
+          {user?.phone && <div><dt>Số điện thoại</dt><dd>{user.phone}</dd></div>}
+          {user?.university && <div><dt>Trường</dt><dd>{user.university}</dd></div>}
           <div>
             <dt>Tham gia từ</dt>
-            <dd>{user ? new Intl.DateTimeFormat("vi-VN", { day: "numeric", month: "long", year: "numeric" }).format(new Date(user.createdAt)) : ""}</dd>
+            <dd>{user?.createdAt ? new Intl.DateTimeFormat("vi-VN", { day: "numeric", month: "long", year: "numeric" }).format(new Date(user.createdAt)) : ""}</dd>
           </div>
         </dl>
         <div className="profile-actions">
           <Link className="profile-home-link" href="/profile/edit">Sửa thông tin hồ sơ</Link>
           <Link className="profile-home-link profile-secondary-link" href="/">Khám phá món đồ</Link>
         </div>
-        <UserReviewSection title="Đánh giá của bạn" />
+        <UserReviewSection
+          title="Đánh giá của bạn"
+          userId={Number.isSafeInteger(parsedUserId) ? parsedUserId : undefined}
+        />
       </section>
-      <p className="auth-disclaimer">Hồ sơ thử nghiệm — dữ liệu chỉ lưu trên trình duyệt này. Không sử dụng mật khẩu thật.</p>
+      <p className="auth-disclaimer">UniLend — nền tảng chia sẻ đồ dùng dành cho cộng đồng sinh viên.</p>
     </main>
   );
 }

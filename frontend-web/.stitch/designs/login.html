@@ -1,0 +1,350 @@
+<!DOCTYPE html><html class="h-full" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Sign In — UniLend™ Modern Rental Marketplace</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 with Forms & Container Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration matching UniLend Design Language -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              black: '#0D0D11',
+              charcoal: '#1E2024',
+              softGray: '#F7F8FA',
+            }
+          },
+          animation: {
+            'shake': 'shake 0.4s ease-in-out',
+          },
+          keyframes: {
+            shake: {
+              '0%, 100%': { transform: 'translateX(0)' },
+              '20%, 60%': { transform: 'translateX(-6px)' },
+              '40%, 80%': { transform: 'translateX(6px)' },
+            }
+          }
+        }
+      }
+    };
+  </script>
+<!-- Custom Styles for Ambient Gradient & Subtle Glow Effects -->
+<style data-purpose="ambient-lighting">
+    /* Subtle radial glow replicating the airy blush & lavender ambient gradient from UniLend homepage */
+    .unilend-bg-atmosphere {
+      background-color: #FAFAFC;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(246, 238, 248, 0.75) 0px, transparent 55%),
+        radial-gradient(at 100% 25%, rgba(254, 237, 242, 0.7) 0px, transparent 50%),
+        radial-gradient(at 85% 95%, rgba(241, 240, 253, 0.8) 0px, transparent 50%),
+        radial-gradient(at 10% 90%, rgba(248, 240, 244, 0.6) 0px, transparent 45%);
+    }
+
+    .ambient-card-halo {
+      background: radial-gradient(circle, rgba(235, 230, 249, 0.45) 0%, rgba(253, 238, 244, 0.3) 50%, transparent 75%);
+    }
+  </style>
+</head>
+<body class="unilend-bg-atmosphere min-h-screen flex flex-col font-sans text-slate-900 antialiased selection:bg-slate-900 selection:text-white">
+<!-- BEGIN: MainHeader -->
+<header class="w-full fixed top-0 left-0 z-50 bg-white/70 backdrop-blur-md border-b border-slate-200/60 transition-all duration-200" data-purpose="top-navigation-bar">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+<!-- Brand Logo / Wordmark -->
+<div class="flex items-center gap-1.5 cursor-pointer select-none">
+<a class="text-xl tracking-tight font-extrabold text-slate-950 flex items-baseline" href="#">
+          UNILEND<span class="text-xs font-semibold ml-0.5 tracking-normal">.™</span>
+</a>
+</div>
+<!-- Center Navigation Links -->
+<nav class="hidden md:flex items-center space-x-9 text-[13px] font-medium tracking-normal text-slate-700">
+<a class="hover:text-black transition-colors" href="#">Home</a>
+<!-- Dropdown Link: Categories -->
+<button class="group flex items-center gap-1 hover:text-black transition-colors focus:outline-none" type="button">
+<span>Categories</span>
+<svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-black transition-transform duration-150 group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+<!-- Dropdown Link: Rent -->
+<button class="group flex items-center gap-1 hover:text-black transition-colors focus:outline-none" type="button">
+<span>Rent</span>
+<svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-black transition-transform duration-150 group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+<a class="hover:text-black transition-colors" href="#">Explore</a>
+<a class="hover:text-black transition-colors" href="#">Contact us</a>
+</nav>
+<!-- Right Side Action Buttons -->
+<div class="flex items-center space-x-3 text-[13px]">
+<a class="px-5 py-2 rounded-full border border-slate-300 font-semibold text-slate-800 bg-white/60 hover:bg-white hover:border-slate-400 transition-all shadow-sm" href="#">
+          Login
+        </a>
+<a class="px-6 py-2 rounded-full bg-slate-950 hover:bg-slate-800 text-white font-medium transition-all shadow-sm" href="#">
+          Join
+        </a>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 relative" data-purpose="login-viewport-wrapper">
+<!-- Delicate Radial Halo Glow behind Login Card -->
+<div class="absolute w-[580px] h-[580px] ambient-card-halo rounded-full -z-10 pointer-events-none filter blur-2xl"></div>
+<!-- Login Container Card -->
+<div class="w-full max-w-[430px] bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/50 transition-all duration-300" data-purpose="login-form-card" id="loginCard">
+<!-- Card Heading & Context -->
+<div class="text-center mb-7">
+<h1 class="text-2xl sm:text-[28px] font-bold text-slate-950 tracking-tight">
+          Welcome Back
+        </h1>
+<p class="text-xs sm:text-sm text-slate-500 mt-1.5 font-normal">
+          Sign in to continue your UniLend experience.
+        </p>
+</div>
+<!-- Login Form Element -->
+<form class="space-y-4" id="signInForm" novalidate="">
+<!-- Email Input Field -->
+<div>
+<label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5" for="emailInput">
+            Email Address
+          </label>
+<div class="relative">
+<input autocomplete="email" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all duration-150 bg-white" id="emailInput" name="email" placeholder="Enter your email address" type="email">
+</div>
+<p class="hidden text-xs text-rose-500 mt-1.5 flex items-center gap-1 font-medium" id="emailError">
+<svg class="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span id="emailErrorMessage">Please enter a valid email address.</span>
+</p>
+</div>
+<!-- Password Input Field -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600" for="passwordInput">
+              Password
+            </label>
+</div>
+<div class="relative">
+<input autocomplete="current-password" class="w-full px-4 py-3 pr-11 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all duration-150 bg-white" id="passwordInput" name="password" placeholder="Enter your password" type="password">
+<!-- Show/Hide Password Interactive Button -->
+<button aria-label="Toggle password visibility" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 focus:outline-none p-1 rounded-md" id="togglePasswordBtn" type="button">
+<!-- Eye Off (Hidden) Icon -->
+<svg class="w-4 h-4" fill="none" id="eyeOffIcon" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<!-- Eye On (Visible) Icon -->
+<svg class="w-4 h-4 hidden" fill="none" id="eyeOnIcon" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+<p class="hidden text-xs text-rose-500 mt-1.5 flex items-center gap-1 font-medium" id="passwordError">
+<svg class="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span>Password is required.</span>
+</p>
+</div>
+<!-- Options: Remember Me & Forgot Password -->
+<div class="flex items-center justify-between pt-1">
+<label class="flex items-center space-x-2.5 cursor-pointer select-none">
+<input class="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer" name="remember" type="checkbox">
+<span class="text-xs text-slate-600 font-medium">Remember me</span>
+</label>
+<a class="text-xs font-semibold text-slate-900 hover:text-slate-600 transition-colors" href="#">
+            Forgot password?
+          </a>
+</div>
+<!-- Primary Submit CTA Button -->
+<div class="pt-2">
+<button class="w-full relative flex items-center justify-center py-3.5 px-6 rounded-full bg-slate-950 hover:bg-slate-800 text-white text-sm font-semibold tracking-wide transition-all duration-150 shadow-md hover:shadow-lg disabled:opacity-75 disabled:cursor-not-allowed group" id="submitBtn" type="submit">
+<!-- Button text label -->
+<span class="flex items-center gap-2" id="btnLabel">
+              Sign In
+              <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+<!-- Loading Spinner State (Hidden by default) -->
+<span class="hidden" id="btnSpinner">
+<svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+<path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor"></path>
+</svg>
+</span>
+</button>
+</div>
+</form>
+<!-- Center Divider Line -->
+<div class="relative my-6">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-slate-200"></div>
+</div>
+<div class="relative flex justify-center text-[10px] tracking-wider uppercase font-semibold text-slate-400">
+<span class="bg-white/95 px-3">or continue with</span>
+</div>
+</div>
+<!-- Social Authentication: Google -->
+<div>
+<button class="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50/70 text-slate-700 text-xs font-semibold tracking-wide transition-all duration-150 bg-white shadow-xs" type="button">
+<!-- Official Google SVG Icon -->
+<svg class="w-4 h-4" viewBox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"></path>
+</svg>
+          Continue with Google
+        </button>
+</div>
+<!-- Registration Invitation Link -->
+<p class="text-center text-xs text-slate-500 mt-6 pt-1">
+        Don’t have an account? 
+        <a class="font-bold text-slate-950 underline underline-offset-4 hover:text-slate-700 transition-colors" href="#">
+          Join UniLend
+        </a>
+</p>
+<!-- Security / Encryption Badge -->
+<div class="mt-6 pt-5 border-t border-slate-100 flex items-center justify-center gap-1.5 text-slate-400">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[11px] font-medium tracking-tight">Enterprise-grade 256-bit encryption</span>
+</div>
+</div>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: MinimalFooter -->
+<footer class="w-full py-6 px-6 border-t border-slate-200/50 text-[11px] text-slate-400 bg-white/40 backdrop-blur-sm" data-purpose="bottom-page-footer">
+<div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+<p>© 2025 UniLend Technologies Inc. All rights reserved.</p>
+<div class="flex items-center space-x-6">
+<a class="hover:text-slate-700 transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-slate-700 transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-slate-700 transition-colors" href="#">Security Architecture</a>
+<a class="hover:text-slate-700 transition-colors" href="#">Status</a>
+</div>
+</div>
+</footer>
+<!-- END: MinimalFooter -->
+<!-- BEGIN: ScriptHandlers -->
+<script data-purpose="form-interactions">
+    document.addEventListener('DOMContentLoaded', () => {
+      // Elements targeting
+      const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+      const passwordInput = document.getElementById('passwordInput');
+      const eyeOffIcon = document.getElementById('eyeOffIcon');
+      const eyeOnIcon = document.getElementById('eyeOnIcon');
+      
+      const form = document.getElementById('signInForm');
+      const emailInput = document.getElementById('emailInput');
+      const emailError = document.getElementById('emailError');
+      const emailErrorMessage = document.getElementById('emailErrorMessage');
+      const passwordError = document.getElementById('passwordError');
+      const loginCard = document.getElementById('loginCard');
+      const submitBtn = document.getElementById('submitBtn');
+      const btnLabel = document.getElementById('btnLabel');
+      const btnSpinner = document.getElementById('btnSpinner');
+
+      // 1. Password Visibility Toggle
+      if (togglePasswordBtn && passwordInput) {
+        togglePasswordBtn.addEventListener('click', () => {
+          const isPassword = passwordInput.type === 'password';
+          passwordInput.type = isPassword ? 'text' : 'password';
+          eyeOffIcon.classList.toggle('hidden', isPassword);
+          eyeOnIcon.classList.toggle('hidden', !isPassword);
+        });
+      }
+
+      // Email validator helper
+      const isValidEmail = (email) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      };
+
+      // 2. Interactive Client-side Validation & Simulated Submission
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        let hasError = false;
+        const emailValue = emailInput.value.trim();
+        const passwordValue = passwordInput.value;
+
+        // Reset error messages and borders
+        emailError.classList.add('hidden');
+        passwordError.classList.add('hidden');
+        emailInput.classList.remove('border-rose-400', 'focus:ring-rose-400');
+        passwordInput.classList.remove('border-rose-400', 'focus:ring-rose-400');
+
+        // Check Email
+        if (!emailValue) {
+          emailErrorMessage.textContent = 'Email address is required.';
+          emailError.classList.remove('hidden');
+          emailInput.classList.add('border-rose-400', 'focus:ring-rose-400');
+          hasError = true;
+        } else if (!isValidEmail(emailValue)) {
+          emailErrorMessage.textContent = 'Please enter a valid email format.';
+          emailError.classList.remove('hidden');
+          emailInput.classList.add('border-rose-400', 'focus:ring-rose-400');
+          hasError = true;
+        }
+
+        // Check Password
+        if (!passwordValue) {
+          passwordError.classList.remove('hidden');
+          passwordInput.classList.add('border-rose-400', 'focus:ring-rose-400');
+          hasError = true;
+        }
+
+        // Error Feedback: Shake Card animation
+        if (hasError) {
+          loginCard.classList.remove('animate-shake');
+          void loginCard.offsetWidth; // Trigger reflow to restart CSS animation
+          loginCard.classList.add('animate-shake');
+          return;
+        }
+
+        // Simulating clean loading state
+        submitBtn.disabled = true;
+        btnLabel.classList.add('hidden');
+        btnSpinner.classList.remove('hidden');
+
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          btnSpinner.classList.add('hidden');
+          btnLabel.classList.remove('hidden');
+          btnLabel.innerHTML = `Welcome back!`;
+          submitBtn.classList.remove('bg-slate-950', 'hover:bg-slate-800');
+          submitBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+        }, 900);
+      });
+
+      // Clear inline errors dynamically upon typing
+      emailInput.addEventListener('input', () => {
+        if (!emailError.classList.contains('hidden')) {
+          emailError.classList.add('hidden');
+          emailInput.classList.remove('border-rose-400', 'focus:ring-rose-400');
+        }
+      });
+
+      passwordInput.addEventListener('input', () => {
+        if (!passwordError.classList.contains('hidden')) {
+          passwordError.classList.add('hidden');
+          passwordInput.classList.remove('border-rose-400', 'focus:ring-rose-400');
+        }
+      });
+    });
+  </script>
+<!-- END: ScriptHandlers -->
+</body></html>

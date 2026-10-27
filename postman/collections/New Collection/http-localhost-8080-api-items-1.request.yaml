@@ -1,0 +1,19 @@
+$kind: http-request
+name: http://localhost:8080/api/items
+description: ""
+url: http://localhost:8080/api/items
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"Máy ảnh Sony A6400\",\r
+
+    \  \"description\": \"Máy ảnh cho mượn chụp kỷ yếu\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0ljy}}"
+order: 4000

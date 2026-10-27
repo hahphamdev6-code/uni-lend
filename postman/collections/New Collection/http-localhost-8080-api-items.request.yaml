@@ -1,0 +1,19 @@
+$kind: http-request
+name: http://localhost:8080/api/items
+description: ""
+url: http://localhost:8080/api/items
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"title\": \"Máy tính bỏ túi Casio FX-580VNX\",\r
+
+    \    \"description\": \"Dùng cho kỳ thi cuối kỳ\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_1c6b}}"
+order: 1000

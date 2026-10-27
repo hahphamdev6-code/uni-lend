@@ -1,0 +1,49 @@
+{
+  "name": "projects/11673829852560038577",
+  "projectId": "11673829852560038577",
+  "title": "UniLend Web",
+  "visibility": "PRIVATE",
+  "projectType": "TEXT_TO_UI_PRO",
+  "origin": "STITCH",
+  "deviceType": "DESKTOP",
+  "Last Sync Time": "2026-10-27T14:27:00.000Z",
+  "designSystem": "assets/b86ae35881ea4b26b8ae9f3ab381776f",
+  "screens": {
+    "home": {
+      "id": "0da7504ec3ca47b8ae5b0a73a39e9bd4",
+      "title": "UniLend - Community Borrowing & Lending Homepage",
+      "sourceScreen": "projects/11673829852560038577/screens/0da7504ec3ca47b8ae5b0a73a39e9bd4",
+      "width": 2560,
+      "height": 6192
+    },
+    "login": {
+      "id": "a21958fb7ca7458d86a4583b8d4bd856",
+      "title": "UniLend - Sign In (Welcome Back)",
+      "sourceScreen": "projects/11673829852560038577/screens/a21958fb7ca7458d86a4583b8d4bd856",
+      "width": 2560,
+      "height": 2048
+    },
+    "register": {
+      "id": "011d329dcd9b4598952abce7318f7c45",
+      "title": "UniLend - Create Your Account",
+      "sourceScreen": "projects/11673829852560038577/screens/011d329dcd9b4598952abce7318f7c45",
+      "width": 2560,
+      "height": 2118
+    },
+    "listings": {
+      "id": "b7e3e48e2b9c4882acf1f708b3ce1802",
+      "authenticatedId": "7841f75f1ac5448cb59efe24dfa3e0cb",
+      "title": "UniLend - Rental Listings",
+      "sourceScreen": "projects/11673829852560038577/screens/b7e3e48e2b9c4882acf1f708b3ce1802",
+      "width": 2560,
+      "height": 4204
+    },
+    "profile": {
+      "id": "7f38d6decf8945ad92a19d130110dc6a",
+      "title": "UniLend - Student Profile & Dashboard",
+      "sourceScreen": "projects/11673829852560038577/screens/7f38d6decf8945ad92a19d130110dc6a",
+      "width": 2560,
+      "height": 3856
+    }
+  }
+}

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UNILEND.™ — Campus &amp; Community Free Item Borrowing &amp; Lending</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-background": "#0D0E12",
+            "on-surface": "#0D0E12",
+            "on-surface-variant": "#555A68",
+            "surface-subtle": "#F4F4F8",
+            "brand-dark": "#0D0E12"
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      background: radial-gradient(circle at 95% 10%, rgba(254, 237, 243, 0.75) 0%, transparent 45%),
+                  radial-gradient(circle at 85% 35%, rgba(243, 238, 255, 0.7) 0%, transparent 40%),
+                  radial-gradient(circle at 5% 15%, rgba(248, 249, 255, 0.8) 0%, transparent 45%),
+                  radial-gradient(circle at 50% 90%, rgba(253, 242, 248, 0.4) 0%, transparent 50%),
+                  #FAFAFD;
+      min-height: 100vh;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="font-sans text-[#0D0E12] antialiased selection:bg-rose-100 selection:text-black flex flex-col min-h-screen">
+<!-- Navigation Header -->
+<header class="sticky top-0 z-50 backdrop-blur-md bg-white/40 border-b border-black/[0.04]">
+<div class="max-w-[1440px] mx-auto px-8 md:px-14 py-5 flex items-center justify-between">
+<!-- Brand Logo -->
+<a class="text-xl font-extrabold tracking-tight text-[#0D0E12] flex items-center gap-2" href="#">
+<span class="w-2.5 h-2.5 rounded-full bg-[#0D0E12] inline-block"></span>
+        UNILEND.™
+      </a>
+<!-- Center Navigation Links -->
+<nav class="hidden md:flex items-center space-x-9 text-sm font-medium text-[#555A68]">
+<a class="text-[#0D0E12] font-semibold border-b-2 border-[#0D0E12] pb-0.5" href="#">Home</a>
+<a class="hover:text-[#0D0E12] transition-colors flex items-center gap-1" href="#categories">
+          Categories
+          <svg class="w-3.5 h-3.5 text-neutral-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+<a class="hover:text-[#0D0E12] transition-colors flex items-center gap-1" href="#featured">
+          Borrow
+          <svg class="w-3.5 h-3.5 text-neutral-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+<a class="hover:text-[#0D0E12] transition-colors" href="#how-it-works">Explore</a>
+<a class="hover:text-[#0D0E12] transition-colors" href="#contact">Contact us</a>
+</nav>
+<!-- Right CTA Group -->
+<div class="flex items-center gap-3">
+<button class="rounded-full border border-black/10 bg-white/60 hover:bg-white text-sm font-medium px-5 py-2.5 transition-all shadow-sm">
+          Login
+        </button>
+<button class="rounded-full bg-[#0D0E12] text-white hover:bg-black/90 text-sm font-medium px-6 py-2.5 transition-all shadow-sm">
+          Join
+        </button>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative pt-12 pb-20 md:pt-16 md:pb-24 overflow-hidden">
+<div class="max-w-[1440px] mx-auto px-8 md:px-14">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+<!-- Left Hero Column -->
+<div class="lg:col-span-7 flex flex-col items-start">
+<!-- Small Pill Tag -->
+<div class="bg-white/80 border border-black/5 text-[#555A68] rounded-full px-3.5 py-1 text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-2 mb-4 shadow-sm backdrop-blur-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Campus &amp; Community Commons
+          </div>
+<!-- Hero Headline -->
+<h1 class="text-4xl sm:text-5xl xl:text-[58px] font-bold tracking-[-0.035em] text-[#0A0B0E] leading-[1.12] mb-6">
+            Borrow Freely.<br/>
+<span class="text-[#555A68] font-medium">Share More.</span>
+</h1>
+<!-- Hero Subtitle -->
+<p class="text-[#555A68] text-lg sm:text-xl font-normal leading-relaxed max-w-xl mb-8">
+            Discover quality items from your campus and community for every occasion. Borrow what you need, when you need it, without the cost of owning everything.
+          </p>
+<!-- Search & Action Bar -->
+<div class="w-full max-w-xl bg-white/90 backdrop-blur-md rounded-full border border-black/10 p-2 pl-5 flex items-center gap-3 shadow-[0_8px_25px_-5px_rgba(0,0,0,0.04)] mb-6">
+<span class="material-symbols-outlined text-neutral-400 text-[20px]">search</span>
+<input class="w-full bg-transparent border-0 focus:ring-0 text-sm font-normal text-[#0D0E12] placeholder:text-neutral-400 p-0" placeholder="Search cameras, tech, books, tools..." type="text"/>
+<div class="h-6 w-px bg-black/10 hidden sm:block"></div>
+<div class="relative hidden sm:flex items-center pr-2">
+<select class="bg-transparent border-0 focus:ring-0 text-xs font-semibold text-[#555A68] py-1 pl-1 pr-6 cursor-pointer">
+<option>All Categories</option>
+<option>Cameras &amp; Media</option>
+<option>Electronics</option>
+<option>Study &amp; Books</option>
+<option>Living &amp; Tools</option>
+</select>
+</div>
+<button class="bg-[#0D0E12] text-white rounded-full p-2.5 sm:px-4 sm:py-2 flex items-center justify-center hover:bg-black/85 transition-all flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<!-- Dual Action Buttons -->
+<div class="flex flex-wrap items-center gap-3.5 mb-8">
+<a class="bg-[#0D0E12] text-white rounded-full px-7 py-3.5 text-sm font-medium hover:bg-black/85 transition-all shadow-sm" href="#featured">
+              Explore Items
+            </a>
+<button class="bg-white/90 text-[#1C1F26] rounded-full border border-black/10 px-6 py-3.5 text-sm font-medium hover:bg-white transition-all shadow-sm flex items-center gap-1.5">
+<span>Share Your Item</span>
+<span class="text-base leading-none">→</span>
+</button>
+</div>
+<!-- Trust Badges -->
+<div class="flex flex-wrap items-center gap-6 text-xs text-[#555A68] font-medium pt-2 border-t border-black/[0.05] w-full">
+<span class="inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">verified</span>
+              Verified Student &amp; Faculty IDs
+            </span>
+<span class="inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-purple-600">lock_clock</span>
+              Smart Locker Handovers
+            </span>
+<span class="inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-blue-600">shield</span>
+              $5,000 UniLend Protection Guarantee
+            </span>
+</div>
+</div>
+<!-- Right Hero Column (Editorial Showcase) -->
+<div class="lg:col-span-5 relative">
+<div class="relative w-full max-w-lg mx-auto">
+<!-- Ambient Glow Behind Card -->
+<div class="absolute -inset-4 bg-gradient-to-tr from-rose-100/60 via-purple-100/40 to-white/80 rounded-3xl blur-2xl -z-10 opacity-80"></div>
+<!-- Frosted Showcase Editorial Card -->
+<div class="bg-white/80 backdrop-blur-md rounded-2xl p-5 border border-black/[0.06] shadow-[0_15px_35px_-10px_rgba(0,0,0,0.06)] relative z-10 transition-transform duration-300 hover:-translate-y-1">
+<div class="relative rounded-xl overflow-hidden h-64 bg-neutral-100 mb-4">
+<img class="w-full h-full object-cover" data-alt="A sleek black mirrorless Sony Alpha A7 camera body positioned on an architectural light grey concrete desk surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3HjcSAMKduxqICKJQpRhqGRH5OipEeKxUCm4yzAmGdY-PDbyUA786ChogLPcETnXATXNL_iZMY7s9ylptdi67LcAi_t7hlgxZmhJdFG167Cznr-LFWdgbIwUmVOGLoSjQAqXVxnXpThzCpKLkzsG30wpKcGI8YDsm8mw22vZtuU9JTyMGzjGSofTW6XyWBhw2NuZH4VL4M1i3XuLx4xhfkAXjpu6dUIOeloEhbyo_P2fyS8W6qJqLSmvZmcJBsOPlX4vrwrtzS8KV"/>
+<!-- Floating Translucent Badges inside Image -->
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#0D0E12] border border-black/5 text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  Available to Borrow • Stanford Hub
+                </div>
+<div class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm text-[#0D0E12] border border-black/5 text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+                  Free Campus Loan • Up to 5 Days
+                </div>
+</div>
+<!-- Lender Profile and Info -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-neutral-100 flex items-center justify-center text-xs font-bold text-[#0D0E12] border border-black/5">
+                    MV
+                  </div>
+<div>
+<div class="flex items-center gap-1">
+<span class="text-sm font-semibold text-[#0D0E12]">Marcus V.</span>
+<span class="material-symbols-outlined text-purple-600 text-[15px] fill-icon">verified</span>
+</div>
+<p class="text-xs text-neutral-400">UC Berkeley (0.4 mi away)</p>
+</div>
+</div>
+<div class="flex items-center gap-1 bg-white/90 px-2.5 py-1 rounded-full border border-black/5 text-xs font-semibold text-[#0D0E12] shadow-sm">
+<span class="material-symbols-outlined text-amber-500 text-[14px] fill-icon">star</span>
+<span>5.0</span>
+<span class="text-neutral-400 font-normal">(42 loans)</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.05] flex items-center justify-between">
+<div>
+<h4 class="text-sm font-bold text-[#0D0E12]">Sony Alpha A7 IV Kit</h4>
+<p class="text-xs text-[#555A68]">28-70mm f/3.5-5.6 OSS + 2x Pro SD Cards</p>
+</div>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+                  Borrow
+                </button>
+</div>
+</div>
+<!-- Floating Micro Card -->
+<div class="absolute -bottom-5 -right-4 bg-white/90 backdrop-blur-md rounded-2xl p-3 border border-black/5 shadow-md z-20 flex items-center gap-3 max-w-[240px] hidden sm:flex">
+<div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-700 flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">laptop_mac</span>
+</div>
+<div class="overflow-hidden">
+<p class="text-xs font-bold text-[#0D0E12] truncate">MacBook Pro 16" M3</p>
+<p class="text-[11px] text-emerald-600 font-medium">Free Community Loan</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Section: The Smarter Way to Share -->
+<section class="py-16 relative" id="how-it-works">
+<div class="max-w-[1440px] mx-auto px-8 md:px-14">
+<!-- Section Header -->
+<div class="text-center max-w-2xl mx-auto mb-12">
+<span class="text-xs font-bold text-neutral-400 uppercase tracking-widest">THE SMARTER WAY TO SHARE</span>
+<h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#0A0B0E] mt-2 mb-3">
+          Everything You Need to Borrow with Confidence
+        </h2>
+<p class="text-[#555A68] text-base leading-relaxed">
+          A modern lending circuit where campus members exchange gear responsibly with complete trust and zero daily costs.
+        </p>
+</div>
+<!-- 4-Column Frosted Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Feature Card 1 -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-black/[0.04] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.03)] hover:border-black/10 transition-all flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-rose-50/80 text-[#0D0E12] flex items-center justify-center mb-5 border border-rose-100/50">
+<span class="material-symbols-outlined text-[22px]">category</span>
+</div>
+<h3 class="text-base font-bold text-[#0D0E12] mb-2">Quality Items</h3>
+<p class="text-sm text-[#555A68] leading-relaxed">
+              Discover carefully shared items for study, tech projects, and everyday needs from verified community members.
+            </p>
+</div>
+<span class="text-xs font-semibold text-neutral-400 mt-6 pt-3 border-t border-black/[0.04] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+            Peer Verified
+          </span>
+</div>
+<!-- Feature Card 2 -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-black/[0.04] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.03)] hover:border-black/10 transition-all flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-purple-50/80 text-[#0D0E12] flex items-center justify-center mb-5 border border-purple-100/50">
+<span class="material-symbols-outlined text-[22px]">calendar_today</span>
+</div>
+<h3 class="text-base font-bold text-[#0D0E12] mb-2">Easy Loan Requests</h3>
+<p class="text-sm text-[#555A68] leading-relaxed">
+              Find what you need, choose your borrow dates, and send a request in just a few clicks with verified campus profiles.
+            </p>
+</div>
+<span class="text-xs font-semibold text-neutral-400 mt-6 pt-3 border-t border-black/[0.04] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+            Instant Reservation
+          </span>
+</div>
+<!-- Feature Card 3 -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-black/[0.04] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.03)] hover:border-black/10 transition-all flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-emerald-50/80 text-[#0D0E12] flex items-center justify-center mb-5 border border-emerald-100/50">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+</div>
+<h3 class="text-base font-bold text-[#0D0E12] mb-2">Trusted Community</h3>
+<p class="text-sm text-[#555A68] leading-relaxed">
+              Connect with verified lenders through transparent profiles, student badges, reviews, and community trust ratings.
+            </p>
+</div>
+<span class="text-xs font-semibold text-neutral-400 mt-6 pt-3 border-t border-black/[0.04] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            $5,000 Shield
+          </span>
+</div>
+<!-- Feature Card 4 -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-black/[0.04] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.03)] hover:border-black/10 transition-all flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-blue-50/80 text-[#0D0E12] flex items-center justify-center mb-5 border border-blue-100/50">
+<span class="material-symbols-outlined text-[22px]">published_with_changes</span>
+</div>
+<h3 class="text-base font-bold text-[#0D0E12] mb-2">Share &amp; Connect</h3>
+<p class="text-sm text-[#555A68] leading-relaxed">
+              Borrow useful items or list your own idle belongings to help peers while fostering a sustainable campus circular economy.
+            </p>
+</div>
+<span class="text-xs font-semibold text-neutral-400 mt-6 pt-3 border-t border-black/[0.04] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+            Zero Costs
+          </span>
+</div>
+</div>
+</div>
+</section>
+<!-- Curated Collections Section -->
+<section class="py-16" id="featured">
+<div class="max-w-[1440px] mx-auto px-8 md:px-14">
+<!-- Section Heading & Filter Pills -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-5">
+<div>
+<span class="text-xs font-bold text-neutral-400 uppercase tracking-widest">CURATED COLLECTIONS</span>
+<h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#0A0B0E] mt-1.5">
+            Find Your Next Borrow
+          </h2>
+<p class="text-[#555A68] text-sm mt-1">Explore popular items available to borrow now across campus hubs.</p>
+</div>
+<!-- Category Filter Pills -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1">
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap shadow-sm">
+            All Items
+          </button>
+<button class="bg-white/80 hover:bg-white text-[#555A68] hover:text-[#0D0E12] border border-black/5 text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all shadow-sm">
+            Cameras &amp; Media
+          </button>
+<button class="bg-white/80 hover:bg-white text-[#555A68] hover:text-[#0D0E12] border border-black/5 text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all shadow-sm">
+            Electronics &amp; Audio
+          </button>
+<button class="bg-white/80 hover:bg-white text-[#555A68] hover:text-[#0D0E12] border border-black/5 text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all shadow-sm">
+            Study &amp; Tech
+          </button>
+<button class="bg-white/80 hover:bg-white text-[#555A68] hover:text-[#0D0E12] border border-black/5 text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all shadow-sm">
+            Everyday Living
+          </button>
+</div>
+</div>
+<!-- 4-Column Grid (8 Items - No Daily Rental Fees!) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Item 1: Sony Alpha A7 IV -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Sony Alpha A7 IV Mirrorless Kit" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuV-eCFBhqv8upEGd2q8vadKYeqKWCiW8YC3nw_bpiXmIaqfLORxWyQNoc8MbgM67FERtwJ0U5LNsLKnmVPQk0SVdgKzobbeTXvDDg8_hhcdFqfi6ODOdg7TW8cHvVpusbqpjJ_amcQrRtubbLEwrTwtPuFs7_e93VV-zJ0KIYoEtoCVdKKSbbK0ohg1MJGeB1bosXnggU-d8Ap1lEEWXMMAX0csAbYTCMnVSYxJKI0j3JE5BT_Q6f1c0K_ahztgWPZ5eWKj5O0pvS"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 5.0 (28)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Cameras &amp; Media</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">Sony Alpha A7 IV Mirrorless Kit</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">MV</span>
+              Marcus V. • Campus Hub
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 5 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+<!-- Item 2: Apple MacBook Pro 16" -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Apple MacBook Pro 16 M3 Max" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYj29vyY8dn5AfiSqVGVwZwZgBdIdwQvy1VKqsoJMHx0jt0dXQGJtrwwBPt2tt2yPQR_eLvX7fhg8egxcryLRgHMtSpLRgCnu0jXJ7h_Cn7wvQ9TY-U6RwtlNDw9LG_oaYT1M2wjalGLgk55HtB_y2FAl0VLms3_2BrbcMGvSW2kpUgRx99ldAEHThgdOk6D2yrbu0STMTCMTc3_2MmWcl-Mr-KlcFtfke_BuYCSTOlTQK9hPldBjxhLVUtBkf0CqWziNiM5aLVLpC"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 4.9 (19)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Electronics &amp; Audio</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">Apple MacBook Pro 16" M3 Max</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">ER</span>
+              Elena R. • Engineering Hub
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 7 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+<!-- Item 3: XGIMI Horizon Pro 4K -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="XGIMI Horizon Pro 4K Projector" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaRM60ER5xovuW0hh5e3qqYIHHEN6aAoQWJp5Q-RfuTvsARnu9CBkKVHqZc_ksY9pWokck_iQrPnVtt5lGbPwpSCIBlm88x-49aDwGemDmA4VpDwqKTFLpRVIw0LiZ25JI8RXaRv2Q0PpfWgP263y9XqXpVOw7KLA-SMroJh2o_JfgIDr5nCsCIs-mMREbm7BKDUAtqwan7mT3gNGMgtXdbpZvePy84zXL4ALabXZJukSKpfwS12XHYVJuWtWExrJfE4Oxq6oOnu_h"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 4.8 (14)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Cameras &amp; Media</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">XGIMI Horizon Pro 4K Projector</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">LC</span>
+              Liam C. • South Campus Dorms
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 3 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+<!-- Item 4: Casio FX-991CW -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Casio FX-991CW Scientific Graphing Calculator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIxNUkGxbfrMpBJzBIsBkZgmS8ot9MMPXAc8K59OjwrQh3qrQnxoj92QPnTODCmXuxQG_9wtxB95Syhzeb6ekcsHMp9D1UCqRZH9QDgb-Dhv7rKU4WgdIpOukFjKPBClVIcvXcUarg0GiN3vUr_K1IP5Fdiq73VIiZ8drxfS1YbxcqQbfR57ll4c0oafhDR-MxyDl7JTxACA-fxcQC6LN5qw9DlgxBW0xMbJx-RUNz_52Da0bcoW7v7MJl5X7rX1mEv-FATmivpXI0"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 5.0 (36)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Study &amp; Tech</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">Casio FX-991CW Graphing Calculator</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">MP</span>
+              Maya P. • Math &amp; Stats Library
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 14 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+<!-- Item 5: DeWalt 20V Cordless Drill -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="DeWalt 20V MAX Cordless Drill Set" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHv4PzB24x_rbS3utxfsX7Ia4rrLl073mLzscWhXvC5ciXvOLm2HP4PGub23s1IoFdnZ72vgFVvX73QWSWzAjI3zb11Xc4fVAnMZ5xO8rRIr8peXKrPz5Te_yBnD1UNQakhShHQsv__adnlymnwVqs856TTUxEsOY6pWaVkjCfuLInUuE_YXzmwbJvazaXlx_zeADqJP8wdfkunYsLqdI4H8E8ryfeWDxJav3LzXAvZ57LqnWvaYxx-XZVSAvIWSiS1N4bqlHJgxoJ"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 4.9 (12)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Everyday Living</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">DeWalt 20V MAX Cordless Drill Set</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">DC</span>
+              David C. • Architecture Studio
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 4 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+<!-- Item 6: DJI Air 3 Drone -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="DJI Air 3 Fly More Combo 4K Drone" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3h8GE5BO_xRUZjGcsu4jjEtMca0NeNHMBQeQobDLhnqT7A4GTjLA471nCa3LjE_ZC2BGmcfILUOlIIx5xvaFKbUh4s5NOi1rNscmq55UtKvymh_JWhA-6EVRmowGzCqWvLZca31kvhmDwO-d3pGvwPAwcutVHMLaBegEA2h738vdat2uGbtM0vdDYwn28-fixirtTJC622_e8mWI4RbpDPTYrnJXB580Xv8NFLTgwTk6NZxrUS8mZH7NZMsqhu3BxwrkK-ShdF51n"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 5.0 (22)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Cameras &amp; Media</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">DJI Air 3 Fly More Combo 4K</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">SJ</span>
+              Sarah J. • North Quad
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 3 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+<!-- Item 7: Sennheiser EW 100 G4 Mic -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Sennheiser EW 100 G4 Wireless Mic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCK4C4HUaaeteRaNY_vhu1AqS8RxdRQvnnVfUcyO-WWvZNFHMEo6EEod70unQsXwqjmG_ijiVY0I-mKFW3q1N5RLZX1nyO2NJo7n7m7joPpmb1TQHPSuVDhchOylekG9bSet6Cupj60kKard1PXImRpKgweGuY9h2IQYcF6FyRZneRT1xOTKXcf75MlN7F_fKaFamXCO1zHglCBmoFpYgK2zCVlWhNcBSwspz38Pcbco1OPObuYXy5vSLEGr-_lZgeql6tu9jGPhHm8"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 4.8 (17)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Electronics &amp; Audio</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">Sennheiser EW 100 G4 Wireless Mic</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">AM</span>
+              Alex M. • Music Hall
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 5 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+<!-- Item 8: Stewart Calculus Bundle -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Stewart Calculus 9th Ed Bundle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3ksOQOz3C39CzOfsG7HQ-QVshDFytWz9IfBH8Q2MmyXT1aDx8KkawPEIhjtK7jnzDxO6o9GHRtY2zadBsKVGwtXVQ0E8MgL6BwCHo0wJUJ55kIsUSAxkHLOsEfPNd7ftGrPIymb0BTv2PZNQozj0foFbARmFKp-Y8kldrOxBfIpRSVnrkNM9bMgTIv-5voyV3pWMPD1M0Cc6MBXz4AV6KH9_l2-gFywP1Pj5inLLxgH6YBCEcqoxFastx0Uga-ShewoNt1i5qnv5e"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 4.9 (45)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Study &amp; Tech</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">Stewart Calculus 9th Ed Bundle</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">CT</span>
+              Chloe T. • Science Commons
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 30 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+</div>
+<!-- Load More Action -->
+<div class="mt-12 text-center">
+<button class="bg-white/80 hover:bg-white text-[#0D0E12] border border-black/10 text-xs font-semibold px-8 py-3 rounded-full transition-all shadow-sm inline-flex items-center gap-2">
+<span>Explore 420+ More Campus Items</span>
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Impact / Turn Idle Gear Section -->
+<section class="py-16" id="impact">
+<div class="max-w-[1440px] mx-auto px-8 md:px-14">
+<div class="bg-white/75 backdrop-blur-md rounded-3xl border border-black/[0.06] p-8 lg:p-12 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.03)]">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+<!-- Banner Left: Call to Action for Lenders -->
+<div class="lg:col-span-6 flex flex-col items-start pr-0 lg:pr-6">
+<span class="px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-100 text-xs font-semibold mb-4">
+              Community Commons
+            </span>
+<h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#0A0B0E] mb-4">
+              Turn Your Idle Gear into Community Value
+            </h2>
+<p class="text-[#555A68] text-base leading-relaxed mb-8">
+              Lend textbooks, cameras, audio equipment, and specialty tools to fellow students and neighbors safely without worrying about damage or hassle.
+            </p>
+<div class="flex flex-wrap items-center gap-4">
+<button class="bg-[#0D0E12] text-white rounded-full px-7 py-3.5 text-sm font-medium hover:bg-black/85 transition-all shadow-sm flex items-center gap-2">
+<span>List an Item for Free</span>
+<span class="material-symbols-outlined text-[18px]">add_task</span>
+</button>
+<a class="text-sm font-semibold text-[#0D0E12] hover:text-neutral-600 px-3 py-3 underline underline-offset-4" href="#">
+                Learn About Guarantees
+              </a>
+</div>
+</div>
+<!-- Banner Right: 4 Credibility Metric Tiles -->
+<div class="lg:col-span-6 grid grid-cols-2 gap-4">
+<!-- Metric 1 -->
+<div class="p-6 rounded-2xl bg-white/90 border border-black/[0.04] shadow-sm flex flex-col">
+<span class="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">Verified Members</span>
+<span class="text-3xl font-extrabold text-[#0D0E12] tracking-tight">14,200+</span>
+<span class="text-xs text-neutral-500 mt-1">Across 18 regional campuses</span>
+</div>
+<!-- Metric 2 -->
+<div class="p-6 rounded-2xl bg-white/90 border border-black/[0.04] shadow-sm flex flex-col">
+<span class="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">Community Items</span>
+<span class="text-3xl font-extrabold text-[#0D0E12] tracking-tight">4,800+</span>
+<span class="text-xs text-neutral-500 mt-1">Shared freely in circulation</span>
+</div>
+<!-- Metric 3 -->
+<div class="p-6 rounded-2xl bg-white/90 border border-black/[0.04] shadow-sm flex flex-col">
+<span class="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">Return Integrity</span>
+<span class="text-3xl font-extrabold text-[#0D0E12] tracking-tight">99.8%</span>
+<span class="text-xs text-neutral-500 mt-1">Safe on-time return rate</span>
+</div>
+<!-- Metric 4 -->
+<div class="p-6 rounded-2xl bg-white/90 border border-black/[0.04] shadow-sm flex flex-col">
+<span class="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">UniLend Shield</span>
+<span class="text-3xl font-extrabold text-[#0D0E12] tracking-tight">$5,000</span>
+<span class="text-xs text-neutral-500 mt-1">Protection guarantee per loan</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Minimal Footer -->
+<footer class="mt-auto border-t border-black/[0.06] bg-white/30 backdrop-blur-sm" id="contact">
+<div class="max-w-[1440px] mx-auto px-8 md:px-14 py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
+<!-- Brand & Copyright -->
+<div class="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+<a class="font-extrabold tracking-tight text-[#0D0E12] flex items-center gap-1.5 text-sm" href="#">
+<span class="w-2 h-2 rounded-full bg-[#0D0E12] inline-block"></span>
+          UNILEND.™
+        </a>
+<span class="hidden sm:inline text-neutral-300">•</span>
+<p>© 2025 UNILEND.™ Technologies Inc. All rights reserved.</p>
+</div>
+<!-- Navigation Links -->
+<div class="flex flex-wrap items-center justify-center gap-6 font-medium">
+<a class="hover:text-[#0D0E12] transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-[#0D0E12] transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-[#0D0E12] transition-colors" href="#">Security</a>
+<a class="hover:text-[#0D0E12] transition-colors" href="#">Community Guidelines</a>
+<a class="hover:text-[#0D0E12] transition-colors" href="#">Borrower Guarantee</a>
+</div>
+</div>
+</footer>
+</body></html>

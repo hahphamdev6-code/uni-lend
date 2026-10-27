@@ -1,0 +1,714 @@
+﻿<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Alex Morgan Â· Student Profile &amp; Dashboard | UNILEND.â„¢</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-highest": "#d3e4fe",
+            "primary-fixed": "#dae2fd",
+            "secondary-fixed-dim": "#d2bbff",
+            "inverse-primary": "#bec6e0",
+            "on-error": "#ffffff",
+            "background": "#f8f9ff",
+            "inverse-on-surface": "#eaf1ff",
+            "on-surface-variant": "#45464d",
+            "on-primary": "#ffffff",
+            "secondary-fixed": "#eaddff",
+            "error-container": "#ffdad6",
+            "outline": "#76777d",
+            "on-secondary-fixed": "#25005a",
+            "primary-container": "#131b2e",
+            "on-secondary-fixed-variant": "#5a00c6",
+            "on-surface": "#0b1c30",
+            "surface-container": "#e5eeff",
+            "tertiary-fixed-dim": "#ffb3b6",
+            "primary-fixed-dim": "#bec6e0",
+            "tertiary-fixed": "#ffdada",
+            "on-primary-fixed": "#131b2e",
+            "surface-dim": "#cbdbf5",
+            "tertiary-container": "#40000c",
+            "primary": "#000000",
+            "on-primary-fixed-variant": "#3f465c",
+            "surface-tint": "#565e74",
+            "secondary-container": "#8a4cfc",
+            "surface-container-high": "#dce9ff",
+            "on-tertiary": "#ffffff",
+            "surface": "#f8f9ff",
+            "on-tertiary-fixed": "#40000c",
+            "surface-variant": "#d3e4fe",
+            "on-secondary": "#ffffff",
+            "on-error-container": "#93000a",
+            "surface-container-lowest": "#ffffff",
+            "outline-variant": "#c6c6cd",
+            "on-secondary-container": "#fffbff",
+            "on-background": "#0b1c30",
+            "inverse-surface": "#213145",
+            "surface-bright": "#f8f9ff",
+            "on-tertiary-container": "#f83256",
+            "error": "#ba1a1a",
+            "tertiary": "#000000",
+            "secondary": "#712ae2",
+            "on-tertiary-fixed-variant": "#920028",
+            "on-primary-container": "#7c839b",
+            "surface-container-low": "#eff4ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "2rem",
+            "margin-desktop": "3rem",
+            "margin-mobile": "1rem",
+            "space-md": "1rem",
+            "gutter-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "gutter-desktop": "2rem",
+            "space-sm": "0.5rem",
+            "space-3xl": "6rem",
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-2xl": "4rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "title-lg": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "label-numeric": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "label-lg": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "headline-sm": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "title-md": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "label-numeric": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "label-md": ["11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined[data-weight="fill"] {
+      font-variation-settings: 'FILL' 1, 'wght' 500;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed relative min-h-screen overflow-x-hidden font-body-md">
+<!-- Soft Ambient Atmospheric Background Glows -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="absolute -top-[18%] -left-[10%] w-[58vw] h-[58vw] rounded-full blur-[120px] opacity-70 bg-gradient-to-br from-[#FEF2F6] via-[#F8EDF9] to-transparent"></div>
+<div class="absolute top-[28%] -right-[12%] w-[50vw] h-[50vw] rounded-full blur-[140px] opacity-60 bg-gradient-to-bl from-[#F2EDFF] via-[#EBF3FF] to-transparent"></div>
+<div class="absolute bottom-[-10%] left-[20%] w-[45vw] h-[45vw] rounded-full blur-[130px] opacity-50 bg-gradient-to-t from-[#FEF0F4] to-transparent"></div>
+</div>
+<div class="relative z-10 flex flex-col min-h-screen">
+<!-- TopNavBar (Shared Component Anchor Implementation) -->
+<header class="bg-surface-container-lowest/90 dark:bg-primary-container/90 backdrop-blur-md text-primary dark:text-inverse-primary docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none">
+<div class="w-full px-6 lg:px-12 max-w-[1360px] mx-auto flex items-center justify-between h-20">
+<!-- Left: Brand Logo & Search Cluster -->
+<div class="flex items-center gap-8">
+<a class="text-title-lg font-title-lg tracking-wider text-primary dark:text-inverse-on-surface font-extrabold flex items-center gap-1.5 focus:outline-none" href="#">
+<span>UNILEND.â„¢</span>
+</a>
+<!-- Search on left per JSON anchor -->
+<div class="hidden xl:flex items-center relative w-72">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none" data-icon="search">search</span>
+<input class="w-full h-10 pl-9 pr-4 rounded-lg bg-surface-container-low border border-outline-variant/40 text-on-surface text-body-sm font-body-sm focus:outline-none focus:border-primary focus:bg-surface-container-lowest transition-all" placeholder="Search gear, lockers, textbooks..." type="text"/>
+</div>
+</div>
+<!-- Center Navigation Links -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150 text-body-md font-body-md" href="#">Home</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150 text-body-md font-body-md" href="#">Categories</a>
+<!-- Active Tab for Student Rental Management -->
+<a class="text-primary dark:text-inverse-on-surface font-semibold border-b-2 border-primary dark:border-inverse-on-surface pb-1 text-body-md font-body-md" href="#">Rent</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150 text-body-md font-body-md" href="#">Explore</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150 text-body-md font-body-md" href="#">Contact Us</a>
+</nav>
+<!-- Right Side: Trailing Actions, Notifications & Authenticated Profile -->
+<div class="flex items-center gap-3">
+<!-- Trailing Secondary: Active Rentals Counter Badge -->
+<a class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface border border-outline-variant/30 text-label-md font-label-md hover:bg-surface-container-highest transition-colors" href="#active-rentals">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span>Active Rentals (2)</span>
+</a>
+<!-- Trailing Primary Action: Rent an Item -->
+<button class="hidden lg:inline-flex items-center justify-center px-4 py-2 rounded-lg bg-primary text-on-primary font-semibold text-body-sm hover:bg-slate-800 transition-all duration-200 active:scale-95 shadow-sm">
+<span>Rent an Item</span>
+</button>
+<!-- Notification Bell Icon Button -->
+<button aria-label="Notifications" class="relative p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[22px]" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full ring-2 ring-surface-container-lowest"></span>
+</button>
+<!-- Message Chat Button -->
+<button aria-label="Messages" class="relative p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[22px]" data-icon="chat_bubble_outline">chat_bubble_outline</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-emerald-500 rounded-full ring-2 ring-surface-container-lowest"></span>
+</button>
+<div class="h-6 w-px bg-outline-variant/40 mx-1"></div>
+<!-- Profile Avatar Chip -->
+<div class="flex items-center gap-2.5 pl-1 cursor-pointer group">
+<div class="relative">
+<img alt="Alex Morgan executive profile avatar" class="w-9 h-9 rounded-full object-cover ring-1 ring-outline-variant/40 group-hover:ring-primary transition-all" data-alt="Modern crisp professional student headshot of Alex Morgan smiling warmly wearing dark collegiate apparel against an airy architectural backdrop with soft morning sunlight, clean minimal aesthetic, studio-quality rendering with soft neutral tones and immaculate focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOG5MmnZToe2XPYSxugjqYMcx57WttPS-15YJT1BI3CpKko2ayIyXZq5_1ywPF8p1WPW5d8EdfjpR0qLKP17eFKJm8JvK9DnAiTltbZtknu3n8f1lLuCdQq6wN99nWh2ww02v1f94yqWrFj2xRFmnGTdow9OlvX_DM5e6-_yaUmBPqtufb4K5iqzR7ldJKlw6S9aAtIq1tZ5AVZ5KSGoxaPwtApylRAl6PoP16iqFs6j_A3Sa3u7Y-n92V0LnzIOigZqaA9ByBcVuF"/>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-surface-container-lowest"></span>
+</div>
+<div class="hidden sm:flex flex-col text-left">
+<span class="text-label-md font-label-md text-on-surface group-hover:text-primary transition-colors">Alex Morgan</span>
+<span class="text-[10px] text-outline tracking-tight leading-none">Engineering '25</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Workspace Container -->
+<main class="flex-grow w-full max-w-[1360px] mx-auto px-6 lg:px-12 pt-8 pb-20 space-y-10">
+<!-- 1. Hero Identity Banner -->
+<section class="w-full bg-surface-container-lowest/85 backdrop-blur-xl rounded-3xl p-6 sm:p-8 lg:p-10 border border-outline-variant/30 shadow-[0_4px_24px_-4px_rgba(15,23,42,0.03)] transition-all">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+<!-- Identity Details -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+<!-- Large Student Avatar with Verification Badge -->
+<div class="relative flex-shrink-0">
+<img alt="Alex Morgan high resolution verified avatar" class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover ring-2 ring-outline-variant/30 shadow-sm" data-alt="Editorial profile portrait of Alex Morgan in natural ambient studio light, wearing a tailored charcoal knit sweater with a relaxed yet confident posture in front of an architectural university glass atrium, soft subtle pink reflections in the background, sharp details and crisp modern clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7eY4TIMJdRZRkxTMZLQpQKaP9yYnv-cVrsXAJw0bLNlMCGaH4ZRuEcnX5cUSqpJnPxNOtqdxXN8-Jhy2kfgdFlbyv8M1dBJcGOZqpvh9UOTNdbEgKMudQ287cNOcPWhJrsQ-ZQqFHrA2_0u4oaqyZ7y7i9AX-rj3g2Bt1PaZIqdcvwFvo5spHZjDMbSHi2JLu9E3UP4Ds6HyyUZJmOx-keXB9sY1V0KSzqXbyrtlde1hHmlTub_Dwpe3FGHvqpOik8RMu6TMNO72l"/>
+<div class="absolute -bottom-2 -right-2 bg-surface-container-lowest p-1 rounded-full shadow-sm">
+<div class="bg-emerald-600 text-white rounded-full p-1 flex items-center justify-center" title="Campus Identity Verified">
+<span class="material-symbols-outlined text-[16px]" data-icon="verified" data-weight="fill">verified</span>
+</div>
+</div>
+</div>
+<!-- Student Metadata -->
+<div class="space-y-3">
+<div class="flex flex-wrap items-center gap-3">
+<h1 class="font-headline-md text-headline-md sm:font-headline-lg sm:text-headline-lg text-on-surface tracking-tight">
+                  Alex Morgan
+                </h1>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-label-md font-label-md">
+<span class="material-symbols-outlined text-[14px]" data-icon="shield">shield</span>
+                  Student Member
+                </span>
+</div>
+<div class="flex flex-wrap items-center gap-2 text-body-sm font-body-sm text-outline">
+<span class="font-medium text-on-surface">@alex.morgan</span>
+<span>â€¢</span>
+<span>alex.m@student.edu</span>
+<span>â€¢</span>
+<span class="inline-flex items-center gap-1 text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+                  Active now
+                </span>
+</div>
+<!-- Badges Row -->
+<div class="flex flex-wrap items-center gap-2 pt-1">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/40 text-label-md font-label-md text-on-surface">
+<span class="material-symbols-outlined text-[14px] text-secondary" data-icon="school">school</span>
+                  VNU-HCM / University of Technology
+                </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200/80 text-amber-900 text-label-md font-label-md">
+<span class="material-symbols-outlined text-[14px] text-amber-600" data-icon="star" data-weight="fill">star</span>
+                  4.9 (18 peer reviews)
+                </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/30 text-label-md font-label-md text-outline">
+<span class="material-symbols-outlined text-[14px]" data-icon="calendar_today">calendar_today</span>
+                  Joined Sep 2023
+                </span>
+</div>
+</div>
+</div>
+<!-- Hero Action Buttons Cluster -->
+<div class="flex flex-wrap items-center gap-3 lg:self-center">
+<!-- Quick share / link icon button -->
+<button class="p-2.5 rounded-lg border border-outline-variant/40 bg-surface-container-lowest hover:bg-surface-container-low text-on-surface transition-colors" title="Share Public Profile Link">
+<span class="material-symbols-outlined text-[20px]" data-icon="share">share</span>
+</button>
+<!-- Secondary: List an Item -->
+<button class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-outline-variant/50 bg-surface-container-lowest/80 text-on-surface font-semibold text-body-sm hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+<span>+ List an Item</span>
+</button>
+<!-- Primary Action: Edit Profile -->
+<button class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-primary text-on-primary font-semibold text-body-sm hover:bg-slate-800 transition-all duration-200 shadow-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="edit">edit</span>
+<span>Edit Profile</span>
+</button>
+</div>
+</div>
+</section>
+<!-- 2. Overview Statistics Bar (4-Column Bento Analytics Grid) -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+<!-- Metric 1: Active Rentals -->
+<div class="bg-surface-container-lowest/80 backdrop-blur-md rounded-2xl p-6 border border-outline-variant/30 hover:border-outline-variant/60 transition-all shadow-[0_2px_12px_rgba(15,23,42,0.02)] flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<span class="text-label-md font-label-md uppercase tracking-wider text-outline">Active Rentals</span>
+<span class="p-2 rounded-lg bg-surface-container-low text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="shopping_bag">shopping_bag</span>
+</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-headline-lg text-headline-lg text-on-surface">1</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-label-md font-label-md">
+                On Schedule
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">MacBook Pro M3 Â· Due in 3 days</p>
+</div>
+</div>
+<!-- Metric 2: Shared Items -->
+<div class="bg-surface-container-lowest/80 backdrop-blur-md rounded-2xl p-6 border border-outline-variant/30 hover:border-outline-variant/60 transition-all shadow-[0_2px_12px_rgba(15,23,42,0.02)] flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<span class="text-label-md font-label-md uppercase tracking-wider text-outline">Shared Items</span>
+<span class="p-2 rounded-lg bg-surface-container-low text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="inventory_2">inventory_2</span>
+</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-headline-lg text-headline-lg text-on-surface">5</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed border border-secondary/20 text-label-md font-label-md">
+                +1 Request pending
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">5 gear items listed for campus sharing</p>
+</div>
+</div>
+<!-- Metric 3: Completed Exchanges -->
+<div class="bg-surface-container-lowest/80 backdrop-blur-md rounded-2xl p-6 border border-outline-variant/30 hover:border-outline-variant/60 transition-all shadow-[0_2px_12px_rgba(15,23,42,0.02)] flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<span class="text-label-md font-label-md uppercase tracking-wider text-outline">Completed Exchanges</span>
+<span class="p-2 rounded-lg bg-surface-container-low text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="swap_horiz">swap_horiz</span>
+</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-headline-lg text-headline-lg text-on-surface">24</span>
+<span class="inline-flex items-center gap-0.5 text-label-md font-label-md text-emerald-700">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span>
+                100%
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">Smooth handover track record</p>
+</div>
+</div>
+<!-- Metric 4: Community Trust -->
+<div class="bg-surface-container-lowest/80 backdrop-blur-md rounded-2xl p-6 border border-outline-variant/30 hover:border-outline-variant/60 transition-all shadow-[0_2px_12px_rgba(15,23,42,0.02)] flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<span class="text-label-md font-label-md uppercase tracking-wider text-outline">Community Trust</span>
+<span class="p-2 rounded-lg bg-surface-container-low text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="security">security</span>
+</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-headline-lg text-headline-lg text-on-surface">100%</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-label-md font-label-md">
+                Verified ID
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">Zero dispute escrow record</p>
+</div>
+</div>
+</section>
+<!-- 3. Tabbed Management & Rentals Engine -->
+<section class="bg-surface-container-lowest/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 lg:p-10 border border-outline-variant/30 shadow-[0_4px_30px_rgba(15,23,42,0.02)] space-y-8">
+<!-- Navigation Tabs Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-outline-variant/30 pb-5">
+<!-- Category Tabs -->
+<div class="flex items-center gap-2 sm:gap-4 overflow-x-auto no-scrollbar scroll-smooth">
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-on-primary font-semibold text-body-sm shadow-sm transition-all whitespace-nowrap">
+<span>Active Rentals</span>
+<span class="px-1.5 py-0.2 bg-white/20 rounded-full text-[11px]">1</span>
+</button>
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-medium text-body-sm transition-colors whitespace-nowrap">
+<span>My Listings</span>
+<span class="px-1.5 py-0.2 bg-surface-container-high rounded-full text-[11px]">5</span>
+</button>
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-medium text-body-sm transition-colors whitespace-nowrap">
+<span>Borrow History</span>
+<span class="px-1.5 py-0.2 bg-surface-container-high rounded-full text-[11px]">23</span>
+</button>
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-medium text-body-sm transition-colors whitespace-nowrap">
+<span>Saved Favorites</span>
+<span class="px-1.5 py-0.2 bg-surface-container-high rounded-full text-[11px]">8</span>
+</button>
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-medium text-body-sm transition-colors whitespace-nowrap">
+<span>Reviews</span>
+<span class="px-1.5 py-0.2 bg-surface-container-high rounded-full text-[11px]">18</span>
+</button>
+</div>
+<!-- Quick Filters Pills -->
+<div class="flex items-center gap-2 overflow-x-auto">
+<span class="text-label-md font-label-md text-outline hidden sm:inline">Filter:</span>
+<button class="px-3 py-1 rounded-full text-label-md font-label-md bg-on-surface text-surface-container-lowest font-medium">All Items</button>
+<button class="px-3 py-1 rounded-full text-label-md font-label-md bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors">Urgent / Due Soon</button>
+<button class="px-3 py-1 rounded-full text-label-md font-label-md bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors">Electronics</button>
+<button class="px-3 py-1 rounded-full text-label-md font-label-md bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors">Study Gear</button>
+</div>
+</div>
+<!-- Cards Grid of Management Items -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Card 1: Active Rental (MacBook Pro) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden flex flex-col justify-between hover:shadow-md transition-all duration-300 group">
+<div>
+<!-- Image Container -->
+<div class="relative h-52 w-full overflow-hidden bg-surface-container-low">
+<img alt="Apple MacBook Pro 16 inch M3 Max" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern space gray Apple MacBook Pro 16-inch M3 Max laptop resting opened on an immaculate architectural oak wood campus studio desk with notebook and clean coffee tumbler in soft daylight, razor sharp crisp digital product photography with light pastel gradients." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRRqG-9tBSbzdegYbjV6zPg5zacLIpy9S4sLDWfgjSb6UXl7k_c2VjoGwYFfeVZ1d6t8HEh1AJukOfrhISqhiqi9nYMvTCe8EtxF-_QU8Gtnsm6M3wLTfO26PsvA6r3kWK_qYw3iBIOGTFHkVjQsPre-YH3VyeCXGatfY2BpeZVvGA6EcxdA4Qtit1urS3EJJICHDNt4U3j77wpHveG8uOMsmGn3FArPRZ_1KyITDd_VNtfbfAJtsi5Tg-ChhSlnm4m5swGLYzWdxb"/>
+<div class="absolute top-3 left-3">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/90 backdrop-blur-md text-white text-label-md font-label-md shadow-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="alarm">alarm</span>
+                    Due in 3 days (Nov 18)
+                  </span>
+</div>
+<div class="absolute top-3 right-3">
+<span class="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold tracking-wide uppercase">
+                    Currently Borrowing
+                  </span>
+</div>
+</div>
+<!-- Content Body -->
+<div class="p-6 space-y-4">
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface tracking-tight group-hover:text-secondary transition-colors">
+                    Apple MacBook Pro 16" M3 Max
+                  </h3>
+<p class="font-body-sm text-body-sm text-outline mt-0.5">36GB Unified Memory Â· 1TB SSD Â· Space Black</p>
+</div>
+<!-- Lender & Pickup Context -->
+<div class="p-3.5 rounded-xl bg-surface-container-low/80 border border-outline-variant/30 space-y-2 text-body-sm font-body-sm">
+<div class="flex items-center justify-between">
+<span class="text-outline text-label-md font-label-md">Lender</span>
+<a class="font-semibold text-on-surface hover:text-secondary flex items-center gap-1" href="#">
+<span>Elena R. (Engineering Bldg)</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="open_in_new">open_in_new</span>
+</a>
+</div>
+<div class="flex items-start gap-2 pt-1 border-t border-outline-variant/20 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline flex-shrink-0 mt-0.5" data-icon="meeting_room">meeting_room</span>
+<span class="text-[12px] leading-relaxed">Picked up via Campus Smart Locker #14</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Cluster -->
+<div class="p-6 pt-0 flex items-center gap-3">
+<button class="flex-1 py-2.5 px-3 rounded-lg bg-primary text-on-primary font-semibold text-body-sm hover:bg-slate-800 transition-all text-center">
+                Manage Rental
+              </button>
+<button class="py-2.5 px-4 rounded-lg border border-outline-variant/50 text-on-surface font-semibold text-body-sm hover:bg-surface-container-low transition-colors text-center whitespace-nowrap">
+                Request Extension
+              </button>
+</div>
+</div>
+<!-- Card 2: Listed Item - Active (Sony Camera) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden flex flex-col justify-between hover:shadow-md transition-all duration-300 group">
+<div>
+<!-- Image Container -->
+<div class="relative h-52 w-full overflow-hidden bg-surface-container-low">
+<img alt="Sony Alpha 7 IV Mirrorless Camera Kit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="High precision Sony Alpha 7 IV mirrorless digital camera kit with 24-70mm GM lens in immaculate condition displayed on architectural white concrete plinth with subtle ambient studio lighting, clean shadows and neutral aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAydyzZ9Krursrc2gkjXA93duPkCR00vS0UMQITpvNsr4mWASGCo1nrpNkaEBVwCDsxZeyWZVIi57nqxAk1-A2mCLUfor3_9OKd9CZzuVFDH3cpy4YQVZytLjUn-e8ZyJsICb18QAn2USw2_lpljnxluogRvqYFaQfbfa9odYEvkMxf2LRidPHBtPywcXc886YRKUc6wR5kp5HsIVNewSfYozfm7A5Ls3qJNnBWvbMCxnXUCeO5fW6BoNoMDUdFE_KSl9AtQqNAPB1O"/>
+<div class="absolute top-3 left-3">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-600/90 backdrop-blur-md text-white text-label-md font-label-md shadow-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span>
+                    Available to Borrow
+                  </span>
+</div>
+<div class="absolute top-3 right-3">
+<span class="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold tracking-wide uppercase">
+                    Your Listing
+                  </span>
+</div>
+</div>
+<!-- Content Body -->
+<div class="p-6 space-y-4">
+<div class="flex items-start justify-between gap-2">
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface tracking-tight group-hover:text-secondary transition-colors">
+                      Sony Alpha 7 IV Camera Kit
+                    </h3>
+<p class="font-body-sm text-body-sm text-outline mt-0.5">Includes 24-70mm f/2.8 lens + 2 batteries</p>
+</div>
+<div class="text-right flex-shrink-0">
+<span class="font-title-lg text-title-lg text-on-surface font-bold">$45</span>
+<span class="block text-[11px] text-outline">/ day</span>
+</div>
+</div>
+<!-- Borrower Activity Indicator -->
+<div class="p-3.5 rounded-xl bg-secondary-fixed/30 border border-secondary/20 space-y-2 text-body-sm font-body-sm">
+<div class="flex items-center justify-between">
+<span class="text-secondary text-label-md font-label-md font-bold">Inquiry Alert</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-white text-[10px] font-bold">2 Pending</span>
+</div>
+<p class="text-[12px] text-on-surface-variant leading-relaxed">
+                    2 pending requests from verified student IDs in Fine Arts department.
+                  </p>
+</div>
+</div>
+</div>
+<!-- Action Cluster -->
+<div class="p-6 pt-0 flex items-center gap-3">
+<button class="flex-1 py-2.5 px-3 rounded-lg bg-primary text-on-primary font-semibold text-body-sm hover:bg-slate-800 transition-all text-center">
+                Review Requests (2)
+              </button>
+<button class="py-2.5 px-4 rounded-lg border border-outline-variant/50 text-on-surface font-semibold text-body-sm hover:bg-surface-container-low transition-colors text-center whitespace-nowrap">
+                Edit Listing
+              </button>
+</div>
+</div>
+<!-- Card 3: Listed Item - Currently Lent Out (Rimowa) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden flex flex-col justify-between hover:shadow-md transition-all duration-300 group">
+<div>
+<!-- Image Container -->
+<div class="relative h-52 w-full overflow-hidden bg-surface-container-low">
+<img alt="Rimowa Essential Cabin Luggage" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Luxury Rimowa Essential Cabin luggage in matte black finish standing against a clean minimalist architectural wall with soft natural lighting, high end industrial design elegance, magazine grade product presentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHoUZftnrdDNLmj17AWYXJXF_MABejUg2w3d0nOOoLrzhLFVDiK-tEL7NyTqsV2FmL1vLpePH3Rb5sleP1_OM7z-niC1b8PKa_AAmgwsOMU9gAcDMxrqHtyOUNtFRb7j4mVRRCFahMLyoblDJTiI9_jpwfnjCrkJKiAheohbqsPWPy9Vgdbg90AFC4NTJiX7JWAKMA4N0ikPvKuZixkWyVDgv-IPUvlNSzpMcQbOGaeRI-bZ7-8aKrGavRM0Vn4dv9mHW_q5WgrBCW"/>
+<div class="absolute top-3 left-3">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-600/90 backdrop-blur-md text-white text-label-md font-label-md shadow-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="swap_calls">swap_calls</span>
+                    Currently Lent Out
+                  </span>
+</div>
+<div class="absolute top-3 right-3">
+<span class="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold tracking-wide uppercase">
+                    Your Listing
+                  </span>
+</div>
+</div>
+<!-- Content Body -->
+<div class="p-6 space-y-4">
+<div class="flex items-start justify-between gap-2">
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface tracking-tight group-hover:text-secondary transition-colors">
+                      Rimowa Essential Cabin Luggage
+                    </h3>
+<p class="font-body-sm text-body-sm text-outline mt-0.5">36L Gloss Black Suitcase Â· TSA Approved</p>
+</div>
+<div class="text-right flex-shrink-0">
+<span class="font-title-lg text-title-lg text-on-surface font-bold">$18</span>
+<span class="block text-[11px] text-outline">/ day</span>
+</div>
+</div>
+<!-- Handover Escrow Details -->
+<div class="p-3.5 rounded-xl bg-surface-container-low/80 border border-outline-variant/30 space-y-2 text-body-sm font-body-sm">
+<div class="flex items-center justify-between">
+<span class="text-outline text-label-md font-label-md">Current Borrower</span>
+<span class="font-semibold text-on-surface">Marcus V.</span>
+</div>
+<div class="flex items-start gap-2 pt-1 border-t border-outline-variant/20 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-blue-600 flex-shrink-0 mt-0.5" data-icon="event_repeat">event_repeat</span>
+<span class="text-[12px] leading-relaxed">Returning in 2 days (Nov 17, 4:00 PM)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Cluster -->
+<div class="p-6 pt-0 flex items-center gap-3">
+<button class="flex-1 py-2.5 px-3 rounded-lg bg-surface-container-low text-on-surface border border-outline-variant/40 font-semibold text-body-sm hover:bg-surface-container-high transition-all text-center">
+                View Handover Escrow
+              </button>
+<button class="py-2.5 px-4 rounded-lg bg-primary text-on-primary font-semibold text-body-sm hover:bg-slate-800 transition-colors text-center whitespace-nowrap">
+                Message Borrower
+              </button>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Community Reviews & Trust Endorsements Section -->
+<section class="bg-surface-container-lowest/85 backdrop-blur-xl rounded-3xl p-6 sm:p-8 lg:p-10 border border-outline-variant/30 shadow-[0_4px_30px_rgba(15,23,42,0.02)] space-y-8">
+<!-- Header with Aggregate Score -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant/30 pb-6">
+<div>
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">
+                Community Reviews &amp; Peer Endorsements
+              </h2>
+<span class="p-1 rounded-md bg-emerald-50 text-emerald-700">
+<span class="material-symbols-outlined text-[18px]" data-icon="verified_user">verified_user</span>
+</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline mt-1">Verified reviews from authentic campus peer borrowing interactions</p>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2 rounded-xl border border-outline-variant/30">
+<div class="flex items-center text-amber-500">
+<span class="material-symbols-outlined text-[20px]" data-icon="star" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-[20px]" data-icon="star" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-[20px]" data-icon="star" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-[20px]" data-icon="star" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-[20px]" data-icon="star" data-weight="fill">star</span>
+</div>
+<span class="font-title-md text-title-md font-bold text-on-surface">4.9 / 5.0</span>
+<span class="text-outline text-body-sm font-body-sm">(18 reviews)</span>
+</div>
+</div>
+<!-- Review Bento Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Review 1: Marcus V. -->
+<div class="p-6 rounded-2xl bg-surface-container-low/60 border border-outline-variant/30 flex flex-col justify-between space-y-4 hover:border-outline-variant/70 transition-all">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-label-md">
+                    MV
+                  </div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Marcus V.</h4>
+<p class="text-outline text-[12px]">UC Berkeley Â· Architecture</p>
+</div>
+</div>
+<div class="flex text-amber-500">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" data-weight="fill">star</span>
+<span class="text-body-sm font-bold text-on-surface ml-1">5.0</span>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-sm text-body-sm leading-relaxed">
+                â€œAlex lent me the camera gear in mint condition. Super punctual at the student center locker. Highly recommended lender!â€
+              </p>
+</div>
+<div class="pt-3 border-t border-outline-variant/20 flex items-center justify-between text-outline text-[11px]">
+<span>Borrowed: Sony Alpha 7 IV</span>
+<span>2 weeks ago</span>
+</div>
+</div>
+<!-- Review 2: Chloe T. -->
+<div class="p-6 rounded-2xl bg-surface-container-low/60 border border-outline-variant/30 flex flex-col justify-between space-y-4 hover:border-outline-variant/70 transition-all">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-purple-900 text-white flex items-center justify-center font-bold text-label-md">
+                    CT
+                  </div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Chloe T.</h4>
+<p class="text-outline text-[12px]">Science Commons Â· Bioengineering</p>
+</div>
+</div>
+<div class="flex text-amber-500">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" data-weight="fill">star</span>
+<span class="text-body-sm font-bold text-on-surface ml-1">5.0</span>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-sm text-body-sm leading-relaxed">
+                â€œSmooth rental for finals week study kit. Returned clean and exactly on time. Trustworthy student!â€
+              </p>
+</div>
+<div class="pt-3 border-t border-outline-variant/20 flex items-center justify-between text-outline text-[11px]">
+<span>Borrowed: Scientific Calculator</span>
+<span>1 month ago</span>
+</div>
+</div>
+<!-- Review 3: Liam C. -->
+<div class="p-6 rounded-2xl bg-surface-container-low/60 border border-outline-variant/30 flex flex-col justify-between space-y-4 hover:border-outline-variant/70 transition-all">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-emerald-900 text-white flex items-center justify-center font-bold text-label-md">
+                    LC
+                  </div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Liam C.</h4>
+<p class="text-outline text-[12px]">South Campus Â· Informatics</p>
+</div>
+</div>
+<div class="flex text-amber-500">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" data-weight="fill">star</span>
+<span class="text-body-sm font-bold text-on-surface ml-1">5.0</span>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-sm text-body-sm leading-relaxed">
+                â€œGreat communication throughout the lending period. Item was packaged securely and works flawlessly.â€
+              </p>
+</div>
+<div class="pt-3 border-t border-outline-variant/20 flex items-center justify-between text-outline text-[11px]">
+<span>Borrowed: iPad Pro Pencil Kit</span>
+<span>1 month ago</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component Anchor Implementation) -->
+<footer class="bg-surface-container-low dark:bg-primary-container text-primary dark:text-inverse-primary docked full-width bottom border-t border-outline-variant/30 dark:border-outline/20">
+<div class="w-full px-6 lg:px-12 max-w-[1360px] mx-auto py-12 flex flex-col md:flex-row items-center justify-between gap-6">
+<!-- Brand & Copyright -->
+<div class="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+<span class="text-title-md font-title-md tracking-wider text-primary dark:text-inverse-on-surface font-bold">
+            UNILEND.â„¢
+          </span>
+<span class="hidden sm:inline text-outline">â€¢</span>
+<p class="text-body-sm font-body-sm text-on-surface-variant dark:text-outline-variant">
+            Â© 2025 UNILEND.â„¢ Peer-to-Peer Precision Rental Systems. All rights reserved.
+          </p>
+</div>
+<!-- Links Array per JSON -->
+<div class="flex flex-wrap items-center justify-center gap-6 text-label-md font-label-md">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">
+            Terms of Service
+          </a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">
+            Privacy Policy
+          </a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">
+            Rental Guarantee
+          </a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">
+            Security Verification
+          </a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">
+            Dispute Resolution
+          </a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">
+            Platform Ledger
+          </a>
+</div>
+</div>
+</footer>
+</div>
+<script>
+    // Lightweight micro-interactions for tab indicators
+    document.querySelectorAll('[data-tab]').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        e.preventDefault();
+      });
+    });
+  </script>
+</body></html>

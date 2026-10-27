@@ -1,0 +1,17 @@
+$kind: http-request
+name: http://localhost:8080/api/auth/register
+description: ""
+url: http://localhost:8080/api/auth/register
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"email\": \"owner@unilend.test\",\r
+
+    \  \"password\": \"password123\",\r
+
+    \  \"fullName\": \"Chủ Đồ (Hà)\"\r
+
+    }"
+order: 2000

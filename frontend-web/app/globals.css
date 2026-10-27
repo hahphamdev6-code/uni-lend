@@ -1,0 +1,218 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-on-background: #0b1c30;
+  --color-on-surface: #0b1c30;
+  --color-on-surface-variant: #45464d;
+  --color-surface-subtle: #f4f4f8;
+  --color-brand-dark: #0d0e12;
+  --color-brand-charcoal: #1a1c23;
+  --color-brand-muted: #666d80;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eff4ff;
+  --color-surface-container: #e5eeff;
+  --color-surface-container-high: #dce9ff;
+  --color-surface-container-highest: #d3e4fe;
+  --color-surface: #f8f9ff;
+  --color-surface-bright: #f8f9ff;
+  --color-surface-dim: #cbdbf5;
+  --color-surface-variant: #d3e4fe;
+  --color-surface-tint: #565e74;
+  --color-background: #f8f9ff;
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #131b2e;
+  --color-on-primary-container: #7c839b;
+  --color-primary-fixed: #dae2fd;
+  --color-primary-fixed-dim: #bec6e0;
+  --color-on-primary-fixed: #131b2e;
+  --color-on-primary-fixed-variant: #3f465c;
+  --color-secondary: #712ae2;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #8a4cfc;
+  --color-on-secondary-container: #fffbff;
+  --color-secondary-fixed: #eaddff;
+  --color-secondary-fixed-dim: #d2bbff;
+  --color-on-secondary-fixed: #25005a;
+  --color-on-secondary-fixed-variant: #5a00c6;
+  --color-tertiary: #000000;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #40000c;
+  --color-on-tertiary-container: #f83256;
+  --color-tertiary-fixed: #ffdada;
+  --color-tertiary-fixed-dim: #ffb3b6;
+  --color-on-tertiary-fixed: #40000c;
+  --color-on-tertiary-fixed-variant: #920028;
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+  --color-outline: #76777d;
+  --color-outline-variant: #c6c6cd;
+  --color-inverse-surface: #213145;
+  --color-inverse-on-surface: #eaf1ff;
+  --color-inverse-primary: #bec6e0;
+  --font-sans: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ambient mesh background reproducing the soft rose & lilac aura from the UniLend Web design */
+body {
+  background-color: #fafafd;
+  background-image:
+    radial-gradient(at 95% 10%, rgba(254, 237, 243, 0.75) 0px, transparent 55%),
+    radial-gradient(at 85% 35%, rgba(243, 238, 255, 0.7) 0px, transparent 50%),
+    radial-gradient(at 5% 15%, rgba(248, 249, 255, 0.8) 0px, transparent 40%),
+    radial-gradient(at 50% 90%, rgba(253, 242, 248, 0.4) 0px, transparent 50%);
+  background-attachment: fixed;
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  color: #0d0e12;
+  min-height: 100vh;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.material-symbols-outlined.fill-icon {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.btn-bounce {
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-bounce:hover {
+  transform: translateY(-1px);
+}
+
+.btn-bounce:active {
+  transform: translateY(1px);
+}
+
+.feature-card {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.06);
+}
+
+.ambient-card-halo {
+  background: radial-gradient(
+    circle,
+    rgba(235, 230, 249, 0.25) 0%,
+    rgba(253, 238, 244, 0.18) 50%,
+    transparent 75%
+  );
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+.text-display-hero {
+  font-size: 56px;
+  line-height: 64px;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.text-headline-lg {
+  font-size: 40px;
+  line-height: 48px;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+.text-headline-md {
+  font-size: 28px;
+  line-height: 36px;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.text-headline-sm {
+  font-size: 22px;
+  line-height: 30px;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+
+.text-title-lg {
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+.text-title-md {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.005em;
+  font-weight: 600;
+}
+
+.text-body-lg {
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: -0.005em;
+  font-weight: 400;
+}
+
+.text-body-md {
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0em;
+  font-weight: 400;
+}
+
+.text-body-sm {
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.005em;
+  font-weight: 400;
+}
+
+.text-label-lg {
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+}
+
+.text-label-md {
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.text-label-numeric {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}

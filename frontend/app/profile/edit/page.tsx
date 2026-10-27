@@ -2,21 +2,16 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, useSyncExternalStore, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import { useAuth } from "../../../components/auth-provider";
 import { AuthShell } from "../../../components/auth-shell";
-import {
-  changeCurrentUserPassword,
-  getCurrentUser,
-  getSessionSnapshot,
-  MockAuthError,
-  subscribeToAuth,
-  updateCurrentUser,
-  type UserProfile,
-} from "../../../lib/mock-auth";
+import { ApiClientError } from "../../../lib/api/apiClient";
+import { userService } from "../../../lib/api/userService";
 
 type ProfileValues = {
   fullName: string;
-  email: string;
+  phone: string;
+  university: string;
 };
 
 type PasswordValues = {
@@ -33,15 +28,19 @@ type PasswordErrors = Partial<Record<PasswordField, string>>;
 function validateProfile(values: ProfileValues): ProfileErrors {
   const errors: ProfileErrors = {};
   const fullName = values.fullName.trim();
-  const email = values.email.trim();
+  const phone = values.phone.trim();
+  const university = values.university.trim();
 
   if (!fullName) errors.fullName = "Vui lòng nhập họ và tên.";
   else if (fullName.length < 2) errors.fullName = "Họ và tên cần có ít nhất 2 ký tự.";
   else if (fullName.length > 100) errors.fullName = "Họ và tên không được vượt quá 100 ký tự.";
 
-  if (!email) errors.email = "Vui lòng nhập email.";
-  else if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    errors.email = "Email chưa đúng định dạng.";
+  if (phone && !/^(\+84|0)[0-9]{8,10}$/.test(phone)) {
+    errors.phone = "Số điện thoại không hợp lệ.";
+  }
+
+  if (university.length > 150) {
+    errors.university = "Tên trường tối đa 150 ký tự.";
   }
 
   return errors;
@@ -53,10 +52,10 @@ function validatePassword(values: PasswordValues): PasswordErrors {
   if (!values.currentPassword) errors.currentPassword = "Vui lòng nhập mật khẩu hiện tại.";
 
   if (!values.newPassword) errors.newPassword = "Vui lòng nhập mật khẩu mới.";
-  else if (values.newPassword.length < 8) {
-    errors.newPassword = "Mật khẩu mới cần có ít nhất 8 ký tự.";
-  } else if (values.newPassword.length > 128) {
-    errors.newPassword = "Mật khẩu mới không được vượt quá 128 ký tự.";
+  else if (values.newPassword.length < 6) {
+    errors.newPassword = "Mật khẩu mới cần có ít nhất 6 ký tự.";
+  } else if (values.newPassword.length > 100) {
+    errors.newPassword = "Mật khẩu mới không được vượt quá 100 ký tự.";
   } else if (values.newPassword === values.currentPassword) {
     errors.newPassword = "Mật khẩu mới cần khác mật khẩu hiện tại.";
   }
@@ -71,29 +70,8 @@ function validatePassword(values: PasswordValues): PasswordErrors {
 
 export default function EditProfilePage() {
   const router = useRouter();
-  const sessionSnapshot = useSyncExternalStore(
-    subscribeToAuth,
-    getSessionSnapshot,
-    () => "__loading__",
-  );
-  const profileState = useMemo(() => {
-    if (sessionSnapshot === "__loading__") return { status: "loading" as const };
-    if (!sessionSnapshot) return { status: "unauthenticated" as const };
-
-    try {
-      const user = getCurrentUser();
-      return user
-        ? { status: "authenticated" as const, user }
-        : { status: "unauthenticated" as const };
-    } catch (error) {
-      return {
-        status: "error" as const,
-        message: error instanceof Error ? error.message : "Không thể tải thông tin hồ sơ.",
-      };
-    }
-  }, [sessionSnapshot]);
-  const user: UserProfile | null =
-    profileState.status === "authenticated" ? profileState.user : null;
+  const auth = useAuth();
+  const user = auth.status === "authenticated" ? auth.user : null;
 
   const [profileValues, setProfileValues] = useState<ProfileValues | null>(null);
   const [passwordValues, setPasswordValues] = useState<PasswordValues>({
@@ -107,58 +85,87 @@ export default function EditProfilePage() {
   const [profileError, setProfileError] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const currentProfileValues = profileValues ?? {
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [savingPassword, setSavingPassword] = useState(false);
+
+  const currentProfileValues: ProfileValues = profileValues ?? {
     fullName: user?.fullName ?? "",
-    email: user?.email ?? "",
+    phone: user?.phone ?? "",
+    university: user?.university ?? "",
   };
 
   useEffect(() => {
-    if (profileState.status === "unauthenticated") router.replace("/login");
-  }, [profileState.status, router]);
+    if (auth.status === "unauthenticated") router.replace("/login");
+  }, [auth.status, router]);
 
-  function handleProfileSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleProfileSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (savingProfile) return;
+
     const errors = validateProfile(currentProfileValues);
     setProfileErrors(errors);
     setProfileMessage("");
     setProfileError("");
     if (Object.keys(errors).length > 0) return;
 
+    setSavingProfile(true);
     try {
-      updateCurrentUser(currentProfileValues);
+      await userService.updateProfile(currentProfileValues);
+      auth.refreshUser();
       setProfileMessage("Thông tin hồ sơ đã được cập nhật.");
     } catch (error) {
+      if (error instanceof ApiClientError && error.fieldErrors) {
+        setProfileErrors({
+          fullName: error.fieldErrors.fullName,
+          phone: error.fieldErrors.phone,
+          university: error.fieldErrors.university,
+        });
+      }
       setProfileError(
-        error instanceof MockAuthError
+        error instanceof Error
           ? error.message
           : "Không thể cập nhật hồ sơ. Vui lòng thử lại.",
       );
+    } finally {
+      setSavingProfile(false);
     }
   }
 
-  function handlePasswordSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handlePasswordSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (savingPassword) return;
+
     const errors = validatePassword(passwordValues);
     setPasswordErrors(errors);
     setPasswordMessage("");
     setPasswordError("");
     if (Object.keys(errors).length > 0) return;
 
+    setSavingPassword(true);
     try {
-      changeCurrentUserPassword(passwordValues);
+      await userService.changePassword({
+        oldPassword: passwordValues.currentPassword,
+        newPassword: passwordValues.newPassword,
+      });
+      await userService.login({
+        email: user?.email ?? "",
+        password: passwordValues.newPassword,
+      });
       setPasswordValues({ currentPassword: "", newPassword: "", confirmPassword: "" });
       setPasswordErrors({});
       setPasswordMessage("Mật khẩu đã được thay đổi.");
     } catch (error) {
       setPasswordError(
-        error instanceof MockAuthError
+        error instanceof Error
           ? error.message
           : "Không thể đổi mật khẩu. Vui lòng thử lại.",
       );
+    } finally {
+      setSavingPassword(false);
     }
   }
 
-  if (profileState.status === "loading" || profileState.status === "unauthenticated") {
+  if (auth.status === "loading" || auth.status === "unauthenticated") {
     return <main className="profile-loading" role="status">Đang tải hồ sơ...</main>;
   }
 
@@ -168,8 +175,8 @@ export default function EditProfilePage() {
       title="Chỉnh sửa hồ sơ"
       description="Cập nhật thông tin cá nhân và giữ an toàn cho tài khoản của bạn."
     >
-      {profileState.status === "error" && (
-        <p className="form-alert" role="alert">{profileState.message}</p>
+      {auth.status === "error" && (
+        <p className="form-alert" role="alert">{auth.error}</p>
       )}
 
       <section className="profile-edit-section" aria-labelledby="profile-information-title">
@@ -192,6 +199,7 @@ export default function EditProfilePage() {
               }}
               aria-invalid={Boolean(profileErrors.fullName)}
               aria-describedby={profileErrors.fullName ? "fullName-error" : undefined}
+              disabled={savingProfile}
               required
             />
             {profileErrors.fullName && (
@@ -203,24 +211,61 @@ export default function EditProfilePage() {
             <input
               autoComplete="email"
               id="email"
-              maxLength={254}
               name="email"
               type="email"
-              value={currentProfileValues.email}
+              value={user?.email ?? ""}
+              disabled
+              readOnly
+            />
+          </div>
+          <div className="form-field">
+            <label htmlFor="phone">Số điện thoại</label>
+            <input
+              autoComplete="tel"
+              id="phone"
+              maxLength={20}
+              name="phone"
+              type="tel"
+              value={currentProfileValues.phone}
               onChange={(event) => {
-                setProfileValues({ ...currentProfileValues, email: event.target.value });
-                setProfileErrors((current) => ({ ...current, email: undefined }));
+                setProfileValues({ ...currentProfileValues, phone: event.target.value });
+                setProfileErrors((current) => ({ ...current, phone: undefined }));
                 setProfileMessage("");
               }}
-              aria-invalid={Boolean(profileErrors.email)}
-              aria-describedby={profileErrors.email ? "email-error" : undefined}
-              required
+              aria-invalid={Boolean(profileErrors.phone)}
+              aria-describedby={profileErrors.phone ? "phone-error" : undefined}
+              placeholder="0901234567"
+              disabled={savingProfile}
             />
-            {profileErrors.email && (
-              <span className="field-error" id="email-error">{profileErrors.email}</span>
+            {profileErrors.phone && (
+              <span className="field-error" id="phone-error">{profileErrors.phone}</span>
             )}
           </div>
-          <button className="auth-submit" type="submit">Lưu thông tin</button>
+          <div className="form-field">
+            <label htmlFor="university">Trường đại học</label>
+            <input
+              autoComplete="organization"
+              id="university"
+              maxLength={150}
+              name="university"
+              value={currentProfileValues.university}
+              onChange={(event) => {
+                setProfileValues({ ...currentProfileValues, university: event.target.value });
+                setProfileErrors((current) => ({ ...current, university: undefined }));
+                setProfileMessage("");
+              }}
+              aria-invalid={Boolean(profileErrors.university)}
+              aria-describedby={profileErrors.university ? "university-error" : undefined}
+              placeholder="Đại học Bách Khoa"
+              disabled={savingProfile}
+            />
+            {profileErrors.university && (
+              <span className="field-error" id="university-error">{profileErrors.university}</span>
+            )}
+          </div>
+          <button className="auth-submit" disabled={savingProfile} type="submit">
+            {savingProfile ? "Đang lưu..." : "Lưu thông tin"}
+          </button>
         </form>
       </section>
 
@@ -229,7 +274,7 @@ export default function EditProfilePage() {
         <form className="auth-form" onSubmit={handlePasswordSubmit} noValidate>
           {passwordError && <p className="form-alert" role="alert">{passwordError}</p>}
           {passwordMessage && <p className="form-success" role="status">{passwordMessage}</p>}
-          <PasswordField
+          <PasswordInputField
             error={passwordErrors.currentPassword}
             id="currentPassword"
             label="Mật khẩu hiện tại"
@@ -240,8 +285,9 @@ export default function EditProfilePage() {
             }}
             value={passwordValues.currentPassword}
             autoComplete="current-password"
+            disabled={savingPassword}
           />
-          <PasswordField
+          <PasswordInputField
             error={passwordErrors.newPassword}
             id="newPassword"
             label="Mật khẩu mới"
@@ -252,8 +298,9 @@ export default function EditProfilePage() {
             }}
             value={passwordValues.newPassword}
             autoComplete="new-password"
+            disabled={savingPassword}
           />
-          <PasswordField
+          <PasswordInputField
             error={passwordErrors.confirmPassword}
             id="confirmPassword"
             label="Nhập lại mật khẩu mới"
@@ -264,8 +311,11 @@ export default function EditProfilePage() {
             }}
             value={passwordValues.confirmPassword}
             autoComplete="new-password"
+            disabled={savingPassword}
           />
-          <button className="auth-submit" type="submit">Cập nhật mật khẩu</button>
+          <button className="auth-submit" disabled={savingPassword} type="submit">
+            {savingPassword ? "Đang cập nhật..." : "Cập nhật mật khẩu"}
+          </button>
         </form>
       </section>
 
@@ -274,8 +324,9 @@ export default function EditProfilePage() {
   );
 }
 
-function PasswordField({
+function PasswordInputField({
   autoComplete,
+  disabled,
   error,
   id,
   label,
@@ -283,6 +334,7 @@ function PasswordField({
   value,
 }: {
   autoComplete: "current-password" | "new-password";
+  disabled?: boolean;
   error?: string;
   id: PasswordField;
   label: string;
@@ -303,6 +355,7 @@ function PasswordField({
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
+        disabled={disabled}
         required
       />
       {error && <span className="field-error" id={errorId}>{error}</span>}

@@ -5,6 +5,18 @@ export interface ApiResponse<T> {
   statusCode: number;
 }
 
+export interface AuthResponse {
+  id: number;
+  email: string;
+  fullName: string;
+  roles: string[];
+  emailVerified?: boolean;
+  averageRating?: number | null;
+  reviewCount?: number | null;
+  tokenType?: string;
+  token?: string;
+}
+
 export interface AdminStats {
   totalUsers: number;
   totalItems: number;
@@ -127,6 +139,7 @@ export interface UserProfileResponse {
   avatarUrl: string | null;
   roles: string[];
   enabled: boolean;
+  emailVerified?: boolean;
   averageRating: number;
   reviewCount: number;
   createdAt: string;

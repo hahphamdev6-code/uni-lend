@@ -2,8 +2,7 @@
 
 import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import type { UserRole } from "../lib/mock-auth";
-import { useAuth } from "./auth-provider";
+import { useAuth, type UserRole } from "./auth-provider";
 
 type RoleGuardProps = {
   children: ReactNode;
