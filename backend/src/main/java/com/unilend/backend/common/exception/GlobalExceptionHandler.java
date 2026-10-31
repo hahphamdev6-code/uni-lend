@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ApiResponse<Void>> handleMethodNotAllowed(HttpRequestMethodNotSupportedException ex) {
-        return build(ErrorCode.METHOD_NOT_ALLOWED, ex.getMessage());
+        return build(ErrorCode.METHOD_NOT_ALLOWED, ErrorCode.METHOD_NOT_ALLOWED.getDefaultMessage());
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
@@ -78,7 +78,6 @@ public class GlobalExceptionHandler {
         return build(ErrorCode.RESOURCE_NOT_FOUND, "Đường dẫn không tồn tại");
     }
 
-    // Vi phạm unique/foreign key ở DB (ví dụ trùng email, trùng tên category)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse<Void>> handleDataIntegrity(DataIntegrityViolationException ex) {
         log.warn("Data integrity violation: {}", ex.getMostSpecificCause().getMessage());
@@ -90,7 +89,7 @@ public class GlobalExceptionHandler {
         return build(ErrorCode.BAD_REQUEST, "Vượt giới hạn upload: mỗi ảnh tối đa 5MB, toàn bộ request tối đa 26MB");
     }
 
-    // Bắt mọi lỗi còn lại, không lộ chi tiết nội bộ ra client
+   
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleUnexpected(Exception ex) {
         log.error("Unexpected error", ex);
@@ -102,4 +101,5 @@ public class GlobalExceptionHandler {
                 .status(code.getStatus())
                 .body(ApiResponse.error(code.name(), message));
     }
+    
 }

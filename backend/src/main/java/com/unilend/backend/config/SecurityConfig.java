@@ -34,6 +34,9 @@ public class SecurityConfig {
     @Value("${app.cors.allowed-origins}")
     private List<String> allowedOrigins;
 
+    @Value("${app.swagger.enabled:true}")
+    private boolean swaggerEnabled;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -47,28 +50,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // API stateless dùng JWT
+                .csrf(AbstractHttpConfigurer::disable) 
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/v1/auth/**", "/api/auth/**", "/auth/**").permitAll()
-                        .requestMatchers("/api/v1/admin/**", "/api/admin/**", "/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/error").permitAll()
-                        // Mở dần các endpoint public khác ở đây, ví dụ:
-                        .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,
-                                "/api/items/me", "/items/me",
-                                "/api/users/me", "/users/me", "/api/v1/users/me").authenticated()
-                        .requestMatchers(HttpMethod.GET,
-                                "/api/categories", "/api/categories/*",
-                                "/categories", "/categories/*",
-                                "/api/items", "/api/items/*",
-                                "/items", "/items/*",
-                                "/api/items/*/booked-dates", "/items/*/booked-dates",
-                                "/api/users/*/reviews", "/users/*/reviews").permitAll()
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                            .requestMatchers("/api/v1/auth/**", "/api/auth/**", "/auth/**").permitAll()
+                            .requestMatchers("/api/v1/admin/**", "/api/admin/**", "/admin/**").hasRole("ADMIN");
+                    if (swaggerEnabled) {
+                        auth.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll();
+                    } else {
+                        auth.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").denyAll();
+                    }
+                    auth.requestMatchers("/error").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
+                            .requestMatchers(HttpMethod.GET,
+                                    "/api/items/me", "/items/me",
+                                    "/api/users/me", "/users/me", "/api/v1/users/me").authenticated()
+                            .requestMatchers(HttpMethod.GET,
+                                    "/api/categories", "/api/categories/*",
+                                    "/categories", "/categories/*",
+                                    "/api/items", "/api/items/*",
+                                    "/items", "/items/*",
+                                    "/api/items/*/booked-dates", "/items/*/booked-dates",
+                                    "/api/users/*/reviews", "/users/*/reviews").permitAll()
+                            .anyRequest().authenticated();
+                })
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((req, res, e) -> writeError(res, ErrorCode.UNAUTHORIZED))
                         .accessDeniedHandler((req, res, e) -> writeError(res, ErrorCode.FORBIDDEN)))
@@ -90,7 +97,7 @@ public class SecurityConfig {
         return source;
     }
 
-    // Trả lỗi cùng format ApiResponse cho 401/403 (các lỗi xảy ra trước khi vào controller)
+  
     private void writeError(HttpServletResponse res, ErrorCode code) throws IOException {
         res.setStatus(code.getStatus().value());
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);

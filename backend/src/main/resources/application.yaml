@@ -1,11 +1,13 @@
 spring:
   config:
     import: optional:file:.env[.properties]
+
   servlet:
     multipart:
       # 5 images x 5MB plus multipart headers; enforced by the servlet parser.
       max-file-size: 5MB
       max-request-size: 26MB
+
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3306/uni_lend}
     username: ${DB_USERNAME:root}
@@ -22,6 +24,7 @@ spring:
     validate-on-migrate: true
     validate-migration-naming: true
     fail-on-missing-locations: true
+
   sql:
     init:
       mode: never
@@ -47,6 +50,13 @@ spring:
           starttls:
             enable: ${SMTP_STARTTLS:false}
 
+# springdoc phải nằm ở cấp cao nhất, không nằm trong "spring:"
+springdoc:
+  api-docs:
+    enabled: ${SWAGGER_ENABLED:true}
+  swagger-ui:
+    enabled: ${SWAGGER_ENABLED:true}
+
 app:
   jwt:
     # Base64, tối thiểu 32 byte. Tạo bằng: openssl rand -base64 32
@@ -70,6 +80,8 @@ app:
     login-window-seconds: ${RATE_LIMIT_LOGIN_WINDOW_SECONDS:60}
     email-max-attempts: ${RATE_LIMIT_EMAIL_MAX:3}
     email-window-seconds: ${RATE_LIMIT_EMAIL_WINDOW_SECONDS:900}
+  swagger:
+    enabled: ${SWAGGER_ENABLED:true}
 
 server:
   port: 8080
