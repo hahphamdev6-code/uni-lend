@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.Optional;
 
@@ -56,6 +57,7 @@ class UserServiceTest {
     @Test
     void getById_includesAverageRatingAndReviewCount() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(currentUserService.getCurrentUser()).thenReturn(user);
         when(reviewService.getAverageRating(1L)).thenReturn(4.5);
         when(reviewService.getReviewCount(1L)).thenReturn(8L);
 
@@ -65,6 +67,19 @@ class UserServiceTest {
         assertEquals("Nguyễn Văn A", profile.fullName());
         assertEquals(4.5, profile.averageRating());
         assertEquals(8L, profile.reviewCount());
+    }
+    @Test
+    void getById_anonymousViewer_returnsPublicProfile() {
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(reviewService.getAverageRating(1L)).thenReturn(4.5);
+        when(reviewService.getReviewCount(1L)).thenReturn(8L);
+        when(currentUserService.getCurrentUser())
+                .thenThrow(new BusinessException(ErrorCode.UNAUTHORIZED));
+
+        UserProfileResponse profile = userService.getById(1L);
+
+        assertEquals("Nguyễn Văn A", profile.fullName());
+        assertNull(profile.email());
     }
 
     @Test
@@ -121,5 +136,39 @@ class UserServiceTest {
         verify(passwordEncoder, never()).matches(org.mockito.ArgumentMatchers.anyString(),
                 org.mockito.ArgumentMatchers.anyString());
         verify(userRepository, never()).save(user);
+    }
+    @Test
+    void getById_forOtherRegularUser_hidesPrivateFields() {
+        user.setPhone("0912345678");
+        User viewer = User.builder().id(2L).email("viewer@unilend.test").fullName("Người xem").build();
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(reviewService.getAverageRating(1L)).thenReturn(4.5);
+        when(reviewService.getReviewCount(1L)).thenReturn(8L);
+        when(currentUserService.getCurrentUser()).thenReturn(viewer);
+        when(currentUserService.isAdmin(viewer)).thenReturn(false);
+
+        UserProfileResponse profile = userService.getById(1L);
+
+        assertEquals(1L, profile.id());
+        assertEquals("Nguyễn Văn A", profile.fullName());
+        org.junit.jupiter.api.Assertions.assertNull(profile.email());
+        org.junit.jupiter.api.Assertions.assertNull(profile.phone());
+        org.junit.jupiter.api.Assertions.assertNull(profile.roles());
+    }
+
+    @Test
+    void getById_forAdminViewer_includesPrivateFields() {
+        user.setPhone("0912345678");
+        User admin = User.builder().id(99L).email("admin@unilend.test").fullName("Admin").build();
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(reviewService.getAverageRating(1L)).thenReturn(4.5);
+        when(reviewService.getReviewCount(1L)).thenReturn(8L);
+        when(currentUserService.getCurrentUser()).thenReturn(admin);
+        when(currentUserService.isAdmin(admin)).thenReturn(true);
+
+        UserProfileResponse profile = userService.getById(1L);
+
+        assertEquals("user@unilend.test", profile.email());
+        assertEquals("0912345678", profile.phone());
     }
 }

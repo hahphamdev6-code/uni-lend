@@ -26,7 +26,7 @@ class DatabaseMigrationTest {
     void createsAllTablesAndMigratesOnlyOnce() throws Exception {
         String url = url();
         Flyway flyway = flyway(url);
-        assertEquals(2, flyway.migrate().migrationsExecuted);
+        assertEquals(3, flyway.migrate().migrationsExecuted);
         flyway.validate();
         try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
             for (String table : new String[]{"users", "user_roles", "categories", "items",
@@ -88,7 +88,10 @@ class DatabaseMigrationTest {
     void explicitBaselineKeepsExistingRowsAndSkipsV1() throws Exception {
         String url = url();
         // Create a real V1 schema as a stand-in for an already initialized dev database.
-        flyway(url).migrate();
+        Flyway.configure().dataSource(url, "sa", "")
+        .locations("classpath:db/migration/h2")
+        .target("1")
+        .cleanDisabled(true).load().migrate();
         try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
             insertOwner(connection);
             // Test database only: simulate pre-Flyway ownership by removing only its history.
@@ -98,9 +101,10 @@ class DatabaseMigrationTest {
                 .locations("classpath:db/migration/h2").baselineVersion("1")
                 .baselineOnMigrate(false).cleanDisabled(true).load();
         adoption.baseline();
-        assertEquals(0, adoption.migrate().migrationsExecuted);
+        assertEquals(2, adoption.migrate().migrationsExecuted);
         try (Connection connection = DriverManager.getConnection(url, "sa", "")) {
             assertEquals(1, scalar(connection, "SELECT COUNT(*) FROM users"));
+            assertEquals(0, scalar(connection, "SELECT COUNT(*) FROM reports"));
             assertEquals(1, scalar(connection, "SELECT COUNT(*) FROM \"flyway_schema_history\" "
                     + "WHERE \"type\" = 'BASELINE' AND \"version\" = '1'"));
         }
@@ -112,9 +116,9 @@ class DatabaseMigrationTest {
     }
 
     private int scalar(Connection connection, String sql) throws SQLException {
-        try (var statement = connection.createStatement(); var result = statement.executeQuery(sql)) {
-            assertTrue(result.next());
-            return result.getInt(1);
+    try (var statement = connection.createStatement(); var result = statement.executeQuery(sql)) {
+        assertTrue(result.next());
+        return result.getInt(1);
         }
     }
 }

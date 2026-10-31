@@ -45,7 +45,6 @@ public class Item extends BaseEntity {
     @Column(nullable = false, length = 20)
     @Builder.Default
     private ItemStatus status = ItemStatus.AVAILABLE;
-
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     @Builder.Default

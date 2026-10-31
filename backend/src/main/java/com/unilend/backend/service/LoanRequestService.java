@@ -57,7 +57,7 @@ public class LoanRequestService {
         Item item = itemRepository.findWithDetailsById(req.itemId())
                 .orElseThrow(() -> new ResourceNotFoundException("Item", req.itemId()));
 
-        if (item.getOwner().getId().equals(borrower.getId())) {
+if (item.getOwner().getId().equals(borrower.getId())) {
             throw new BusinessException(ErrorCode.BAD_REQUEST, "Bạn không thể mượn đồ của chính mình");
         }
         if (item.getStatus() == ItemStatus.UNAVAILABLE) {

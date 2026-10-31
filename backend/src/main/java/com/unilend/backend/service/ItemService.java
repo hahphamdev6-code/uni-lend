@@ -32,8 +32,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -74,7 +74,6 @@ public class ItemService {
         item.setTitle(req.title().trim());
         item.setDescription(req.description());
         item.setCategory(resolveCategory(req.categoryId()));
-
         if (req.status() != null && req.status() != item.getStatus()) {
             if (req.status() == ItemStatus.LENT_OUT) {
                 throw new BusinessException(ErrorCode.BAD_REQUEST,
@@ -104,7 +103,6 @@ public class ItemService {
 
     @Transactional
     public ItemResponse uploadImages(Long itemId, List<MultipartFile> files) {
-        // Serialize uploads of the same item before counting its existing images.
         Item item = itemRepository.findByIdForImageUpload(itemId)
                 .orElseThrow(() -> new ResourceNotFoundException("món đồ", itemId));
         assertOwner(item);
@@ -118,7 +116,6 @@ public class ItemService {
                     "Mỗi món đồ chỉ được tối đa %d ảnh (hiện có %d ảnh)".formatted(MAX_IMAGES_PER_ITEM, currentCount));
         }
 
-        // Validate the whole batch before writing any file; never trust client MIME or suffix.
         List<ImageUploadValidator.ValidatedImage> validated = files.stream()
                 .map(imageUploadValidator::validate).toList();
         List<String> createdUrls = new ArrayList<>();
@@ -140,7 +137,6 @@ public class ItemService {
                 ItemImage itemImage = ItemImage.builder().item(item).imageUrl(imageUrl).build();
                 item.getImages().add(itemImageRepository.save(itemImage));
             }
-            // Surface constraint failures now; afterCompletion also covers failures at commit.
             itemImageRepository.flush();
             return ItemResponse.from(item);
         } catch (RuntimeException ex) {
@@ -170,6 +166,15 @@ public class ItemService {
         return ItemResponse.from(getWithDetailsOrThrow(id));
     }
 
+    private boolean canViewHiddenItem(Item item) {
+        try {
+            User viewer = currentUserService.getCurrentUser();
+            return item.getOwner().getId().equals(viewer.getId()) || currentUserService.isAdmin(viewer);
+        } catch (BusinessException ex) {
+            return false;
+        }
+    }
+
     @Transactional(readOnly = true)
     public PageResponse<ItemResponse> search(String keyword, Long categoryId, ItemStatus status,
                                              int page, int size) {
@@ -186,8 +191,6 @@ public class ItemService {
                 itemRepository.findByOwnerId(me.getId(), pageable(page, size)),
                 ItemResponse::from);
     }
-
-    // ---- helpers ----
 
     private String storeFile(Long itemId, ImageUploadValidator.ValidatedImage image) {
         String filename = UUID.randomUUID() + image.extension();

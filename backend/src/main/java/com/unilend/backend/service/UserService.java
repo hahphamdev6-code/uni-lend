@@ -23,6 +23,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ReviewService reviewService;
 
+    
     @Transactional(readOnly = true)
     public UserProfileResponse getMyProfile() {
         User user = currentUserService.getCurrentUser();
@@ -31,10 +32,21 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserProfileResponse getById(Long id) {
-        User user = userRepository.findById(id)
+        User target = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", id));
-        return toProfileResponse(user);
+        double avgRating = reviewService.getAverageRating(target.getId());
+        long reviewCount = reviewService.getReviewCount(target.getId());
+
+        try {
+            User viewer = currentUserService.getCurrentUser();
+            if (viewer.getId().equals(target.getId()) || currentUserService.isAdmin(viewer)) {
+                return UserProfileResponse.from(target, avgRating, reviewCount);
+            }
+        } catch (BusinessException ignored) {
+        }
+        return UserProfileResponse.publicProfileFrom(target, avgRating, reviewCount);
     }
+
 
     @Transactional
     public UserProfileResponse updateMyProfile(UpdateProfileRequest req) {
@@ -76,4 +88,5 @@ public class UserService {
         long reviewCount = reviewService.getReviewCount(user.getId());
         return UserProfileResponse.from(user, avgRating, reviewCount);
     }
+    
 }
