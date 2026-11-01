@@ -81,7 +81,8 @@ public class GlobalExceptionHandler {
     // Vi phạm unique/foreign key ở DB (ví dụ trùng email, trùng tên category)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse<Void>> handleDataIntegrity(DataIntegrityViolationException ex) {
-        log.warn("Data integrity violation: {}", ex.getMostSpecificCause().getMessage());
+        // Database messages may include values such as email addresses; keep logs generic.
+        log.warn("Data integrity violation");
         return build(ErrorCode.CONFLICT, "Dữ liệu bị trùng hoặc vi phạm ràng buộc");
     }
 
@@ -93,7 +94,8 @@ public class GlobalExceptionHandler {
     // Bắt mọi lỗi còn lại, không lộ chi tiết nội bộ ra client
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleUnexpected(Exception ex) {
-        log.error("Unexpected error", ex);
+        // Do not log exception messages or stack traces that can contain request data or secrets.
+        log.error("Unexpected error type={}", ex.getClass().getSimpleName());
         return build(ErrorCode.INTERNAL_ERROR, ErrorCode.INTERNAL_ERROR.getDefaultMessage());
     }
 

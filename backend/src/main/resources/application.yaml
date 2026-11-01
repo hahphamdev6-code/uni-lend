@@ -73,3 +73,30 @@ app:
 
 server:
   port: 8080
+
+management:
+  health:
+    mail:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics
+  endpoint:
+    health:
+      show-details: never
+      show-components: never
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState,db
+        liveness:
+          include: livenessState
+  metrics:
+    tags:
+      application: unilend-backend
+
+logging:
+  pattern:
+    level: "%5p [requestId:%X{requestId:-none}]"
