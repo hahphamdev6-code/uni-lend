@@ -21,7 +21,10 @@ public record ItemResponse(
         Instant createdAt
 ) {
 
-    public record OwnerSummary(Long id, String fullName) {
+    public record OwnerSummary(Long id, String fullName, String email, String university, String avatarUrl) {
+        public OwnerSummary(Long id, String fullName) {
+            this(id, fullName, null, null, null);
+        }
     }
 
     public static ItemResponse from(Item i) {
@@ -38,7 +41,13 @@ public record ItemResponse(
                 i.getTitle(),
                 i.getDescription(),
                 i.getStatus(),
-                new OwnerSummary(i.getOwner().getId(), i.getOwner().getFullName()),
+                new OwnerSummary(
+                        i.getOwner().getId(),
+                        i.getOwner().getFullName(),
+                        i.getOwner().getEmail(),
+                        i.getOwner().getUniversity(),
+                        i.getOwner().getAvatarUrl()
+                ),
                 i.getCategory() == null ? null : CategoryResponse.from(i.getCategory()),
                 urls,
                 imageDtos,

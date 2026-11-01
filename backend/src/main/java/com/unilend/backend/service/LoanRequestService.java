@@ -188,7 +188,7 @@ public class LoanRequestService {
     @Transactional
     public LoanRequestResponse markReturned(Long loanId, User actor) {
         LoanRequest loan = findLoanForUpdate(loanId);
-        requireOwner(loan, actor);
+        requireParticipant(loan, actor);
         if (loan.getStatus() != LoanStatus.APPROVED && loan.getStatus() != LoanStatus.OVERDUE) {
             throw new BusinessException(ErrorCode.CONFLICT, "Chỉ xác nhận trả được với khoản mượn đã duyệt");
         }
@@ -204,10 +204,16 @@ public class LoanRequestService {
             item.setStatus(ItemStatus.AVAILABLE);
         }
 
+        boolean isActorOwner = loan.getItem().getOwner().getId().equals(actor.getId());
+        Long recipientId = isActorOwner ? loan.getBorrower().getId() : loan.getItem().getOwner().getId();
+        String notifMsg = isActorOwner
+                ? "Chủ đồ đã xác nhận bạn đã trả món đồ \"%s\"".formatted(item.getTitle())
+                : "Người mượn %s đã xác nhận hoàn trả món đồ \"%s\"".formatted(actor.getFullName(), item.getTitle());
+
         notificationService.notify(
-                loan.getBorrower().getId(),
+                recipientId,
                 NotificationType.LOAN_RETURNED,
-                "Chủ đồ đã xác nhận bạn đã trả món đồ \"%s\"".formatted(item.getTitle()),
+                notifMsg,
                 "/loans/" + loan.getId()
         );
         return toResponse(loan, actor);
@@ -412,6 +418,14 @@ public class LoanRequestService {
     private void requireBorrower(LoanRequest loan, User actor) {
         if (!loan.getBorrower().getId().equals(actor.getId())) {
             throw new BusinessException(ErrorCode.FORBIDDEN, "Chỉ người gửi yêu cầu mới được thực hiện thao tác này");
+        }
+    }
+
+    private void requireParticipant(LoanRequest loan, User actor) {
+        boolean isBorrower = loan.getBorrower().getId().equals(actor.getId());
+        boolean isOwner = loan.getItem().getOwner().getId().equals(actor.getId());
+        if (!isBorrower && !isOwner && !isAdmin(actor)) {
+            throw new BusinessException(ErrorCode.FORBIDDEN, "Bạn không có quyền thao tác trên khoản mượn này");
         }
     }
 

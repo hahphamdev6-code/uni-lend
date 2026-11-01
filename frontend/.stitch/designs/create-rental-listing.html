@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UNILEND.™ | Create Rental Listing</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary": "#ffffff",
+            "secondary-fixed": "#eaddff",
+            "on-error": "#ffffff",
+            "surface-tint": "#565e74",
+            "on-background": "#0b1c30",
+            "tertiary-fixed": "#ffdada",
+            "error": "#ba1a1a",
+            "tertiary-container": "#40000c",
+            "on-error-container": "#93000a",
+            "tertiary": "#000000",
+            "secondary-fixed-dim": "#d2bbff",
+            "primary-fixed": "#dae2fd",
+            "on-tertiary-fixed-variant": "#920028",
+            "on-secondary-container": "#fffbff",
+            "surface-dim": "#cbdbf5",
+            "secondary": "#712ae2",
+            "outline-variant": "#c6c6cd",
+            "outline": "#76777d",
+            "inverse-surface": "#213145",
+            "on-secondary": "#ffffff",
+            "tertiary-fixed-dim": "#ffb3b6",
+            "secondary-container": "#8a4cfc",
+            "error-container": "#ffdad6",
+            "inverse-primary": "#bec6e0",
+            "on-surface": "#0b1c30",
+            "primary-container": "#131b2e",
+            "surface-bright": "#f8f9ff",
+            "surface-container-highest": "#d3e4fe",
+            "on-secondary-fixed": "#25005a",
+            "surface-variant": "#d3e4fe",
+            "on-primary-fixed": "#131b2e",
+            "on-primary": "#ffffff",
+            "surface-container": "#e5eeff",
+            "on-tertiary-fixed": "#40000c",
+            "surface": "#f8f9ff",
+            "background": "#f8f9ff",
+            "on-surface-variant": "#45464d",
+            "on-tertiary-container": "#f83256",
+            "primary": "#000000",
+            "on-secondary-fixed-variant": "#5a00c6",
+            "inverse-on-surface": "#eaf1ff",
+            "surface-container-high": "#dce9ff",
+            "primary-fixed-dim": "#bec6e0",
+            "surface-container-low": "#eff4ff",
+            "on-primary-container": "#7c839b",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed-variant": "#3f465c"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "1rem",
+            "space-2xl": "4rem",
+            "gutter-mobile": "1rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "margin": "2rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "gutter-desktop": "2rem",
+            "margin-desktop": "3rem",
+            "space-xl": "2.5rem",
+            "space-3xl": "6rem"
+          },
+          "fontFamily": {
+            "display-hero": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "title-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-numeric": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "title-md": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-md": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-sm": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "label-lg": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "label-numeric": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none !important;
+      border-color: #0b1c30 !important;
+      box-shadow: 0 0 0 3px rgba(11, 28, 48, 0.08) !important;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- TopNavBar (Shared Component) -->
+<header class="docked full-width top-0 sticky z-50 bg-surface-container-lowest/90 dark:bg-surface/90 backdrop-blur-md border-b border-outline-variant/40 dark:border-outline-variant/20 shadow-sm dark:shadow-none">
+<div class="max-w-[1360px] mx-auto px-margin-desktop flex items-center justify-between h-16 w-full">
+<!-- Left: Logo & Search -->
+<div class="flex items-center gap-space-lg">
+<a class="text-title-lg font-title-lg font-bold tracking-tight text-on-surface dark:text-inverse-on-surface" href="#">
+          UNILEND.™
+        </a>
+<div class="hidden lg:flex items-center bg-surface-container-low px-3 py-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant w-64">
+<span class="material-symbols-outlined text-outline text-lg mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none p-0 text-body-sm font-body-sm focus:ring-0 w-full placeholder:text-outline text-on-surface" placeholder="Search verified gear..." type="text"/>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-space-lg">
+<a class="text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface font-title-md text-title-md transition-colors hover:text-primary dark:hover:text-inverse-primary duration-150" href="#">Home</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface font-title-md text-title-md transition-colors hover:text-primary dark:hover:text-inverse-primary duration-150" href="#">Categories</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface font-title-md text-title-md transition-colors hover:text-primary dark:hover:text-inverse-primary duration-150" href="#">Rent</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface font-title-md text-title-md transition-colors hover:text-primary dark:hover:text-inverse-primary duration-150" href="#">Explore</a>
+<a class="text-primary dark:text-inverse-primary border-b-2 border-primary dark:border-inverse-primary pb-1 font-title-md text-title-md active:scale-[0.99] transition-transform duration-150" href="#">Join / List an Item</a>
+</nav>
+<!-- Trailing Action Cluster -->
+<div class="flex items-center gap-space-md">
+<button aria-label="Notifications" class="p-2 text-on-surface-variant hover:text-on-surface rounded-full transition-colors relative" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<button aria-label="Favorites" class="p-2 text-on-surface-variant hover:text-on-surface rounded-full transition-colors hidden sm:block" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="favorite">favorite</span>
+</button>
+<div class="h-5 w-[1px] bg-outline-variant/40 hidden sm:block"></div>
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant/60 flex items-center justify-center font-bold text-body-sm text-on-surface">
+            MK
+          </div>
+<span class="text-label-lg font-label-lg text-on-surface hidden sm:inline">M. Kensington</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Container Layout (Centered ~1120px) -->
+<main class="flex-grow max-w-[1120px] mx-auto w-full px-margin-mobile md:px-margin pt-space-xl pb-space-3xl">
+<!-- Breadcrumb & Page Header -->
+<section class="mb-space-xl">
+<nav class="flex items-center gap-2 text-label-md font-label-md text-outline uppercase tracking-wider mb-2">
+<a class="hover:text-on-surface transition-colors" href="#">Home</a>
+<span class="text-outline-variant">/</span>
+<a class="hover:text-on-surface transition-colors" href="#">My Listings</a>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface font-semibold">Create Listing</span>
+</nav>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md mt-3">
+<div>
+<h1 class="text-headline-md md:text-headline-lg font-headline-md md:font-headline-lg text-on-surface tracking-tight">
+            Share What You Own. Earn When Others Need It.
+          </h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant mt-2 max-w-2xl">
+            List your items on UniLend and let others make the most of what you already own. Protected by SafeGuarantee™.
+          </p>
+</div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-lowest rounded-full border border-outline-variant/40 shadow-sm self-start md:self-auto">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="text-label-md font-label-md text-on-surface">Campus Hub Active</span>
+</div>
+</div>
+<!-- Horizontal Multi-step Progress Indicator -->
+<div class="mt-space-lg pt-space-lg border-t border-outline-variant/30">
+<div class="grid grid-cols-3 gap-3 md:gap-space-md">
+<!-- Step 1 (Active) -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-lowest border border-on-surface/20 shadow-sm">
+<span class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center text-label-md font-label-md font-bold">
+              1
+            </span>
+<div class="min-w-0">
+<p class="text-label-lg font-label-lg font-bold text-on-surface truncate">Item Details</p>
+<p class="text-body-sm font-body-sm text-outline hidden sm:block">Specs &amp; condition</p>
+</div>
+</div>
+<!-- Step 2 (Upcoming) -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-lowest/60 border border-outline-variant/30 opacity-75">
+<span class="w-6 h-6 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center text-label-md font-label-md">
+              2
+            </span>
+<div class="min-w-0">
+<p class="text-label-lg font-label-lg font-semibold text-on-surface-variant truncate">Rental &amp; Pricing</p>
+<p class="text-body-sm font-body-sm text-outline hidden sm:block">Rates &amp; schedules</p>
+</div>
+</div>
+<!-- Step 3 (Upcoming) -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-lowest/60 border border-outline-variant/30 opacity-75">
+<span class="w-6 h-6 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center text-label-md font-label-md">
+              3
+            </span>
+<div class="min-w-0">
+<p class="text-label-lg font-label-lg font-semibold text-on-surface-variant truncate">Review &amp; Publish</p>
+<p class="text-body-sm font-body-sm text-outline hidden sm:block">Safety clearance</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Two-Column Form Split Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Left Column: Primary Submission Form (~68% width -> col-span-8) -->
+<form class="lg:col-span-8 space-y-space-xl" onsubmit="event.preventDefault();">
+<!-- SECTION 1: Item Details -->
+<section class="bg-surface-container-lowest rounded-2xl p-6 md:p-space-lg border border-outline-variant/30 shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/20 mb-6">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined text-[18px]" data-icon="inventory_2">inventory_2</span>
+</span>
+<h2 class="text-title-lg font-title-lg text-on-surface tracking-tight">1. Tell Us About Your Item</h2>
+</div>
+<span class="text-label-md font-label-md text-outline uppercase tracking-wider">Required fields *</span>
+</div>
+<div class="space-y-space-md">
+<!-- Item Name -->
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2" for="item-name">
+                Listing Title / Item Name <span class="text-error">*</span>
+</label>
+<input class="w-full h-11 px-3.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline transition-colors" id="item-name" placeholder="e.g. Sony Alpha 7 IV Mirrorless Kit" type="text" value="Sony Alpha 7 IV Mirrorless Kit"/>
+</div>
+<!-- Category & Brand/Model Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2" for="item-category">
+                  Category <span class="text-error">*</span>
+</label>
+<div class="relative">
+<select class="w-full h-11 px-3.5 pr-10 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md font-body-md text-on-surface appearance-none transition-colors" id="item-category">
+<option selected="" value="cameras">Cameras &amp; Photography</option>
+<option value="electronics">Electronics</option>
+<option value="appliances">Home Appliances</option>
+<option value="tools">Tools &amp; Equipment</option>
+<option value="outdoors">Travel &amp; Outdoors</option>
+<option value="fitness">Sports &amp; Fitness</option>
+<option value="furniture">Furniture</option>
+<option value="other">Other Items</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-outline pointer-events-none text-[20px]" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2" for="item-brand">
+                  Brand / Model <span class="text-outline font-normal">(Optional)</span>
+</label>
+<input class="w-full h-11 px-3.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline transition-colors" id="item-brand" placeholder="e.g. Sony / ILCE-7M4" type="text" value="Sony / ILCE-7M4"/>
+</div>
+</div>
+<!-- Description -->
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2" for="item-description">
+                Detailed Description <span class="text-error">*</span>
+</label>
+<textarea class="w-full p-3.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline transition-colors leading-relaxed" id="item-description" placeholder="Mention item condition, included cables, lenses, chargers, protective carrying cases, and essential operating instructions..." rows="4">Flawless full-frame Sony A7 IV kit. Includes Sony FE 24-70mm f/2.8 GM lens, 2x genuine Sony NP-FZ100 batteries, dual battery fast charger, 128GB Sony Tough V90 SD card, and a Peak Design padded sling bag. Handed over with sensor inspection verified.</textarea>
+<div class="flex justify-between items-center mt-1.5 text-body-sm font-body-sm text-outline">
+<span>Minimum 40 characters for expedited verification.</span>
+<span class="text-label-numeric font-label-numeric">264 / 2,000</span>
+</div>
+</div>
+<!-- Condition Selector -->
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2.5">
+                Item Condition <span class="text-error">*</span>
+</label>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+<label class="cursor-pointer">
+<input class="sr-only peer" name="condition" type="radio" value="new"/>
+<div class="h-full p-3 rounded-xl border border-outline-variant/50 bg-surface-container-lowest peer-checked:border-on-surface peer-checked:bg-surface-container-low peer-checked:ring-1 peer-checked:ring-on-surface transition-all flex flex-col justify-between">
+<p class="text-label-lg font-label-lg font-bold text-on-surface">New</p>
+<p class="text-body-sm font-body-sm text-outline mt-1 leading-snug">Sealed or never operated.</p>
+</div>
+</label>
+<label class="cursor-pointer">
+<input checked="" class="sr-only peer" name="condition" type="radio" value="like_new"/>
+<div class="h-full p-3 rounded-xl border border-outline-variant/50 bg-surface-container-lowest peer-checked:border-on-surface peer-checked:bg-surface-container-low peer-checked:ring-1 peer-checked:ring-on-surface transition-all flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<p class="text-label-lg font-label-lg font-bold text-on-surface">Like New</p>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<p class="text-body-sm font-body-sm text-outline mt-1 leading-snug">Pristine, zero signs of wear.</p>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="sr-only peer" name="condition" type="radio" value="good"/>
+<div class="h-full p-3 rounded-xl border border-outline-variant/50 bg-surface-container-lowest peer-checked:border-on-surface peer-checked:bg-surface-container-low peer-checked:ring-1 peer-checked:ring-on-surface transition-all flex flex-col justify-between">
+<p class="text-label-lg font-label-lg font-bold text-on-surface">Good</p>
+<p class="text-body-sm font-body-sm text-outline mt-1 leading-snug">Minor cosmetic wear, fully sound.</p>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="sr-only peer" name="condition" type="radio" value="fair"/>
+<div class="h-full p-3 rounded-xl border border-outline-variant/50 bg-surface-container-lowest peer-checked:border-on-surface peer-checked:bg-surface-container-low peer-checked:ring-1 peer-checked:ring-on-surface transition-all flex flex-col justify-between">
+<p class="text-label-lg font-label-lg font-bold text-on-surface">Fair</p>
+<p class="text-body-sm font-body-sm text-outline mt-1 leading-snug">Visible blemishes, functions 100%.</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 2: Add Photos -->
+<section class="bg-surface-container-lowest rounded-2xl p-6 md:p-space-lg border border-outline-variant/30 shadow-sm relative">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/20 mb-6">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined text-[18px]" data-icon="photo_camera">photo_camera</span>
+</span>
+<h2 class="text-title-lg font-title-lg text-on-surface tracking-tight">2. Add Photos of Your Item</h2>
+</div>
+<span class="text-label-numeric font-label-numeric text-outline">3 / 8 Uploaded</span>
+</div>
+<!-- Drag and Drop Dropzone -->
+<div class="border-2 border-dashed border-outline-variant/70 rounded-xl p-8 text-center hover:border-on-surface transition-colors bg-surface-container-lowest/50 group cursor-pointer">
+<div class="mx-auto w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface mb-3 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[24px]" data-icon="cloud_upload">cloud_upload</span>
+</div>
+<h3 class="text-title-md font-title-md text-on-surface">Drag and drop your photos here</h3>
+<p class="text-body-sm font-body-sm text-outline mt-1 mb-4">or browse files from your device (PNG, JPG up to 10MB each)</p>
+<button class="inline-flex items-center justify-center h-10 px-5 rounded-lg border border-outline-variant/80 bg-surface-container-lowest text-label-lg font-label-lg font-semibold text-on-surface hover:bg-surface-container-low transition-colors" type="button">
+              Upload Photos
+            </button>
+</div>
+<!-- Uploaded Photos Grid -->
+<div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+<!-- Image 1 (Cover) -->
+<div class="group relative rounded-xl border border-outline-variant/50 overflow-hidden bg-surface-container-high aspect-[4/3]">
+<img class="w-full h-full object-cover" data-alt="A precision studio photograph of a sleek black Sony Alpha 7 IV mirrorless digital camera on a clean matte alabaster surface. High-key soft gallery lighting illuminates the sharp lens mount and refined ergonomic textures. Minimalist editorial aesthetic using serene monochrome tones and balanced architectural restraint." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWffoVML51oMjL45kqmOohGZMZtoCInlOxgIVhi9OuRTxSxf-uRQJ3PB2FHG_G_qMjh8JROfD50OmtTG0vWfjWj9U5niYu5IFaQn_W-tsquX6IC3coC3B1oz--sBIa374Am4ScZIo0vpMwpxU2NCsIcdmE6eMqKwKdAiXRNdBDgZR9zGtisQPNZ1WR7gld4mL-6V-nrLAiNyZ1AFO7n7Ug8ong7xaxJ08worsG6lif"/>
+<span class="absolute top-2.5 left-2.5 px-2.5 py-1 bg-primary text-on-primary rounded-md text-label-md font-label-md font-bold tracking-wider uppercase">
+                Cover Photo
+              </span>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+<button class="p-1.5 bg-surface-container-lowest text-on-surface rounded-lg shadow-sm hover:scale-105 transition-transform" title="Crop/Edit" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="crop">crop</span>
+</button>
+<button class="p-1.5 bg-surface-container-lowest text-error rounded-lg shadow-sm hover:scale-105 transition-transform" title="Remove" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Image 2 -->
+<div class="group relative rounded-xl border border-outline-variant/50 overflow-hidden bg-surface-container-high aspect-[4/3]">
+<img class="w-full h-full object-cover" data-alt="A professional close-up photograph of a Sony full-frame mirrorless camera paired with a heavy 24-70mm f2.8 G Master zoom lens resting on a light neutral stone desk. Subtle daylight falls across the glass elements, highlighting the anti-reflective coating with exquisite clarity in an architectural studio setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAo42xr8sz4v-gCjakXDBv_aZFKMlMvr55SbFGOfCqF6wiY7g4B1lj5eKE3VAR4Q3TujrEwPHGhHcwbFfUbOwhOfFQot5szsPdUYzAfbdtuyZFMXbKSD6pyrR-yMhNCFWcNiG_8fUId8dwoihiqgB3Hfsmo8N7UGsB2qJJjreeB44Txo8sgttHAMWFWfRiHFP9ZJvoJFKBmKIfpXr97Y0bZpCi-pfaW8epHOlv8Lzd3"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+<button class="p-1.5 bg-surface-container-lowest text-on-surface rounded-lg shadow-sm hover:scale-105 transition-transform" title="Set as Cover" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="star">star</span>
+</button>
+<button class="p-1.5 bg-surface-container-lowest text-error rounded-lg shadow-sm hover:scale-105 transition-transform" title="Remove" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Image 3 -->
+<div class="group relative rounded-xl border border-outline-variant/50 overflow-hidden bg-surface-container-high aspect-[4/3]">
+<img class="w-full h-full object-cover" data-alt="An organized overhead layflat photograph of a camera accessory kit arranged inside a structured grey padded sling organizer. The gear includes dual lithium camera batteries, a dual-slot fast charger, high-speed memory card cases, and precision lens caps, shot with clean, soft morning light in an airy studio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtoUdk7xqPOVDK052zGE3YTszsug2LsGpuPgXThubSoIXH569KEgltnenHOoSfFSK54xMqxyGL02JhGaKHVTgWO8AjGUjsFV2jOkfpaNxLwsDmS8XLyCvoEbeYoJ7uZ6KkkHSpOhJKIMjL4W6hihkpYUmsP0xtKgBnPg3HNSw8EQWl5yZ6v8VyJJyjCucNx7Mo8F2_HV_q26AxTE91ROJBpVSQLAn4YyJTnN3s6VU8"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+<button class="p-1.5 bg-surface-container-lowest text-on-surface rounded-lg shadow-sm hover:scale-105 transition-transform" title="Set as Cover" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="star">star</span>
+</button>
+<button class="p-1.5 bg-surface-container-lowest text-error rounded-lg shadow-sm hover:scale-105 transition-transform" title="Remove" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Optimization Hint -->
+<div class="mt-4 p-3.5 bg-surface-container-low rounded-xl border border-outline-variant/30 flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-0.5" data-icon="tips_and_updates">tips_and_updates</span>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+<span class="font-bold text-on-surface">Lender Tip:</span> Listings with 3+ bright, multi-angle photos receive <span class="font-bold text-on-surface">40% more rental requests</span> and clear insurance claims twice as fast.
+            </p>
+</div>
+</section>
+<!-- SECTION 3: Terms & Pricing -->
+<section class="bg-surface-container-lowest rounded-2xl p-6 md:p-space-lg border border-outline-variant/30 shadow-sm relative">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/20 mb-6">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined text-[18px]" data-icon="payments">payments</span>
+</span>
+<h2 class="text-title-lg font-title-lg text-on-surface tracking-tight">3. Set Your Rental Terms &amp; Pricing</h2>
+</div>
+<span class="text-label-md font-label-md text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+              SafeGuarantee™ Included
+            </span>
+</div>
+<div class="space-y-space-md">
+<!-- Price Rate & Frequency Pill Toggle -->
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2" for="rental-rate">
+                Rental Rate <span class="text-error">*</span>
+</label>
+<div class="flex flex-col sm:flex-row gap-3">
+<div class="relative flex-1">
+<span class="absolute left-3.5 top-3 text-body-md font-body-md text-outline font-bold">$</span>
+<input class="w-full h-11 pl-8 pr-3.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md font-body-md font-bold text-on-surface placeholder:text-outline transition-colors" id="rental-rate" type="number" value="45"/>
+</div>
+<!-- Period Toggle -->
+<div class="inline-flex bg-surface-container-low p-1 rounded-lg border border-outline-variant/40 self-start sm:self-auto">
+<button class="px-4 py-1.5 rounded-md text-label-lg font-label-lg font-bold bg-surface-container-lowest text-on-surface shadow-xs" type="button">
+                    Daily
+                  </button>
+<button class="px-4 py-1.5 rounded-md text-label-lg font-label-lg text-on-surface-variant hover:text-on-surface" type="button">
+                    Weekly
+                  </button>
+<button class="px-4 py-1.5 rounded-md text-label-lg font-label-lg text-on-surface-variant hover:text-on-surface" type="button">
+                    Monthly
+                  </button>
+</div>
+</div>
+</div>
+<!-- Durations & Deposit Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md">
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2" for="min-duration">
+                  Min. Duration <span class="text-error">*</span>
+</label>
+<select class="w-full h-11 px-3.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md font-body-md text-on-surface" id="min-duration">
+<option value="1">1 Day</option>
+<option selected="" value="2">2 Days</option>
+<option value="3">3 Days</option>
+<option value="7">1 Week</option>
+</select>
+</div>
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2" for="max-duration">
+                  Max. Duration <span class="text-outline font-normal">(Optional)</span>
+</label>
+<select class="w-full h-11 px-3.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md font-body-md text-on-surface" id="max-duration">
+<option value="7">7 Days</option>
+<option selected="" value="14">14 Days</option>
+<option value="30">30 Days</option>
+<option value="unlimited">No Maximum</option>
+</select>
+</div>
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2" for="deposit-amount">
+                  Security Deposit
+                </label>
+<div class="relative">
+<span class="absolute left-3.5 top-3 text-body-md font-body-md text-outline font-bold">$</span>
+<input class="w-full h-11 pl-8 pr-3.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md font-body-md text-on-surface transition-colors" id="deposit-amount" type="number" value="150"/>
+</div>
+</div>
+</div>
+<!-- Location & Availability Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md pt-2">
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2" for="item-location">
+                  Item Location / Campus Area <span class="text-error">*</span>
+</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-3 text-outline text-[20px]" data-icon="location_on">location_on</span>
+<input class="w-full h-11 pl-10 pr-3.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline transition-colors" id="item-location" type="text" value="North Campus / Engineering Building Hub"/>
+</div>
+</div>
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2">
+                  Availability Schedule <span class="text-error">*</span>
+</label>
+<div class="grid grid-cols-2 gap-2">
+<label class="cursor-pointer">
+<input checked="" class="sr-only peer" name="availability" type="radio" value="always"/>
+<div class="h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-lowest peer-checked:border-on-surface peer-checked:bg-surface-container-low flex items-center justify-center text-label-lg font-label-lg font-bold text-on-surface transition-all">
+                      Always Available
+                    </div>
+</label>
+<label class="cursor-pointer">
+<input class="sr-only peer" name="availability" type="radio" value="custom"/>
+<div class="h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-lowest peer-checked:border-on-surface peer-checked:bg-surface-container-low flex items-center justify-center text-label-lg font-label-lg text-on-surface-variant transition-all">
+                      Specific Dates
+                    </div>
+</label>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: Pickup & Handover -->
+<section class="bg-surface-container-lowest rounded-2xl p-6 md:p-space-lg border border-outline-variant/30 shadow-sm relative">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/20 mb-6">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined text-[18px]" data-icon="handshake">handshake</span>
+</span>
+<h2 class="text-title-lg font-title-lg text-on-surface tracking-tight">4. Pickup &amp; Handover Logistics</h2>
+</div>
+<span class="text-label-md font-label-md text-outline uppercase tracking-wider">Zero Contact Supported</span>
+</div>
+<div class="space-y-space-md">
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2.5">
+                Preferred Handover Method <span class="text-error">*</span>
+</label>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+<label class="cursor-pointer">
+<input checked="" class="sr-only peer" name="handover" type="radio" value="locker"/>
+<div class="p-3.5 rounded-xl border border-outline-variant/60 bg-surface-container-lowest peer-checked:border-on-surface peer-checked:bg-surface-container-low peer-checked:ring-1 peer-checked:ring-on-surface transition-all">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[18px] text-secondary" data-icon="lock">lock</span>
+<p class="text-label-lg font-label-lg font-bold text-on-surface">Smart Locker</p>
+</div>
+<p class="text-body-sm font-body-sm text-outline">Recommended. 24/7 automated campus lockers.</p>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="sr-only peer" name="handover" type="radio" value="meetup"/>
+<div class="p-3.5 rounded-xl border border-outline-variant/60 bg-surface-container-lowest peer-checked:border-on-surface peer-checked:bg-surface-container-low peer-checked:ring-1 peer-checked:ring-on-surface transition-all">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant" data-icon="person_pin_circle">person_pin_circle</span>
+<p class="text-label-lg font-label-lg font-bold text-on-surface">In-Person Meetup</p>
+</div>
+<p class="text-body-sm font-body-sm text-outline">Public daylight meetups on verified perimeter.</p>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="sr-only peer" name="handover" type="radio" value="delivery"/>
+<div class="p-3.5 rounded-xl border border-outline-variant/60 bg-surface-container-lowest peer-checked:border-on-surface peer-checked:bg-surface-container-low peer-checked:ring-1 peer-checked:ring-on-surface transition-all">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant" data-icon="local_shipping">local_shipping</span>
+<p class="text-label-lg font-label-lg font-bold text-on-surface">Direct Delivery</p>
+</div>
+<p class="text-body-sm font-body-sm text-outline">Courier or direct drop to student dorm address.</p>
+</div>
+</label>
+</div>
+</div>
+<div>
+<label class="block text-label-lg font-label-lg text-on-surface mb-2" for="handover-instructions">
+                Handover &amp; Care Instructions
+              </label>
+<textarea class="w-full p-3.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline transition-colors" id="handover-instructions" placeholder="e.g. Item will be placed in Locker Hub #14 at Engineering Hall. One-time code generated upon rental approval. Please ensure lens cap is replaced before return." rows="3">Stored securely in Locker Hub #14 at North Quad. The 6-digit access code is transmitted automatically via the UniLend app once payment clears. Please use the padded carry case during transit.</textarea>
+</div>
+</div>
+</section>
+<!-- Form Action Bar -->
+<div class="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-outline-variant/30">
+<button class="w-full sm:w-auto h-11 px-5 rounded-lg border border-outline-variant/80 bg-surface-container-lowest text-label-lg font-label-lg font-semibold text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors" type="button">
+            Save as Draft
+          </button>
+<div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+<button class="flex-1 sm:flex-initial h-11 px-5 rounded-lg border border-outline-variant bg-surface-container-lowest text-label-lg font-label-lg font-semibold text-on-surface hover:bg-surface-container-low transition-colors" type="button">
+              Preview Listing
+            </button>
+<button class="flex-1 sm:flex-initial h-11 px-6 rounded-lg bg-primary text-on-primary text-label-lg font-label-lg font-semibold hover:bg-primary-container transition-all active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm" type="submit">
+<span>Publish Listing</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</form>
+<!-- Right Column: Sticky Sidebar (~32% width -> col-span-4) -->
+<aside class="lg:col-span-4 space-y-space-lg sticky top-24">
+<!-- Live Listing Preview Card -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/40 shadow-sm overflow-hidden">
+<div class="p-4 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-low/50">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<p class="text-label-md font-label-md uppercase tracking-wider text-outline">Live Preview</p>
+</div>
+<span class="text-label-md font-label-md text-on-surface-variant">Renter View</span>
+</div>
+<div class="p-4">
+<!-- Simulated Card Container -->
+<div class="rounded-xl border border-outline-variant/40 overflow-hidden bg-surface-container-lowest shadow-xs group">
+<!-- Item Image Cover -->
+<div class="relative aspect-[16/10] bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A pristine high-end studio still-life of the Sony Alpha 7 IV mirrorless digital camera centered on an architectural light grey pedestal. Soft diffused top lighting creates gentle contrast and emphasizes the pristine quality of the matte camera body and high-grade 24-70mm lens." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgKbxDmO1opLvGfBvOJqSir5zeHZhtof_ZM15zXVvRO2iYvIG-cUclwkzQX5y75fPWKcHu0xYOIQJTiEJQVaypiw50pHewIJPp9SfaY-E1x3Gu91fmBIDh7xEwmW4Jh8OtAfPjANYmstC7nKMXTLWROIShF-rlLB05WpdEGSWd1Ute20tSCGv2Hy2JAHBzqmG6w7Y3hquh4W-ZNAMxyCQ0OM96AgW4vg-8IjXfF_f1"/>
+<span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-label-md font-label-md font-bold text-on-surface tracking-wider border border-outline-variant/30 uppercase">
+                  LIKE NEW
+                </span>
+<span class="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-md text-on-surface hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="favorite">favorite</span>
+</span>
+</div>
+<!-- Card Content -->
+<div class="p-4">
+<p class="text-label-md font-label-md uppercase tracking-wider text-outline mb-1">
+                  CAMERAS &amp; MEDIA
+                </p>
+<h4 class="text-title-md font-title-md text-on-surface font-bold leading-tight">
+                  Sony Alpha 7 IV Mirrorless Kit
+                </h4>
+<div class="mt-3 flex items-baseline justify-between">
+<p class="text-title-lg font-title-lg font-bold text-on-surface">
+                    $45 <span class="text-body-sm font-body-sm font-normal text-outline">/ day</span>
+</p>
+<span class="text-body-sm font-body-sm text-on-surface-variant font-medium">★ 5.0 (New)</span>
+</div>
+<div class="mt-3 pt-3 border-t border-outline-variant/20 flex flex-col gap-1.5 text-body-sm font-body-sm text-outline">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="location_on">location_on</span>
+<span class="truncate">North Campus • Smart Locker #14</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="verified_user">verified_user</span>
+<span class="truncate">Deposit: $150 (Auto-waived for verified students)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Owner Tips & SafeGuarantee™ Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/40 shadow-sm space-y-4">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="shield">shield</span>
+</div>
+<div>
+<h4 class="text-title-md font-title-md text-on-surface font-bold">UniLend Owner Guarantee</h4>
+<p class="text-body-sm font-body-sm text-outline mt-0.5">Underwritten $2,500 replacement warranty on all verified physical peer rentals.</p>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant/20 space-y-2.5">
+<p class="text-label-md font-label-md uppercase tracking-wider text-outline">Listing Checklist</p>
+<div class="flex items-center gap-2.5 text-body-sm font-body-sm text-on-surface">
+<span class="material-symbols-outlined text-[18px] text-emerald-600" data-icon="check_circle">check_circle</span>
+<span>Identity Verified (M. Kensington)</span>
+</div>
+<div class="flex items-center gap-2.5 text-body-sm font-body-sm text-on-surface">
+<span class="material-symbols-outlined text-[18px] text-emerald-600" data-icon="check_circle">check_circle</span>
+<span>Serial Number documented for audit</span>
+</div>
+<div class="flex items-center gap-2.5 text-body-sm font-body-sm text-on-surface">
+<span class="material-symbols-outlined text-[18px] text-outline" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+<span>Sanitization &amp; hygiene confirmed</span>
+</div>
+</div>
+<div class="pt-2">
+<a class="inline-flex items-center gap-1 text-label-lg font-label-lg font-semibold text-secondary hover:underline" href="#">
+              Read Underwriting Terms
+              <span class="material-symbols-outlined text-[16px]" data-icon="open_in_new">open_in_new</span>
+</a>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="docked full-width bottom bg-surface-container-low dark:bg-surface-container border-t border-outline-variant/40 dark:border-outline-variant/20 flat no shadows mt-auto">
+<div class="max-w-[1360px] mx-auto px-margin-desktop py-space-xl flex flex-col md:flex-row items-center justify-between gap-gutter-desktop w-full">
+<!-- Left: Logo & Legal -->
+<div class="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+<span class="text-title-md font-title-md font-bold tracking-tight text-on-surface dark:text-inverse-on-surface">
+          UNILEND.™
+        </span>
+<span class="text-body-sm font-body-sm text-on-surface-variant dark:text-outline">
+          © 2025 UNILEND.™ All rights reserved. Architectural peer-to-peer campus reserve network.
+        </span>
+</div>
+<!-- Right: Links -->
+<div class="flex flex-wrap items-center justify-center gap-6 text-label-md font-label-md">
+<a class="text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">Terms of Service</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">Security</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">Community Guidelines</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">Rental Guarantee</a>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,943 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Rental Management | UNILEND.™ Lender Operations</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed": "#25005a",
+            "surface-tint": "#565e74",
+            "on-tertiary-container": "#f83256",
+            "surface-container-high": "#dce9ff",
+            "on-error": "#ffffff",
+            "tertiary-fixed": "#ffdada",
+            "outline-variant": "#c6c6cd",
+            "on-surface-variant": "#45464d",
+            "surface-variant": "#d3e4fe",
+            "on-surface": "#0b1c30",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#bec6e0",
+            "on-secondary-fixed-variant": "#5a00c6",
+            "surface-container-low": "#eff4ff",
+            "primary": "#000000",
+            "secondary-fixed-dim": "#d2bbff",
+            "on-error-container": "#93000a",
+            "secondary-fixed": "#eaddff",
+            "inverse-on-surface": "#eaf1ff",
+            "surface-bright": "#f8f9ff",
+            "on-primary-container": "#7c839b",
+            "on-tertiary-fixed": "#40000c",
+            "secondary-container": "#8a4cfc",
+            "tertiary": "#000000",
+            "tertiary-container": "#40000c",
+            "on-secondary-container": "#fffbff",
+            "surface-dim": "#cbdbf5",
+            "on-secondary": "#ffffff",
+            "error-container": "#ffdad6",
+            "on-tertiary": "#ffffff",
+            "secondary": "#712ae2",
+            "primary-container": "#131b2e",
+            "surface": "#f8f9ff",
+            "on-background": "#0b1c30",
+            "outline": "#76777d",
+            "on-primary-fixed": "#131b2e",
+            "on-tertiary-fixed-variant": "#920028",
+            "inverse-primary": "#bec6e0",
+            "background": "#f8f9ff",
+            "on-primary": "#ffffff",
+            "on-primary-fixed-variant": "#3f465c",
+            "surface-container-lowest": "#ffffff",
+            "inverse-surface": "#213145",
+            "primary-fixed": "#dae2fd",
+            "tertiary-fixed-dim": "#ffb3b6",
+            "surface-container-highest": "#d3e4fe",
+            "surface-container": "#e5eeff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-desktop": "2rem",
+            "margin-desktop": "3rem",
+            "space-xl": "2.5rem",
+            "space-3xl": "6rem",
+            "margin-mobile": "1rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "gutter": "1.5rem",
+            "gutter-mobile": "1rem",
+            "space-2xl": "4rem",
+            "margin": "2rem"
+          },
+          "fontFamily": {
+            "label-numeric": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "title-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-numeric": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "title-md": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-md": ["11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "label-lg": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-md": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-sm": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md selection:bg-secondary-fixed selection:text-on-secondary-fixed relative overflow-x-hidden" style="background-color: rgb(250, 250, 253);">
+<!-- Atmospheric Lavender & Pale-Blue Ambient Gradient Wash (Signature UniLend Aesthetic) -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#FAFAFD]"></div>
+<!-- ========================================================================= -->
+<!-- 1. HEADER & NAVIGATION (Shared Component: TopNavBar)                      -->
+<!-- ========================================================================= -->
+<header class="bg-surface-container-lowest/90 dark:bg-primary-container/90 backdrop-blur-md docked full-width top-0 sticky z-50 border-b border-outline-variant/30 dark:border-outline/20 shadow-sm dark:shadow-none">
+<div class="w-full px-6 lg:px-12 max-w-[1360px] mx-auto flex items-center justify-between h-20">
+<!-- Brand & Global Search -->
+<div class="flex items-center gap-8">
+<a class="text-title-lg font-title-lg tracking-wider text-primary dark:text-inverse-on-surface font-extrabold flex items-center gap-2" href="#">
+<span class="w-2.5 h-2.5 rounded-full bg-primary inline-block"></span>
+          UNILEND.™
+        </a>
+<!-- Global Search Field -->
+
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-8"><a class="text-on-surface hover:text-primary transition-colors duration-150 text-body-md font-medium" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors duration-150 text-body-md font-medium" href="#">Categories</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors duration-150 text-body-md font-medium" href="#">Borrow</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors duration-150 text-body-md font-medium" href="#">Explore</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors duration-150 text-body-md font-medium" href="#">Contact us</a></nav>
+<!-- Trailing Action Controls & Owner Profile -->
+<div class="flex items-center gap-3.5"><button class="rounded-full border border-black/10 bg-white/70 text-sm font-medium text-[#0D0E12] px-5 py-2 hover:bg-white transition-all shadow-sm">Login</button>
+<button class="rounded-full bg-[#0D0E12] text-white text-sm font-medium px-5 py-2 hover:bg-black/90 transition-all shadow-sm">Join</button></div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- MAIN WORKSPACE CANVAS                                                     -->
+<!-- ========================================================================= -->
+<main class="relative z-10 flex-1 w-full max-w-[1360px] mx-auto px-6 lg:px-12 py-8 space-y-8">
+<!-- Breadcrumbs & Quick Ledger Status -->
+<div class="flex flex-wrap items-center justify-between gap-4">
+<nav class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Lender Portal</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-semibold">Rental Management</span>
+</nav>
+<div class="flex items-center gap-3">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container-lowest/80 backdrop-blur border border-outline-variant/40 rounded-full text-label-md font-label-md text-on-surface">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          Escrow Security Vault Active
+        </div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-lowest/80 backdrop-blur border border-outline-variant/40 rounded-full text-label-md font-label-md text-on-surface">
+<span class="material-symbols-outlined text-[15px] text-secondary">security</span>
+          $100,000 Lender Guarantee
+        </div>
+</div>
+</div>
+<!-- Page Title & Operational Mission -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Rental Management</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-1.5 max-w-2xl">
+          Review inbound rental requests, verify custody handovers, inspect returned equipment, and manage your lending ledger.
+        </p>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<button class="h-10 px-4 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/60 text-primary text-label-lg font-label-lg transition-all duration-200 active:scale-95 flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+          Export Audit Ledger
+        </button>
+<button class="h-10 px-4 rounded-lg bg-primary hover:bg-primary/90 text-on-primary text-label-lg font-label-lg transition-all duration-200 active:scale-95 flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">qr_code_scanner</span>
+          Scan Handover Pass
+        </button>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- 2. TOP METRIC SUMMARY CARDS                                               -->
+<!-- ========================================================================= -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+<!-- Metric 1: Pending Requests -->
+<div class="bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/40 rounded-2xl p-5 shadow-sm hover:border-outline-variant/80 transition-all duration-200 relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Pending Requests</span>
+<div class="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-700">
+<span class="material-symbols-outlined text-[20px]">notifications_active</span>
+</div>
+</div>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="font-headline-lg text-headline-lg text-primary">3</span>
+<span class="text-label-md font-label-md text-amber-800 bg-amber-100/70 px-2 py-0.5 rounded-full font-semibold">Action Required</span>
+</div>
+<div class="mt-3 flex items-center gap-1.5 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">timelapse</span>
+<span class="">~18m average response time</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-amber-400/80 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+</div>
+<!-- Metric 2: Confirmed Rentals -->
+<div class="bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/40 rounded-2xl p-5 shadow-sm hover:border-outline-variant/80 transition-all duration-200 relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Confirmed Rentals</span>
+<div class="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200/60 flex items-center justify-center text-sky-700">
+<span class="material-symbols-outlined text-[20px]">event_upcoming</span>
+</div>
+</div>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="font-headline-lg text-headline-lg text-primary">2</span>
+<span class="text-label-md font-label-md text-sky-800 bg-sky-100/70 px-2 py-0.5 rounded-full font-semibold">Scheduled Handover</span>
+</div>
+<div class="mt-3 flex items-center gap-1.5 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">hub</span>
+<span class="">Next pickup: Tomorrow 10:00 AM</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-sky-400/80 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+</div>
+<!-- Metric 3: Currently Rented -->
+<div class="bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/40 rounded-2xl p-5 shadow-sm hover:border-outline-variant/80 transition-all duration-200 relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Currently Rented</span>
+<div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200/60 flex items-center justify-center text-emerald-700">
+<span class="material-symbols-outlined text-[20px]">swap_horizontal_circle</span>
+</div>
+</div>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="font-headline-lg text-headline-lg text-primary">4</span>
+<span class="text-label-md font-label-md text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded-full font-semibold">Active in Custody</span>
+</div>
+<div class="mt-3 flex items-center gap-1.5 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">verified_user</span>
+<span class="">100% telemetry check-in rate</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-emerald-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+</div>
+<!-- Metric 4: Returns to Review -->
+<div class="bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/40 rounded-2xl p-5 shadow-sm hover:border-outline-variant/80 transition-all duration-200 relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Returns to Review</span>
+<div class="w-9 h-9 rounded-xl bg-purple-50 border border-purple-200/60 flex items-center justify-center text-purple-700">
+<span class="material-symbols-outlined text-[20px]">fact_check</span>
+</div>
+</div>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="font-headline-lg text-headline-lg text-primary">1</span>
+<span class="text-label-md font-label-md text-purple-800 bg-purple-100/70 px-2 py-0.5 rounded-full font-semibold">Inspection Pending</span>
+</div>
+<div class="mt-3 flex items-center gap-1.5 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">lock_clock</span>
+<span class="">$150.00 Escrow Hold in Release Window</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-secondary scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 3. CONTROLS BAR: FILTER TABS & SEARCH CONTROLS                            -->
+<!-- ========================================================================= -->
+<section class="bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/40 rounded-2xl p-4 space-y-4 shadow-sm">
+<!-- Filter Tabs with Exact Requested Status Counters -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 border-b border-outline-variant/30 scrollbar-none">
+<button class="px-3.5 py-2 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg flex items-center gap-2 shrink-0">
+<span class="">All</span>
+<span class="px-1.5 py-0.2 rounded-full bg-white/20 text-xs font-mono">10</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg hover:bg-surface-container-low text-on-surface-variant hover:text-on-surface font-label-lg text-label-lg flex items-center gap-2 shrink-0 transition-colors">
+<span class="">Pending</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container text-xs font-mono text-on-surface">3</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg hover:bg-surface-container-low text-on-surface-variant hover:text-on-surface font-label-lg text-label-lg flex items-center gap-2 shrink-0 transition-colors">
+<span class="">Confirmed</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container text-xs font-mono text-on-surface">2</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg hover:bg-surface-container-low text-on-surface-variant hover:text-on-surface font-label-lg text-label-lg flex items-center gap-2 shrink-0 transition-colors">
+<span class="">Active</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container text-xs font-mono text-on-surface">4</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg bg-purple-50 text-purple-900 border border-purple-200/80 font-label-lg text-label-lg flex items-center gap-2 shrink-0">
+<span class="">Return Pending</span>
+<span class="px-1.5 py-0.2 rounded-full bg-purple-200/80 text-xs font-mono text-purple-900 font-bold">1</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg hover:bg-surface-container-low text-on-surface-variant hover:text-on-surface font-label-lg text-label-lg flex items-center gap-2 shrink-0 transition-colors">
+<span class="">Completed</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container text-xs font-mono text-on-surface">18</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg hover:bg-rose-50 text-rose-800 hover:text-rose-900 font-label-lg text-label-lg flex items-center gap-2 shrink-0 transition-colors">
+<span class="">Rejected / Disputed</span>
+<span class="px-1.5 py-0.2 rounded-full bg-rose-100 text-xs font-mono text-rose-900">1</span>
+</button>
+</div>
+<!-- Search & Dropdown Filters Grid -->
+<div class="flex flex-col lg:flex-row items-center gap-3">
+<!-- Main Search Input -->
+<div class="relative flex-1 w-full">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full h-11 pl-11 pr-4 bg-surface-container-lowest border border-outline-variant/60 rounded-xl text-body-md font-body-md text-on-surface placeholder-on-surface-variant/60 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-150" placeholder="Search by equipment title, order reference (#UL-849204), or renter name..." type="text">
+</div>
+<!-- Filter Dropdown Clusters -->
+<div class="flex items-center gap-2 w-full lg:w-auto overflow-x-auto pb-1 lg:pb-0">
+<!-- Date Range -->
+<button class="h-11 px-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 text-body-sm font-body-sm text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-2 shrink-0">
+<span class="material-symbols-outlined text-[18px] text-outline">calendar_today</span>
+<span class="">This Month / Oct 2025</span>
+<span class="material-symbols-outlined text-[16px] text-outline">expand_more</span>
+</button>
+<!-- Category -->
+<button class="h-11 px-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 text-body-sm font-body-sm text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-2 shrink-0">
+<span class="material-symbols-outlined text-[18px] text-outline">category</span>
+<span class="">All Gear</span>
+<span class="material-symbols-outlined text-[16px] text-outline">expand_more</span>
+</button>
+<!-- Status Filter -->
+<button class="h-11 px-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 text-body-sm font-body-sm text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-2 shrink-0">
+<span class="material-symbols-outlined text-[18px] text-outline">filter_list</span>
+<span class="">Status Filter</span>
+<span class="material-symbols-outlined text-[16px] text-outline">expand_more</span>
+</button>
+<!-- Sort -->
+<button class="h-11 px-3.5 rounded-xl bg-surface-container-low border border-outline-variant/60 text-body-sm font-body-sm font-semibold text-primary hover:bg-surface-container transition-colors flex items-center gap-2 shrink-0">
+<span class="material-symbols-outlined text-[18px] text-primary">sort</span>
+<span class="">Action Required First</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 4. RENTAL REQUEST & CUSTODY MANAGEMENT CARDS                              -->
+<!-- ========================================================================= -->
+<section class="space-y-6">
+<!-- --------------------------------------------------------------------- -->
+<!-- CARD 1: RETURN PENDING (Inspection & Condition Check Required)        -->
+<!-- --------------------------------------------------------------------- -->
+<article class="bg-surface-container-lowest/95 backdrop-blur-md border-2 border-purple-300/80 rounded-2xl p-6 lg:p-7 shadow-sm transition-all duration-200 relative overflow-hidden">
+<!-- Subtle Card Top Ribbon Indicator -->
+<div class="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-outline-variant/30">
+<div class="flex items-center gap-2.5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-100 text-purple-900 border border-purple-300 font-label-md text-label-md font-bold uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-purple-700 animate-ping"></span>
+              Return Pending • Inspection Required
+            </span>
+<span class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">meeting_room</span>
+              Handed over at Mission District Hub Locker #B-14
+            </span>
+</div>
+<div class="flex items-center gap-3 text-body-sm font-body-sm text-on-surface-variant">
+<span class="font-mono text-outline font-medium">Order #UL-849204</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="text-purple-800 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">hourglass_top</span>
+              Escrow Hold expires in 22 hrs
+            </span>
+</div>
+</div>
+<!-- Card Body Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-5 items-start">
+<!-- Gear Thumbnail & Spec Details (Cols 1-4) -->
+<div class="lg:col-span-4 flex gap-4">
+<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-surface-container border border-outline-variant/40 shrink-0 overflow-hidden relative group">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Modern high-end Sony Alpha A7 IV mirrorless digital cinema camera with prime 50mm G-Master lens resting on a clean studio surface. High key photographic lighting with subtle violet and cool white reflections in a minimalist gallery setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB06ES9axQs8MR-h_Akh74qWMoU6SDeOTfmPIsNXAhEJmLXenSmbCLaGvA69hx9TJY6JjeuXLvXbF7x1Ijn75jjQ1HY9kiWpZhtgrh4U94C63w6WQJO7kJi4JMhOc_mvV3gbJjXCs-wl3M0Nw81WlBNLHph0Uh8BumfNTxmW34P6mT5Z_PF1R8-0-Uy3BA5bCx4DU9klZHQILNu84eYR_3jjNGnwarwFGZFvLZCq3uUC4WOfvVhklWORg">
+<span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-primary/80 backdrop-blur text-[10px] font-mono text-white">4K 60p</span>
+</div>
+<div class="flex flex-col justify-center space-y-1">
+<span class="text-label-md font-label-md text-secondary uppercase font-bold tracking-wider">Cinema &amp; Stills</span>
+<h3 class="font-title-lg text-title-lg text-primary font-bold leading-tight">Sony Alpha A7 IV Mirrorless Camera Kit</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant font-mono">SN: #SN-8492-A7M4 • Pre-custody 9.8/10</p>
+<div class="pt-1 flex items-center gap-2">
+<span class="text-xs px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium">Pelican Case Included</span>
+<span class="text-xs px-2 py-0.5 rounded bg-surface-container text-on-surface font-medium">2x Batteries</span>
+</div>
+</div>
+</div>
+<!-- Renter Verification & Custody Window (Cols 5-8) -->
+<div class="lg:col-span-4 space-y-3.5 border-t lg:border-t-0 lg:border-l lg:border-r border-outline-variant/30 lg:px-6 pt-4 lg:pt-0">
+<!-- Renter Info -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant/50" data-alt="Portrait of Alex Morgan, a creative cinematographer with clean aesthetic, warm natural daylight illumination, wearing a dark minimal jacket against a modern architectural concrete gallery wall." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_C6nCaBuAEVrspSURdMq9pYI37fbzBJbprOwcNYwkCAenvbfBqN3ylKZgqMt8A_lSXVX5PGco6EP_xBDXIEC30m56jGHCYL_7aFnH5thCvrm3sZ3SlDbN62wjQpj2SzZcSuqiREKE7yVAYB_TfiLhBh9_CpIApxQ_q4RYcPMAO312L-z1iSqg_PMWTZ6BVbbNWbsP4G9V2Tlp55H-JY3tjcVNQxA8PGtXSzKhgB3nAPOjzrK7pucMXA">
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-title-md text-title-md text-primary font-bold">Alex Morgan</span>
+<span class="material-symbols-outlined text-[15px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-body-sm font-bold text-primary">4.9</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="">14 verified rentals</span>
+<span class="">•</span>
+<span class="text-secondary font-medium">Tier 1 Renter</span>
+</div>
+</div>
+</div>
+<!-- Direct Communication Shortcut -->
+<button class="w-9 h-9 rounded-lg border border-outline-variant/60 flex items-center justify-center hover:bg-surface-container transition-colors" title="Message Alex Morgan">
+<span class="material-symbols-outlined text-[18px] text-primary">chat</span>
+</button>
+</div>
+<!-- Custody Timeline & Handover Stamp -->
+<div class="bg-surface-container-low/60 rounded-xl p-3 border border-outline-variant/30 space-y-1.5">
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Custody Window:</span>
+<span class="font-medium text-primary">Oct 24 – Oct 27, 2025</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Hub Check-in:</span>
+<span class="font-medium text-emerald-800 flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">check_circle</span>
+                  Returned today at 5:45 PM
+                </span>
+</div>
+</div>
+<!-- Return Evidence Photo Thumbnails -->
+<div>
+<span class="text-label-md font-label-md text-on-surface-variant block mb-1.5">Renter Return Evidence (2 Photos):</span>
+<div class="flex items-center gap-2">
+<div class="relative w-16 h-12 rounded-lg bg-surface-container border border-outline-variant/50 overflow-hidden cursor-pointer group">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Close up verification photo of Sony A7 IV mirrorless camera sensor and mount, illuminated by clean white laboratory LED light confirming pristine scratch-free condition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP2GAjYr0DDxHCqIwrzDzyaWlT7tTqr-iyGk-WU3j3fVz9xfdzJ7aoBBG-IQNStN5QsQpWsijvHxlbjwsvN3uM2bnVlOgKcNWiL1j9YUhIPBCEQ0PiZsGW-iIfNrutKq8AnV-Dum7T2zoZ0-aNKs40oKxwGBk8YsDQkvOVWxr9p94cZ0qWEwgiVZA03qEa9LHCq7hKmchvaZlZmBBILOmKA2lUKWcggjAnbTEuxclMj91dkPe9b3ZVUQ">
+<span class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[10px] transition-opacity">Sensor</span>
+</div>
+<div class="relative w-16 h-12 rounded-lg bg-surface-container border border-outline-variant/50 overflow-hidden cursor-pointer group">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Detailed inspection snapshot showing organized hardcase Pelican interior with camera body, two pristine Sony batteries, and dual charger packed neatly." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM7NLLPAOHIdu4ySMtg__OWMKRgkN-jLyil1EQmwC8OvDFmS2_pMYL9P5HeZ_PmAKjAKxdEmeiCF_czYDfl2paiNbH0RsEAkgW9OtfdekOvwGifLdCb7LdGBoMmRrVAf0En0FqQYNIpidpm3Vnl0GonV8WEHn9tcKmNvbv9cT8T6i6plhTw9xk4NZTdrN10SgsmAsdvRKhaKJpQr2rCfus9nNmQ-_QPMYMv1mtqHKogQEE7mThnJz1_A">
+<span class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[10px] transition-opacity">Pack</span>
+</div>
+<button class="text-body-sm font-body-sm text-secondary hover:underline flex items-center gap-1 pl-1">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+                  Full Audit
+                </button>
+</div>
+</div>
+</div>
+<!-- Financial Settlement & Operational CTA (Cols 9-12) -->
+<div class="lg:col-span-4 flex flex-col justify-between space-y-4 pt-4 lg:pt-0">
+<!-- Financial Payout Breakdown -->
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-3.5 space-y-2">
+<div class="flex justify-between items-center">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Lender Payout Earned:</span>
+<span class="text-title-md font-title-md font-bold text-primary">$135.00</span>
+</div>
+<div class="flex justify-between items-center pt-1 border-t border-outline-variant/20">
+<span class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-purple-700">lock</span>
+                  Escrow Deposit Hold:
+                </span>
+<span class="text-label-lg font-label-lg font-semibold text-purple-900">$150.00</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="space-y-2">
+<button class="w-full h-11 px-4 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-label-lg text-label-lg transition-all duration-200 active:scale-95 shadow-sm flex items-center justify-center gap-2" onclick="document.getElementById('inspectionModal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+                Confirm Return &amp; Release Deposit
+              </button>
+<button class="w-full h-10 px-4 rounded-xl bg-surface-container-lowest hover:bg-rose-50 border border-outline-variant/60 hover:border-rose-300 text-rose-800 font-label-lg text-label-lg transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">report_problem</span>
+                Report an Issue / Claim Damage
+              </button>
+</div>
+</div>
+</div>
+</article>
+<!-- --------------------------------------------------------------------- -->
+<!-- CARD 2: PENDING APPROVAL (Inbound Booking Request)                     -->
+<!-- --------------------------------------------------------------------- -->
+<article class="bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/40 rounded-2xl p-6 lg:p-7 shadow-sm hover:border-outline-variant/80 transition-all duration-200">
+<div class="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-outline-variant/30">
+<div class="flex items-center gap-2.5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-300 font-label-md text-label-md font-bold uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              Pending Owner Approval
+            </span>
+<span class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">schedule</span>
+              Received 12 mins ago • Auto-expires in 23 hrs
+            </span>
+</div>
+<span class="font-mono text-body-sm text-outline font-medium">Order #UL-850193</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-5 items-start">
+<!-- Gear Thumbnail & Title -->
+<div class="lg:col-span-4 flex gap-4">
+<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-surface-container border border-outline-variant/40 shrink-0 overflow-hidden relative group">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Professional DJI Ronin RS 3 Pro 3-axis motorized gimbal stabilizer isolated on a pristine white architectural studio pedestal. Clean ambient lighting with subtle soft shadows and refined high-tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHQRsb3RZkL6XKkw0aEnCc9g8oU2SwpqkCJv2p5ViDPPQ1c0e2KWVZx-pzmnXqaK0S00pUfZXXRCOPWrhHhzgDcqb_HC5Y2vf3xi835sgRlRKnMHN2cPhAkYSjktYI8opWat6on8YKkhkr9XmKAOnNMeKttY4XKJV6lCcvjaDk0-jZZnYoYyX_tlzxnJwGFMBOxehOSZOKCN7qen8C-_8osHpBqOvF9qG_S0jZ7CZQH9-EZpCe7TanuQ">
+</div>
+<div class="flex flex-col justify-center space-y-1">
+<span class="text-label-md font-label-md text-secondary uppercase font-bold tracking-wider">Stabilization</span>
+<h3 class="font-title-lg text-title-lg text-primary font-bold leading-tight">DJI Ronin RS 3 Pro Gimbal Stabilizer Combo</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Carbon Fiber • LiDAR Range Finder Module</p>
+<div class="pt-1 flex items-center gap-1 text-emerald-800 text-xs font-medium">
+<span class="material-symbols-outlined text-[15px]">event_available</span>
+<span class="">No conflicting bookings detected</span>
+</div>
+</div>
+</div>
+<!-- Renter Profile & Project Context -->
+<div class="lg:col-span-4 space-y-3.5 border-t lg:border-t-0 lg:border-l lg:border-r border-outline-variant/30 lg:px-6 pt-4 lg:pt-0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant/50" data-alt="Portrait of Jordan Taylor, an independent documentary filmmaker wearing minimalist black crewneck, neutral calm facial expression in modern brightly lit creative workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW0fXqn-yGSGtYBl_FNL2MSuZQ9AoYlwVcJeXsz2CpcV3p96en4glYwlE0Vp0TofLnUW40emV_017vjbaU3De9yTn05R9GHdm2jWqWP36nVF0szqVmRhbbICSNj9BKsvvlnsmOG_47ThWb1Q45_QuW12N1CL3GQmizVDSt4IPCdIrg-G2-DQIwlT04tLixRvr7ZI4ljq4W7NhX-IGQTPkJNMc45DipZRJgjkVwUTf99fDyADxAi49CZg">
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-title-md text-title-md text-primary font-bold">Jordan Taylor</span>
+<span class="material-symbols-outlined text-[15px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-body-sm font-bold text-primary">5.0</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">6 verified rentals • ID Verified</div>
+</div>
+</div>
+<button class="w-9 h-9 rounded-lg border border-outline-variant/60 flex items-center justify-center hover:bg-surface-container transition-colors" title="Message Jordan Taylor">
+<span class="material-symbols-outlined text-[18px] text-primary">chat</span>
+</button>
+</div>
+<div class="bg-surface-container-low/60 rounded-xl p-3 border border-outline-variant/30 space-y-1.5">
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Requested Dates:</span>
+<span class="font-medium text-primary">Oct 30 – Nov 02, 2025 (3 Days)</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Handover Method:</span>
+<span class="font-medium text-primary">In-Person Pickup at Studio</span>
+</div>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant bg-surface-container-lowest p-2.5 rounded-lg border border-outline-variant/30 italic">
+              “Shooting a short indie documentary downtown. Need LiDAR auto-focus for low-light night scenes.”
+            </div>
+</div>
+<!-- Payout & Booking Actions -->
+<div class="lg:col-span-4 flex flex-col justify-between space-y-4 pt-4 lg:pt-0">
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-3.5 space-y-2">
+<div class="flex justify-between items-center">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Estimated Payout:</span>
+<span class="text-title-md font-title-md font-bold text-primary">$120.00 <span class="text-body-sm text-on-surface-variant font-normal">($40/day)</span></span>
+</div>
+<div class="flex justify-between items-center pt-1 border-t border-outline-variant/20">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Security Deposit Hold:</span>
+<span class="text-label-lg font-label-lg font-semibold text-on-surface">$100.00</span>
+</div>
+</div>
+<div class="space-y-2">
+<button class="w-full h-11 px-4 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-label-lg text-label-lg transition-all duration-200 active:scale-95 shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check</span>
+                Approve Request
+              </button>
+<button class="w-full h-10 px-4 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/60 text-on-surface-variant hover:text-error font-label-lg text-label-lg transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">close</span>
+                Decline / Reject
+              </button>
+</div>
+</div>
+</div>
+</article>
+<!-- --------------------------------------------------------------------- -->
+<!-- CARD 3: CONFIRMED (Scheduled for Handover)                            -->
+<!-- --------------------------------------------------------------------- -->
+<article class="bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/40 rounded-2xl p-6 lg:p-7 shadow-sm hover:border-outline-variant/80 transition-all duration-200">
+<div class="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-outline-variant/30">
+<div class="flex items-center gap-2.5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 text-sky-900 border border-sky-300 font-label-md text-label-md font-bold uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-sky-600"></span>
+              Confirmed • Pickup Scheduled
+            </span>
+<span class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1 font-medium text-sky-800">
+<span class="material-symbols-outlined text-[16px]">alarm</span>
+              Tomorrow, 10:00 AM (Ready for drop-off)
+            </span>
+</div>
+<span class="font-mono text-body-sm text-outline font-medium">Order #UL-848802</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-5 items-start">
+<div class="lg:col-span-4 flex gap-4">
+<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-surface-container border border-outline-variant/40 shrink-0 overflow-hidden relative group">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Telephoto Sony FE 70-200mm f2.8 GM OSS II premium white zoom lens standing upright in a brightly lit modern gallery studio with pristine white reflections and soft ambient light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjYuj9A4ZTCS0PGqKKemj2bWfWk6JpRZt5FwtzFCD0vhvf1DddiIURusaDb2tM9nACJVNJ9j4pbWqKNjojIahvtFiY87jipSdTCrzleVqBI5WSJhIEa18s9GvhK7TcL1kz26Y9FLK2XbDwSaRZ_zGmrM1RginHHYTHkQi8L2s6J4ugHGczK-h1l_V_W_4MLqGk_r2L73-DN7_cKOdqq7MIiLNmjMCo_iBMBluEjRdLPIxaiwQQvCXFEw">
+</div>
+<div class="flex flex-col justify-center space-y-1">
+<span class="text-label-md font-label-md text-secondary uppercase font-bold tracking-wider">Optics</span>
+<h3 class="font-title-lg text-title-lg text-primary font-bold leading-tight">Sony FE 70-200mm f/2.8 GM OSS II Lens</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Includes Hood, Tripod Collar &amp; UV Filter</p>
+<div class="pt-1 flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-[15px] text-sky-600">lock</span>
+<span class="">Lockbox Allocated: #A-08</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 space-y-3.5 border-t lg:border-t-0 lg:border-l lg:border-r border-outline-variant/30 lg:px-6 pt-4 lg:pt-0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant/50" data-alt="Studio portrait of Maya Patel, a commercial product photographer with warm friendly expression, crisp lighting, wearing a minimalist modern beige trench coat in a gallery foyer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8pE3UAxCfRgXzAvGNWbRLJ9hAYeKG-z1W76rPzVnDrN2Q03cBL4N8cgwBCJhqH17v_wd6JD3n6JHpNb-QHbKP85Pmr3TOL0yp2_68Lhd46RPB5Tl36Cc8K5HPrPTYv-z0kZJOEjVTjbwfntMvBXRiB6BdFUay3n-1brbIBFUe-Dv3O4gqC-oJPnkr-vwsLmGldZJ7xxHBhDp7b_a77IpQVcsF98EY-tIrDoFqVRE9RwUHqpfT7ne5UA">
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-title-md text-title-md text-primary font-bold">Maya Patel</span>
+<span class="material-symbols-outlined text-[15px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-body-sm font-bold text-primary">4.8</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">8 verified rentals • Identity Confirmed</div>
+</div>
+</div>
+<button class="w-9 h-9 rounded-lg border border-outline-variant/60 flex items-center justify-center hover:bg-surface-container transition-colors" title="Message Maya Patel">
+<span class="material-symbols-outlined text-[18px] text-primary">chat</span>
+</button>
+</div>
+<div class="bg-surface-container-low/60 rounded-xl p-3 border border-outline-variant/30 space-y-1.5">
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Rental Window:</span>
+<span class="font-medium text-primary">Oct 29 – Nov 01, 2025</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Handover Location:</span>
+<span class="font-medium text-primary">Mission District Smart Hub Locker #A-08</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 flex flex-col justify-between space-y-4 pt-4 lg:pt-0">
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-3.5 space-y-2">
+<div class="flex justify-between items-center">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Confirmed Payout:</span>
+<span class="text-title-md font-title-md font-bold text-primary">$105.00</span>
+</div>
+<div class="flex justify-between items-center pt-1 border-t border-outline-variant/20">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Escrow Verification:</span>
+<span class="text-label-lg font-label-lg font-semibold text-emerald-700">Pre-authorized</span>
+</div>
+</div>
+<div class="space-y-2">
+<button class="w-full h-11 px-4 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-label-lg text-label-lg transition-all duration-200 active:scale-95 shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">key</span>
+                Confirm Handover &amp; Release Locker PIN
+              </button>
+<div class="grid grid-cols-2 gap-2">
+<button class="h-10 px-3 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/60 text-on-surface font-label-lg text-label-lg transition-colors flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">chat</span>
+                  Message
+                </button>
+<button class="h-10 px-3 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/60 text-on-surface font-label-lg text-label-lg transition-colors flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">pin_drop</span>
+                  Logistics
+                </button>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- --------------------------------------------------------------------- -->
+<!-- CARD 4: ACTIVE IN CUSTODY                                             -->
+<!-- --------------------------------------------------------------------- -->
+<article class="bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/40 rounded-2xl p-6 lg:p-7 shadow-sm hover:border-outline-variant/80 transition-all duration-200">
+<div class="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-outline-variant/30">
+<div class="flex items-center gap-2.5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-300 font-label-md text-label-md font-bold uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+              Active Custody • Due in 2 Days (Oct 29)
+            </span>
+<span class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">sync_alt</span>
+              Live Status: In Use • On Schedule
+            </span>
+</div>
+<span class="font-mono text-body-sm text-outline font-medium">Order #UL-847291</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-5 items-start">
+<div class="lg:col-span-4 flex gap-4">
+<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-surface-container border border-outline-variant/40 shrink-0 overflow-hidden relative group">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Cinematic Blackmagic Pocket Cinema Camera 6K Pro with battery grip and EVF viewfinder attached, studio product photo against soft gray minimalist gallery backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmqEIfqM9WfOfWV416wQVNyd4L3-wRArq9eDwY9zYtWPI7Hs1pg9sPRQePy27eL95tvDsBR09rkweOekENYhJu8ghIO5pX_PWohJzFFOYNUmtUT2Iqx5S_ghtZMLUR6DgMw_5NWSN3c-psSg9fzTJ6xtmmswY8yBmWsXQmvmHx6_ef8ki2MvvqROu84Ug6JPOK0NijUMJIcy94W_DD9vIhrE92Jd8SOUy2huOI03SZIzIaLXJLhGvxtw">
+</div>
+<div class="flex flex-col justify-center space-y-1">
+<span class="text-label-md font-label-md text-secondary uppercase font-bold tracking-wider">Cinema Rig</span>
+<h3 class="font-title-lg text-title-lg text-primary font-bold leading-tight">Blackmagic Pocket Cinema Camera 6K Pro</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Includes 1TB T5 SSD &amp; 3x NP-F570</p>
+<div class="pt-1 flex items-center gap-1 text-emerald-800 text-xs font-medium">
+<span class="material-symbols-outlined text-[15px]">verified_user</span>
+<span class="">Insured under UniLend SafeHold Pro</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 space-y-3.5 border-t lg:border-t-0 lg:border-l lg:border-r border-outline-variant/30 lg:px-6 pt-4 lg:pt-0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant/50" data-alt="Portrait of Liam Chen, an Asian film producer smiling gently, wearing clean dark tech wear apparel in high-key daylight studio setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTZJmoTiPpz8Enn5c3mJcfRu1vJ5KRErzaXr48LsqIRw-T5Bu46Bzaz35Hnl2-FWt582m2f1M_QnyUXLx-wqb_jT30grX5Kwl0shEocd6YrJx2dxGKKo2c9Y36JaVO-y7GucRxd3YCG-z3wwDPdhKAievjLV2GW6_bKdvzYPLf_0lI8o88KFdjMFR1hCh9z9PqHfLhzlkKvdVEJ5vXDRxtR_EBLTqyw37P1VOFref-qu2CrXIx10ZbGw">
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-title-md text-title-md text-primary font-bold">Liam Chen</span>
+<span class="material-symbols-outlined text-[15px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-body-sm font-bold text-primary">5.0</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">Repeat renter (3rd time)</div>
+</div>
+</div>
+<button class="w-9 h-9 rounded-lg border border-outline-variant/60 flex items-center justify-center hover:bg-surface-container transition-colors" title="Message Liam Chen">
+<span class="material-symbols-outlined text-[18px] text-primary">chat</span>
+</button>
+</div>
+<div class="bg-surface-container-low/60 rounded-xl p-3 border border-outline-variant/30 space-y-1.5">
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Handed Over On:</span>
+<span class="font-medium text-primary">Oct 25, 2025 at 9:15 AM</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Expected Return:</span>
+<span class="font-medium text-primary">Oct 29, 2025 (5:00 PM)</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 flex flex-col justify-between space-y-4 pt-4 lg:pt-0">
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-3.5 space-y-2">
+<div class="flex justify-between items-center">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Gross Accrual:</span>
+<span class="text-title-md font-title-md font-bold text-primary">$260.00</span>
+</div>
+<div class="flex justify-between items-center pt-1 border-t border-outline-variant/20">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Security Hold Status:</span>
+<span class="text-label-lg font-label-lg font-semibold text-emerald-700">Locked ($200.00)</span>
+</div>
+</div>
+<div class="space-y-2">
+<button class="w-full h-11 px-4 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/60 text-primary font-label-lg text-label-lg transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+                View Rental Details
+              </button>
+<button class="w-full h-10 px-4 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/60 text-on-surface font-label-lg text-label-lg transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">forum</span>
+                Communicate with Renter
+              </button>
+</div>
+</div>
+</div>
+</article>
+<!-- --------------------------------------------------------------------- -->
+<!-- CARD 5: DISPUTE / INSPECTION REVIEW STATE (Separate pipeline card)    -->
+<!-- --------------------------------------------------------------------- -->
+<article class="bg-rose-50/40 backdrop-blur-md border border-rose-200 rounded-2xl p-6 lg:p-7 shadow-sm transition-all duration-200 relative overflow-hidden">
+<div class="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-rose-200/60">
+<div class="flex items-center gap-2.5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-900 border border-rose-300 font-label-md text-label-md font-bold uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-rose-600"></span>
+              Under Inspection Review / Damage Claim Active
+            </span>
+<span class="text-body-sm font-body-sm text-rose-800 font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">gavel</span>
+              Automatic order completion paused
+            </span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-body-sm text-rose-950 font-bold">Case #CS-9912</span>
+<span class="w-1 h-1 rounded-full bg-rose-300"></span>
+<span class="font-mono text-body-sm text-outline">Order #UL-781102</span>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-5 items-start">
+<div class="lg:col-span-4 flex gap-4">
+<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-white border border-rose-200 shrink-0 overflow-hidden relative group">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Sennheiser EW 100 G4 wireless microphone receiver and bodypack transmitter with antenna on pure white background, photographic lighting highlighting clean electronics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCurtKTZjtj7Lumn3Zz3kRJPMQ9bU_wY4zxbR9DuQsawAfrv3yTMSUZzkzwE6lWDq1-GxTsrFWMDribBY60a4Idk9RJ5QP9ao5_tWiSYKSNyEIIhl4JgYNOAY94whnbW1zmEBl_OyiVIvAu-fmBccicGjqM9mfWWvanAGWFBJOr4w2VoqF6IdeClRLIYkeqixWT-aAbYv1okE4iVlGZfz7RVU2zrQUh5tOOK05NnzdlX9c2DL-2LhVXeA">
+</div>
+<div class="flex flex-col justify-center space-y-1">
+<span class="text-label-md font-label-md text-rose-800 uppercase font-bold tracking-wider">Audio Production</span>
+<h3 class="font-title-lg text-title-lg text-primary font-bold leading-tight">Sennheiser EW 100 G4 Wireless Mic Kit</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant font-mono">Transmitter &amp; Bodypack (A-Band)</p>
+<div class="pt-1 flex items-center gap-1 text-rose-700 text-xs font-semibold">
+<span class="material-symbols-outlined text-[15px]">shield</span>
+<span class="">$75.00 Escrow Security Frozen</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 space-y-3 border-t lg:border-t-0 lg:border-l lg:border-r border-rose-200/60 lg:px-6 pt-4 lg:pt-0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center font-bold text-on-surface">
+                  DK
+                </div>
+<div>
+<div class="font-title-md text-title-md text-primary font-bold">David K.</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">Returned on Oct 26 • Claim filed by Owner</div>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-white text-rose-900 border border-rose-200 text-xs font-semibold">In Underwriting</span>
+</div>
+<!-- Incident Note -->
+<div class="bg-white/90 rounded-xl p-3.5 border border-rose-200 text-body-sm font-body-sm text-on-surface space-y-1">
+<div class="font-semibold text-rose-900 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">info</span>
+                Lender Inspection Findings:
+              </div>
+<p class="text-on-surface-variant">
+                “Reported missing lavalier clip &amp; minor cosmetic scuff on transmitter body. UniLend Concierge underwriting case #CS-9912 open. Renter response requested within 24 hours.”
+              </p>
+</div>
+</div>
+<div class="lg:col-span-3 flex flex-col justify-between space-y-3 pt-4 lg:pt-0">
+<div class="bg-white/90 border border-rose-200 rounded-xl p-3 space-y-1">
+<span class="text-xs text-on-surface-variant block">Concierge Handler:</span>
+<span class="text-sm font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">support_agent</span>
+                UniLend Resolution Lead (Elena S.)
+              </span>
+</div>
+<button class="w-full h-11 px-4 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-label-lg text-label-lg transition-all duration-200 active:scale-95 shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+              View Dispute Ledger &amp; Case
+            </button>
+</div>
+</div>
+</article>
+</section>
+<!-- ========================================================================= -->
+<!-- PAGINATION BAR                                                            -->
+<!-- ========================================================================= -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 pb-8 border-t border-outline-variant/30">
+<div class="text-body-sm font-body-sm text-on-surface-variant">
+        Showing <span class="font-semibold text-primary">5</span> of <span class="font-semibold text-primary">10</span> active management listings
+      </div>
+<div class="flex items-center gap-1.5">
+<button class="h-9 px-3 rounded-lg border border-outline-variant/50 text-body-sm text-on-surface-variant hover:bg-surface-container disabled:opacity-40" disabled="">
+<span class="material-symbols-outlined text-[16px] align-middle">chevron_left</span>
+          Previous
+        </button>
+<button class="w-9 h-9 rounded-lg bg-primary text-on-primary text-body-sm font-bold">1</button>
+<button class="w-9 h-9 rounded-lg border border-outline-variant/50 hover:bg-surface-container text-body-sm font-medium text-on-surface">2</button>
+<button class="h-9 px-3 rounded-lg border border-outline-variant/50 text-body-sm text-on-surface hover:bg-surface-container">
+          Next
+          <span class="material-symbols-outlined text-[16px] align-middle">chevron_right</span>
+</button>
+</div>
+</div>
+</main>
+<!-- ========================================================================= -->
+<!-- 5. CONFIRMATION DIALOG / MODAL MOCK (Return Inspection Assessment)        -->
+<!-- ========================================================================= -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm transition-opacity duration-300" id="inspectionModal">
+<div class="bg-surface-container-lowest rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-outline-variant/50 relative space-y-6">
+<!-- Close button -->
+<button class="absolute top-5 right-5 w-8 h-8 rounded-lg flex items-center justify-center hover:bg-surface-container-low transition-colors text-outline" onclick="document.getElementById('inspectionModal').classList.add('hidden')">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+<!-- Modal Header -->
+<div class="space-y-1.5 pr-8">
+<div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 text-[11px] font-bold tracking-wider uppercase">
+          Return Inspection &amp; Escrow Release
+        </div>
+<h3 class="font-headline-sm text-headline-sm text-primary font-bold">Condition Assessment Checklist</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Order #UL-849204 • Sony Alpha A7 IV Kit</p>
+</div>
+<!-- Checklist Items -->
+<div class="space-y-3 bg-surface-container-low/50 p-4 rounded-xl border border-outline-variant/40">
+<label class="flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 text-primary rounded border-outline-variant focus:ring-0" type="checkbox">
+<div>
+<span class="text-body-md font-body-md font-semibold text-primary block">Optics &amp; Sensor Integrity</span>
+<span class="text-body-sm text-on-surface-variant">Sensor glass clean, free of scratches, mount contacts functional.</span>
+</div>
+</label>
+<label class="flex items-start gap-3 cursor-pointer pt-2 border-t border-outline-variant/20">
+<input checked="" class="mt-1 w-4 h-4 text-primary rounded border-outline-variant focus:ring-0" type="checkbox">
+<div>
+<span class="text-body-md font-body-md font-semibold text-primary block">All Accessories Accounted For</span>
+<span class="text-body-sm text-on-surface-variant">2x Sony OEM batteries, charging dock, wrist strap, and Pelican hardcase.</span>
+</div>
+</label>
+<label class="flex items-start gap-3 cursor-pointer pt-2 border-t border-outline-variant/20">
+<input checked="" class="mt-1 w-4 h-4 text-primary rounded border-outline-variant focus:ring-0" type="checkbox">
+<div>
+<span class="text-body-md font-body-md font-semibold text-primary block">Body Cosmetic Condition Checked</span>
+<span class="text-body-sm text-on-surface-variant">Matches pre-rental state (Grade 9.8/10). No moisture or drop impact marks.</span>
+</div>
+</label>
+</div>
+<!-- Financial Escrow Settlement Action -->
+<div class="bg-surface-container-low/80 rounded-xl p-4 border border-outline-variant/40 space-y-2">
+<div class="flex items-center justify-between text-body-sm">
+<span class="text-on-surface-variant">Immediate Escrow Release to Alex Morgan:</span>
+<span class="font-mono font-bold text-primary">$150.00 USD</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-semibold text-emerald-800">
+<span class="">Lender Payout Credit to your Stripe Account:</span>
+<span class="font-mono text-title-md font-bold text-emerald-800">$135.00 USD</span>
+</div>
+</div>
+<!-- Trust Stamp -->
+<div class="flex items-center gap-2 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-secondary">verified_user</span>
+<span class="">Secured by UniLend Escrow Smart Contracts with cryptographic zero-liability pledge.</span>
+</div>
+<!-- Modal Action Buttons -->
+<div class="flex items-center justify-end gap-3 pt-2">
+<button class="px-4 py-2.5 rounded-xl border border-outline-variant/60 hover:bg-surface-container text-body-sm font-semibold text-on-surface transition-colors" onclick="document.getElementById('inspectionModal').classList.add('hidden')">
+          Cancel
+        </button>
+<button class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-on-primary text-body-sm font-bold shadow-md transition-all active:scale-95 flex items-center gap-2" onclick="document.getElementById('inspectionModal').classList.add('hidden')">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+          Authorize &amp; Release Escrow
+        </button>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- 6. FOOTER (Shared Component: Footer)                                      -->
+<!-- ========================================================================= -->
+<footer class="bg-surface-container-low dark:bg-primary-container border-t border-outline-variant/30 dark:border-outline/20 flat no shadows mt-auto">
+<div class="w-full px-6 lg:px-12 max-w-[1360px] mx-auto py-12 flex flex-col md:flex-row items-center justify-between gap-6">
+<!-- Logo & Copyright -->
+<div class="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+<a class="text-title-md font-title-md tracking-wider text-primary dark:text-inverse-on-surface font-bold" href="#">
+          UNILEND.™
+        </a>
+<span class="hidden sm:inline text-outline-variant">|</span>
+<p class="text-body-sm font-body-sm text-on-surface-variant dark:text-outline-variant">
+          © 2025 UNILEND.™ Peer-to-Peer Precision Rental Systems. All rights reserved.
+        </p>
+</div>
+<!-- Legal Links -->
+<nav class="flex flex-wrap justify-center items-center gap-6 text-label-md font-label-md">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">Terms of Service</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">Rental Guarantee</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">Security Verification</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">Dispute Resolution</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors duration-150" href="#">Platform Ledger</a>
+</nav>
+</div>
+</footer>
+
+
+
+
+
+
+
+
+</body></html>

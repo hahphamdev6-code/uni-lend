@@ -1,759 +1,623 @@
 <!DOCTYPE html>
 
-<html class="light" lang="vi"><head>
+<html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>UNILEND — Nền Tảng Chia Sẻ Đồ Dùng Sinh Viên</title>
-<!-- Fonts -->
+<title>UNILEND.™ — Campus &amp; Community Free Item Borrowing &amp; Lending</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700&amp;family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
-          "colors": {
-            "surface": "#fcf9f8",
-            "on-error-container": "#93000a",
-            "on-error": "#ffffff",
-            "surface-bright": "#fcf9f8",
-            "primary": "#00508d",
-            "on-primary-fixed": "#001c38",
-            "error": "#ba1a1a",
-            "surface-tint": "#0060a9",
-            "surface-dim": "#dcd9d9",
-            "secondary-fixed": "#cbe6ff",
-            "primary-container": "#0568b5",
-            "on-tertiary-fixed": "#0e1d24",
-            "on-tertiary-container": "#d7e7f1",
-            "surface-container": "#f0edec",
-            "on-surface": "#1c1b1b",
-            "on-secondary": "#ffffff",
-            "on-primary-container": "#d7e6ff",
-            "on-tertiary": "#ffffff",
-            "on-primary": "#ffffff",
-            "secondary-container": "#44b7ff",
-            "primary-fixed": "#d3e4ff",
-            "tertiary-fixed": "#d5e5ef",
-            "surface-variant": "#e5e2e1",
-            "secondary": "#006494",
-            "outline": "#717782",
-            "on-surface-variant": "#414751",
-            "inverse-surface": "#313030",
-            "on-primary-fixed-variant": "#004881",
-            "error-container": "#ffdad6",
-            "on-secondary-fixed-variant": "#004b71",
-            "on-secondary-fixed": "#001e30",
-            "on-background": "#1c1b1b",
-            "inverse-primary": "#a2c9ff",
-            "surface-container-highest": "#e5e2e1",
-            "surface-container-high": "#ebe7e7",
-            "background": "#fcf9f8",
-            "primary-fixed-dim": "#a2c9ff",
-            "tertiary-container": "#596871",
-            "surface-container-lowest": "#ffffff",
-            "inverse-on-surface": "#f3f0ef",
-            "tertiary": "#415058",
-            "on-tertiary-fixed-variant": "#3a4951",
-            "on-secondary-container": "#004669",
-            "tertiary-fixed-dim": "#b9c9d2",
-            "secondary-fixed-dim": "#8ecdff",
-            "surface-container-low": "#f6f3f2",
-            "outline-variant": "#c1c7d3"
+          colors: {
+            "on-background": "#0D0E12",
+            "on-surface": "#0D0E12",
+            "on-surface-variant": "#555A68",
+            "surface-subtle": "#F4F4F8",
+            "brand-dark": "#0D0E12"
           },
-          "borderRadius": {
-            "DEFAULT": "1rem",
-            "lg": "2rem",
-            "xl": "3rem",
-            "full": "9999px"
-          },
-          "spacing": {
-            "margin": "3rem",
-            "space-xs": "0.25rem",
-            "space-2xl": "4rem",
-            "gutter-sm": "1rem",
-            "space-sm": "0.5rem",
-            "gutter": "1.5rem",
-            "space-lg": "1.5rem",
-            "space-md": "1rem",
-            "margin-mobile": "1.25rem",
-            "space-xl": "2.5rem"
-          },
-          "fontFamily": {
-            "display-hero": ["Barlow Condensed"],
-            "headline-lg-mobile": ["Barlow Condensed"],
-            "body-md": ["Be Vietnam Pro"],
-            "body-sm": ["Be Vietnam Pro"],
-            "label-lg": ["Be Vietnam Pro"],
-            "headline-sm": ["Barlow Condensed"],
-            "label-md": ["Be Vietnam Pro"],
-            "label-caps": ["Barlow Condensed"],
-            "headline-lg": ["Barlow Condensed"],
-            "body-lg": ["Be Vietnam Pro"],
-            "display-hero-mobile": ["Barlow Condensed"],
-            "headline-md": ["Barlow Condensed"]
-          },
-          "fontSize": {
-            "display-hero": ["80px", { "lineHeight": "76px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
-            "headline-lg-mobile": ["32px", { "lineHeight": "32px", "letterSpacing": "0em", "fontWeight": "700" }],
-            "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
-            "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
-            "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
-            "headline-sm": ["20px", { "lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "600" }],
-            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
-            "label-caps": ["14px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700" }],
-            "headline-lg": ["48px", { "lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
-            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
-            "display-hero-mobile": ["44px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "800" }],
-            "headline-md": ["28px", { "lineHeight": "30px", "letterSpacing": "0.01em", "fontWeight": "700" }]
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"]
           }
         }
       }
     }
   </script>
+<style>
+    body {
+      background: radial-gradient(circle at 95% 10%, rgba(254, 237, 243, 0.75) 0%, transparent 45%),
+                  radial-gradient(circle at 85% 35%, rgba(243, 238, 255, 0.7) 0%, transparent 40%),
+                  radial-gradient(circle at 5% 15%, rgba(248, 249, 255, 0.8) 0%, transparent 45%),
+                  radial-gradient(circle at 50% 90%, rgba(253, 242, 248, 0.4) 0%, transparent 50%),
+                  #FAFAFD;
+      min-height: 100vh;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
 </head>
-<body id="top" class="bg-surface text-on-surface antialiased font-body-md selection:bg-secondary-container selection:text-on-secondary-container">
-<!-- 1. Promo Announcement Strip -->
-<aside aria-label="Announcement" class="w-full bg-surface-container-low border-b border-outline-variant py-2 px-margin-mobile md:px-margin text-center">
-<p class="font-label-caps text-label-caps tracking-widest text-on-surface uppercase inline-flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse inline-block"></span>
-      Mượn miễn phí trong khuôn viên — Hẹn gặp trong 5 phút
-    </p>
-</aside>
-<!-- 2. Header (TopNavBar) mapped directly from Shared Components JSON -->
-<header class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline docked full-width top-0 sticky z-50">
-<div class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin flex items-center justify-between h-16">
-<!-- Logo & Main Nav -->
-<div class="flex items-center gap-10">
-<a class="font-headline-md text-headline-md font-bold uppercase tracking-tight text-on-surface dark:text-inverse-on-surface hover:opacity-85 transition-opacity" href="#">
-          UNILEND
-        </a>
-<nav class="hidden md:flex items-center gap-8">
-<!-- Active State: Khám phá -->
-<a class="text-on-surface dark:text-inverse-on-surface font-label-lg text-label-lg border-b-2 border-primary dark:border-primary-fixed pb-1" href="#kham-pha">
-            Khám phá
-          </a>
-<a class="text-on-surface-variant dark:text-outline-variant font-label-lg text-label-lg hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors" href="#cach-hoat-dong">
-            Cách hoạt động
-          </a>
-<a class="text-on-surface-variant dark:text-outline-variant font-label-lg text-label-lg hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors" href="#cong-dong">
-            Cộng đồng
-          </a>
+<body class="font-sans text-[#0D0E12] antialiased selection:bg-rose-100 selection:text-black flex flex-col min-h-screen">
+<!-- Navigation Header -->
+<header class="sticky top-0 z-50 backdrop-blur-md bg-white/40 border-b border-black/[0.04]">
+<div class="max-w-[1440px] mx-auto px-8 md:px-14 py-5 flex items-center justify-between">
+<!-- Brand Logo -->
+<a class="text-xl font-extrabold tracking-tight text-[#0D0E12] flex items-center gap-2" href="#">
+<span class="w-2.5 h-2.5 rounded-full bg-[#0D0E12] inline-block"></span>
+        UNILEND.™
+      </a>
+<!-- Center Navigation Links -->
+<nav class="hidden md:flex items-center space-x-9 text-sm font-medium text-[#555A68]">
+<a class="text-[#0D0E12] font-semibold border-b-2 border-[#0D0E12] pb-0.5" href="#">Home</a>
+<a class="hover:text-[#0D0E12] transition-colors flex items-center gap-1" href="#categories">
+          Categories
+          <svg class="w-3.5 h-3.5 text-neutral-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+<a class="hover:text-[#0D0E12] transition-colors flex items-center gap-1" href="#featured">
+          Borrow
+          <svg class="w-3.5 h-3.5 text-neutral-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+<a class="hover:text-[#0D0E12] transition-colors" href="#how-it-works">Explore</a>
+<a class="hover:text-[#0D0E12] transition-colors" href="#contact">Contact us</a>
 </nav>
-</div>
-<!-- Right Search Pill & Action Cluster -->
+<!-- Right CTA Group -->
 <div class="flex items-center gap-3">
-<!-- Search bar pill on right -->
-<div class="hidden lg:flex items-center bg-surface-container-low border border-outline-variant rounded-full px-4 py-2 w-64 hover:border-on-surface transition-colors">
-<span class="material-symbols-outlined text-outline text-lg mr-2 leading-none">search</span>
-<input class="bg-transparent border-none p-0 text-sm focus:outline-none focus:ring-0 placeholder:text-outline w-full text-on-surface" placeholder="Tìm kiếm đồ dùng..." type="text"/>
-</div>
-<!-- Trailing Icon Actions -->
-<button aria-label="Yêu thích" class="p-2 text-on-surface-variant hover:text-on-surface transition-colors rounded-full leading-none flex items-center justify-center">
-<span class="material-symbols-outlined text-[22px]">favorite</span>
-</button>
-<div class="h-5 w-px bg-outline-variant mx-1 hidden sm:block"></div>
-<!-- Secondary action -->
-<button class="font-label-lg text-label-lg px-4 py-2 text-on-surface hover:opacity-85 transition-opacity">
-          Đăng nhập
+<button class="rounded-full border border-black/10 bg-white/60 hover:bg-white text-sm font-medium px-5 py-2.5 transition-all shadow-sm">
+          Login
         </button>
-<!-- Primary action pill -->
-<button class="bg-on-surface text-surface-container-lowest font-label-lg text-label-lg px-6 py-2 rounded-full hover:opacity-85 active:scale-[0.98] transition-all">
-          Tham gia
+<button class="rounded-full bg-[#0D0E12] text-white hover:bg-black/90 text-sm font-medium px-6 py-2.5 transition-all shadow-sm">
+          Join
         </button>
 </div>
 </div>
 </header>
-<!-- 3. Athletic Editorial Hero Section -->
-<section class="relative bg-surface-container-lowest border-b border-outline-variant overflow-hidden">
-<!-- Visual Stage Container -->
-<div class="relative w-full h-[640px] md:h-[720px] bg-surface-container-low flex items-end">
-<!-- Full-bleed Authentic Campus Photo with crisp clean lighting -->
-<img class="absolute inset-0 w-full h-full object-cover object-center" data-alt="A candid, high-energy Vietnamese university student smiling warmly on an airy university campus quad, holding a silver analog camera in natural bright daylight. Clean athletic editorial framing with clear architectural concrete pillars and manicured grass in soft blur. Minimalist, modern aesthetic with high contrast, authentic lighting, and a palette of crisp white and ocean blue." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8lu1FZRhCmNK8bc1QWUg4XVwC_kH4yKf_ChLNSviI_kO4KIsafQip8UtgfpvVvRAb_cZnx2PA89IdVSR_OG0gRrObbYyQbxbwSbWZYQDxCDwXwj_4byXUcJWb9PZf8bgkR5HTYPVpsC_At73W6BOMXKsSo4KxanhkqLH6Dmpytdds_BZHUS6MsRPb90fwtpxzKfCgMZESJy_B7ZPqB7c7Jh7Q43VrED1WXi37xkptuJ5kw9z1eBFeiAZRzuV27RKEyOqfk_HxKyU"/>
-<!-- Editorial Gradient Protection Layer (hairline subtle contrast wash) -->
-<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent"></div>
-<!-- Hero Core Typography -->
-<div class="relative z-10 w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin pb-28 md:pb-36 text-surface-container-lowest">
-<div class="inline-block bg-secondary-container text-on-secondary-container px-3.5 py-1 rounded-full font-label-caps text-label-caps uppercase mb-4 tracking-wider">
-          MẠNG LƯỚI CAMPUS PEER-TO-PEER
-        </div>
-<h1 class="font-display-hero text-display-hero-mobile md:text-display-hero uppercase tracking-tight text-white max-w-4xl">
-          MƯỢN ĐIỀU BẠN CẦN.<br/>CHIA SẺ ĐIỀU BẠN CÓ.
-        </h1>
-<p class="font-body-lg text-body-lg text-surface-variant max-w-2xl mt-4 mb-8">
-          Nền tảng mượn đồ dùng học tập và đời sống sinh viên tiện lợi nhất ngay trong khuôn viên trường. Không mua sắm thừa thãi, kết nối bạn bè 5 phút nhận đồ.
-        </p>
-<!-- Dual Pill CTAs -->
-<div class="flex flex-wrap items-center gap-4">
-<a class="bg-primary-container text-surface-container-lowest font-label-lg text-label-lg px-8 py-3.5 rounded-full hover:bg-primary transition-colors active:scale-[0.98]" href="#kham-pha">
-            Khám phá ngay
-          </a>
-<button class="bg-transparent border-2 border-white text-white font-label-lg text-label-lg px-8 py-3.5 rounded-full hover:bg-white hover:text-on-surface transition-all active:scale-[0.98]">
-            Đăng món đồ
-          </button>
+<!-- Hero Section -->
+<section class="relative pt-12 pb-20 md:pt-16 md:pb-24 overflow-hidden">
+<div class="max-w-[1440px] mx-auto px-8 md:px-14">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+<!-- Left Hero Column -->
+<div class="lg:col-span-7 flex flex-col items-start">
+<!-- Small Pill Tag -->
+<div class="bg-white/80 border border-black/5 text-[#555A68] rounded-full px-3.5 py-1 text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-2 mb-4 shadow-sm backdrop-blur-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Campus &amp; Community Commons
+          </div>
+<!-- Hero Headline -->
+<h1 class="text-4xl sm:text-5xl xl:text-[58px] font-bold tracking-[-0.035em] text-[#0A0B0E] leading-[1.12] mb-6">
+            Borrow Freely.<br/>
+<span class="text-[#555A68] font-medium">Share More.</span>
+</h1>
+<!-- Hero Subtitle -->
+<p class="text-[#555A68] text-lg sm:text-xl font-normal leading-relaxed max-w-xl mb-8">
+            Discover quality items from your campus and community for every occasion. Borrow what you need, when you need it, without the cost of owning everything.
+          </p>
+<!-- Search & Action Bar -->
+<div class="w-full max-w-xl bg-white/90 backdrop-blur-md rounded-full border border-black/10 p-2 pl-5 flex items-center gap-3 shadow-[0_8px_25px_-5px_rgba(0,0,0,0.04)] mb-6">
+<span class="material-symbols-outlined text-neutral-400 text-[20px]">search</span>
+<input class="w-full bg-transparent border-0 focus:ring-0 text-sm font-normal text-[#0D0E12] placeholder:text-neutral-400 p-0" placeholder="Search cameras, tech, books, tools..." type="text"/>
+<div class="h-6 w-px bg-black/10 hidden sm:block"></div>
+<div class="relative hidden sm:flex items-center pr-2">
+<select class="bg-transparent border-0 focus:ring-0 text-xs font-semibold text-[#555A68] py-1 pl-1 pr-6 cursor-pointer">
+<option>All Categories</option>
+<option>Cameras &amp; Media</option>
+<option>Electronics</option>
+<option>Study &amp; Books</option>
+<option>Living &amp; Tools</option>
+</select>
+</div>
+<button class="bg-[#0D0E12] text-white rounded-full p-2.5 sm:px-4 sm:py-2 flex items-center justify-center hover:bg-black/85 transition-all flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<!-- Dual Action Buttons -->
+<div class="flex flex-wrap items-center gap-3.5 mb-8">
+<a class="bg-[#0D0E12] text-white rounded-full px-7 py-3.5 text-sm font-medium hover:bg-black/85 transition-all shadow-sm" href="#featured">
+              Explore Items
+            </a>
+<button class="bg-white/90 text-[#1C1F26] rounded-full border border-black/10 px-6 py-3.5 text-sm font-medium hover:bg-white transition-all shadow-sm flex items-center gap-1.5">
+<span>Share Your Item</span>
+<span class="text-base leading-none">→</span>
+</button>
+</div>
+<!-- Trust Badges -->
+<div class="flex flex-wrap items-center gap-6 text-xs text-[#555A68] font-medium pt-2 border-t border-black/[0.05] w-full">
+<span class="inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">verified</span>
+              Verified Student &amp; Faculty IDs
+            </span>
+<span class="inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-purple-600">lock_clock</span>
+              Smart Locker Handovers
+            </span>
+<span class="inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-blue-600">shield</span>
+              $5,000 UniLend Protection Guarantee
+            </span>
 </div>
 </div>
-</div>
-<!-- Floating Campus Search Card Overlay (Docked Over Hero Bottom) -->
-<div class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin -mt-20 md:-mt-24 relative z-20 pb-12">
-<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 md:p-8 flex flex-col gap-6">
-<div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-4">
-<!-- Main Search Input -->
-<div class="flex-1 flex items-center bg-surface-container-low border border-outline-variant rounded-full px-5 py-3.5 focus-within:border-primary-container transition-colors">
-<span class="material-symbols-outlined text-outline text-2xl mr-3 leading-none">search</span>
-<input class="w-full bg-transparent border-none p-0 font-body-md text-body-md focus:outline-none focus:ring-0 text-on-surface placeholder:text-outline" placeholder="Bạn đang cần tìm món gì? (thước vẽ, máy ảnh, tài liệu...)" type="text"/>
-</div>
-<!-- Location Badge Segmented -->
-<div class="flex items-center justify-between sm:justify-start gap-3 bg-surface-container-low border border-outline-variant rounded-full px-5 py-3.5">
-<div class="flex items-center gap-2 text-on-surface">
-<span class="material-symbols-outlined text-primary-container text-xl leading-none">near_me</span>
-<span class="font-label-lg text-label-lg whitespace-nowrap">Gần bạn · Bán kính 1km</span>
-</div>
+<!-- Right Hero Column (Editorial Showcase) -->
+<div class="lg:col-span-5 relative">
+<div class="relative w-full max-w-lg mx-auto">
+<!-- Ambient Glow Behind Card -->
+<div class="absolute -inset-4 bg-gradient-to-tr from-rose-100/60 via-purple-100/40 to-white/80 rounded-3xl blur-2xl -z-10 opacity-80"></div>
+<!-- Frosted Showcase Editorial Card -->
+<div class="bg-white/80 backdrop-blur-md rounded-2xl p-5 border border-black/[0.06] shadow-[0_15px_35px_-10px_rgba(0,0,0,0.06)] relative z-10 transition-transform duration-300 hover:-translate-y-1">
+<div class="relative rounded-xl overflow-hidden h-64 bg-neutral-100 mb-4">
+<img class="w-full h-full object-cover" data-alt="A sleek black mirrorless Sony Alpha A7 camera body positioned on an architectural light grey concrete desk surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3HjcSAMKduxqICKJQpRhqGRH5OipEeKxUCm4yzAmGdY-PDbyUA786ChogLPcETnXATXNL_iZMY7s9ylptdi67LcAi_t7hlgxZmhJdFG167Cznr-LFWdgbIwUmVOGLoSjQAqXVxnXpThzCpKLkzsG30wpKcGI8YDsm8mw22vZtuU9JTyMGzjGSofTW6XyWBhw2NuZH4VL4M1i3XuLx4xhfkAXjpu6dUIOeloEhbyo_P2fyS8W6qJqLSmvZmcJBsOPlX4vrwrtzS8KV"/>
+<!-- Floating Translucent Badges inside Image -->
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#0D0E12] border border-black/5 text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  Available to Borrow • Stanford Hub
+                </div>
+<div class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm text-[#0D0E12] border border-black/5 text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+                  Free Campus Loan • Up to 5 Days
+                </div>
 </div>
-<!-- Search Button -->
-<button class="bg-on-surface text-surface-container-lowest font-label-lg text-label-lg px-8 py-3.5 rounded-full hover:opacity-85 transition-opacity active:scale-[0.98] whitespace-nowrap">
-            Tìm đồ mượn
-          </button>
+<!-- Lender Profile and Info -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-neutral-100 flex items-center justify-center text-xs font-bold text-[#0D0E12] border border-black/5">
+                    MV
+                  </div>
+<div>
+<div class="flex items-center gap-1">
+<span class="text-sm font-semibold text-[#0D0E12]">Marcus V.</span>
+<span class="material-symbols-outlined text-purple-600 text-[15px] fill-icon">verified</span>
 </div>
-<!-- Quick filter micro tags -->
-<div class="flex items-center gap-2 flex-wrap pt-2 border-t border-outline-variant">
-<span class="font-label-caps text-label-caps uppercase text-outline mr-2">Gợi ý nhanh:</span>
-<a class="bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm px-3.5 py-1.5 rounded-full border border-outline-variant transition-colors" href="#">
-            Máy tính khoa học
-          </a>
-<a class="bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm px-3.5 py-1.5 rounded-full border border-outline-variant transition-colors" href="#">
-            Bàn ủi cầm tay
-          </a>
-<a class="bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm px-3.5 py-1.5 rounded-full border border-outline-variant transition-colors" href="#">
-            Máy chiếu đồ án
-          </a>
-<a class="bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm px-3.5 py-1.5 rounded-full border border-outline-variant transition-colors" href="#">
-            Vợt cầu lông
-          </a>
+<p class="text-xs text-neutral-400">UC Berkeley (0.4 mi away)</p>
+</div>
+</div>
+<div class="flex items-center gap-1 bg-white/90 px-2.5 py-1 rounded-full border border-black/5 text-xs font-semibold text-[#0D0E12] shadow-sm">
+<span class="material-symbols-outlined text-amber-500 text-[14px] fill-icon">star</span>
+<span>5.0</span>
+<span class="text-neutral-400 font-normal">(42 loans)</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.05] flex items-center justify-between">
+<div>
+<h4 class="text-sm font-bold text-[#0D0E12]">Sony Alpha A7 IV Kit</h4>
+<p class="text-xs text-[#555A68]">28-70mm f/3.5-5.6 OSS + 2x Pro SD Cards</p>
+</div>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+                  Borrow
+                </button>
+</div>
+</div>
+<!-- Floating Micro Card -->
+<div class="absolute -bottom-5 -right-4 bg-white/90 backdrop-blur-md rounded-2xl p-3 border border-black/5 shadow-md z-20 flex items-center gap-3 max-w-[240px] hidden sm:flex">
+<div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-700 flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">laptop_mac</span>
+</div>
+<div class="overflow-hidden">
+<p class="text-xs font-bold text-[#0D0E12] truncate">MacBook Pro 16" M3</p>
+<p class="text-[11px] text-emerald-600 font-medium">Free Community Loan</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 </section>
-<!-- 4. Value Proposition Cards (3 Pillar Matrix) -->
-<section class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin py-space-xl">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<!-- Card 1 -->
-<div class="border border-outline-variant rounded-xl p-8 bg-surface-container-lowest hover:border-on-surface transition-colors flex flex-col justify-between">
-<div>
-<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center mb-6 text-primary-container">
-<span class="material-symbols-outlined text-2xl">location_on</span>
-</div>
-<h2 class="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide mb-3">
-            GẦN NGAY TRONG TRƯỜNG
-          </h2>
-<p class="font-body-md text-body-md text-on-surface-variant">
-            Kết nối trực tiếp sinh viên cùng trường hoặc ký túc xá gần bạn nhất. Tiết kiệm thời gian di chuyển, chỉ mất 5 phút gặp mặt nhận đồ tại sảnh hay căng-tin.
-          </p>
-</div>
-<div class="mt-6 pt-4 border-t border-outline-variant flex items-center text-primary-container font-label-caps text-label-caps uppercase">
-<span>Bán kính đi bộ</span>
-<span class="material-symbols-outlined text-base ml-1">chevron_right</span>
-</div>
-</div>
-<!-- Card 2 -->
-<div class="border border-outline-variant rounded-xl p-8 bg-surface-container-lowest hover:border-on-surface transition-colors flex flex-col justify-between">
-<div>
-<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center mb-6 text-primary-container">
-<span class="material-symbols-outlined text-2xl">schedule</span>
-</div>
-<h2 class="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide mb-3">
-            DÙNG KHI CẦN
-          </h2>
-<p class="font-body-md text-body-md text-on-surface-variant">Không cần mua mới — mượn ngay hàng trăm món đồ hữu ích từ bạn bè cùng trường, đúng lúc bạn cần.</p>
-</div>
-<div class="mt-6 pt-4 border-t border-outline-variant flex items-center text-primary-container font-label-caps text-label-caps uppercase">
-<span>Không phí hao tổn</span>
-<span class="material-symbols-outlined text-base ml-1">chevron_right</span>
-</div>
-</div>
-<!-- Card 3 -->
-<div class="border border-outline-variant rounded-xl p-8 bg-surface-container-lowest hover:border-on-surface transition-colors flex flex-col justify-between">
-<div>
-<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center mb-6 text-primary-container">
-<span class="material-symbols-outlined text-2xl">eco</span>
-</div>
-<h2 class="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide mb-3">
-            CHIA SẺ BỀN VỮNG
-          </h2>
-<p class="font-body-md text-body-md text-on-surface-variant">
-            Giảm lãng phí, tái sử dụng tài nguyên và xây dựng lối sống sinh viên văn minh, gắn kết cộng đồng học thuật tương thân tương ái.
-          </p>
-</div>
-<div class="mt-6 pt-4 border-t border-outline-variant flex items-center text-primary-container font-label-caps text-label-caps uppercase">
-<span>Cộng đồng xanh</span>
-<span class="material-symbols-outlined text-base ml-1">chevron_right</span>
-</div>
-</div>
-</div>
-</section>
-<!-- 5. Featured Section "ĐỒ HAY ĐANG ĐƯỢC SẺ CHIA" -->
-<section class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin py-space-xl border-t border-outline-variant" id="kham-pha">
-<!-- Section Header & Controls -->
-<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
-<div>
-<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-widest block mb-1">
-          DANH MỤC TRONG CAMPUS
-        </span>
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase tracking-tight text-on-surface">
-          ĐỒ HAY ĐANG ĐƯỢC SẺ CHIA
+<!-- Features Section: The Smarter Way to Share -->
+<section class="py-16 relative" id="how-it-works">
+<div class="max-w-[1440px] mx-auto px-8 md:px-14">
+<!-- Section Header -->
+<div class="text-center max-w-2xl mx-auto mb-12">
+<span class="text-xs font-bold text-neutral-400 uppercase tracking-widest">THE SMARTER WAY TO SHARE</span>
+<h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#0A0B0E] mt-2 mb-3">
+          Everything You Need to Borrow with Confidence
         </h2>
+<p class="text-[#555A68] text-base leading-relaxed">
+          A modern lending circuit where campus members exchange gear responsibly with complete trust and zero daily costs.
+        </p>
 </div>
-<!-- Category Filter Pills & View All Link -->
-<div class="flex flex-wrap items-center gap-3">
-<div class="flex items-center gap-2 p-1 bg-surface-container-low rounded-full border border-outline-variant">
-<button class="bg-on-surface text-surface-container-lowest font-label-caps text-label-caps uppercase px-4 py-1.5 rounded-full">
-            Tất cả
-          </button>
-<button class="text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps uppercase px-4 py-1.5 rounded-full transition-colors">
-            Học tập
-          </button>
-<button class="text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps uppercase px-4 py-1.5 rounded-full transition-colors">
-            Công nghệ
-          </button>
-<button class="text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps uppercase px-4 py-1.5 rounded-full transition-colors">
-            Đời sống
-          </button>
-</div>
-<a class="font-label-lg text-label-lg text-primary-container hover:underline ml-2 inline-flex items-center gap-1" href="#">
-          Khám phá tất cả <span class="material-symbols-outlined text-base">arrow_forward</span>
-</a>
-</div>
-</div>
-<!-- 3x2 Nike-Style Product Catalog Grid -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-<!-- Item Card 1 -->
-<article class="group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest flex flex-col justify-between hover:border-on-surface transition-all">
+<!-- 4-Column Frosted Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Feature Card 1 -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-black/[0.04] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.03)] hover:border-black/10 transition-all flex flex-col justify-between">
 <div>
-<!-- Image Stage 1:1 -->
-<div class="relative aspect-square bg-[#F5F8FB] overflow-hidden flex items-center justify-center p-6 border-b border-outline-variant">
-<span class="absolute top-4 left-4 z-10 bg-surface-container-lowest border border-outline-variant text-primary-container font-label-caps text-label-caps uppercase px-2.5 py-1 rounded-full">
-              Có sẵn hôm nay
-            </span>
-<button aria-label="Yêu thích" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant flex items-center justify-center text-on-surface hover:text-error transition-colors">
-<span class="material-symbols-outlined text-xl">favorite</span>
-</button>
-<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="A premium black Ricoh GR1s 35mm compact film camera isolated crisply on a smooth neutral cloud white studio background with soft diffuse commercial athletic catalog lighting. Minimalist product photography, bold industrial design, rich matte black textures and clean metallic accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHxCDc13AAWCO0tcSTrUS6GFlQn11Nt2bEti18KHWMllBPVioKTZ8BPu7yjBSu6kh0x-qyLCyQ_VZ9-V0FJUBdlD0biF6rzFoPGcr2KPaza1ohzbr-eONlFs3RFOpvoW4i7VuVhOBzbvLU1naYCZV0mVPy9kAW_0AXJJWG8ZtJQqggs2dWpeSEpHn8gTju7G1HL34WRSU_5LBEvC9mbY81jFpRrHXYTcTdvDGIIAF9wzNxDVh4I4sQJfIeUZODH7vCUFFQ_fjmR-U"/>
+<div class="w-12 h-12 rounded-xl bg-rose-50/80 text-[#0D0E12] flex items-center justify-center mb-5 border border-rose-100/50">
+<span class="material-symbols-outlined text-[22px]">category</span>
 </div>
-<!-- Card Content -->
-<div class="p-5">
-<p class="font-label-caps text-label-caps uppercase text-outline mb-1">
-              Nhiếp ảnh · Cách 300m
-            </p>
-<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface font-bold tracking-tight">
-              Máy ảnh film Ricoh GR1s
-            </h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-              Hoàng Long · Sinh viên năm 3
+<h3 class="text-base font-bold text-[#0D0E12] mb-2">Quality Items</h3>
+<p class="text-sm text-[#555A68] leading-relaxed">
+              Discover carefully shared items for study, tech projects, and everyday needs from verified community members.
             </p>
 </div>
-</div>
-<div class="px-5 pb-5 pt-0">
-<div class="w-full border-t border-outline-variant pt-3 flex items-center justify-between">
-<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-wider">
-              MƯỢN TỰ DO
-            </span>
-<button class="bg-surface-container-low hover:bg-on-surface hover:text-white text-on-surface font-label-caps text-label-caps uppercase px-4 py-2 rounded-full border border-outline-variant transition-colors">
-              Gửi yêu cầu
-            </button>
-</div>
-</div>
-</article>
-<!-- Item Card 2 -->
-<article class="group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest flex flex-col justify-between hover:border-on-surface transition-all">
-<div>
-<!-- Image Stage 1:1 -->
-<div class="relative aspect-square bg-[#F5F8FB] overflow-hidden flex items-center justify-center p-6 border-b border-outline-variant">
-<span class="absolute top-4 left-4 z-10 bg-surface-container-lowest border border-outline-variant text-primary-container font-label-caps text-label-caps uppercase px-2.5 py-1 rounded-full">
-              Có sẵn hôm nay
-            </span>
-<button aria-label="Yêu thích" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant flex items-center justify-center text-on-surface hover:text-error transition-colors">
-<span class="material-symbols-outlined text-xl">favorite</span>
-</button>
-<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="A sleek Dangbei modern mini portable video projector positioned neatly on an ultra-clean cloud white surface. Bright studio lighting showcases its minimal compact form factor, premium front optical lens, and clean textured mesh speaker grill. Athletic editorial product styling with pure neutral tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDeND_m2hV272zaSaOVEY8eWHHTNE7dWBva-ShLXYGQqIEdmv1YVDf-TbEF9qVyr0u92H754Dw-QzDwJY-y37UMvMYvvs8ShCbIMjioVKVZwxO-PDnb6oo5T6rNjH2ie6k-sp-kbWLqs5xzLm091Q20H9YpqPbpS_jJLf4bkNZ6OtpEY9Yp0qwmiGXoaJzpcsec3yLSyeewWMYfB5Ed3QwWuzN3Bo0mGQRZKPx40KI6XUN4hsXqMZIZTE-b9uukcr_-xaBatWcnZg"/>
-</div>
-<!-- Card Content -->
-<div class="p-5">
-<p class="font-label-caps text-label-caps uppercase text-outline mb-1">
-              Công nghệ · Cách 500m
-            </p>
-<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface font-bold tracking-tight">
-              Máy chiếu mini Dangbei
-            </h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-              Minh Thư · Sinh viên năm 2
-            </p>
-</div>
-</div>
-<div class="px-5 pb-5 pt-0">
-<div class="w-full border-t border-outline-variant pt-3 flex items-center justify-between">
-<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-wider">
-              MƯỢN TỰ DO
-            </span>
-<button class="bg-surface-container-low hover:bg-on-surface hover:text-white text-on-surface font-label-caps text-label-caps uppercase px-4 py-2 rounded-full border border-outline-variant transition-colors">
-              Gửi yêu cầu
-            </button>
-</div>
-</div>
-</article>
-<!-- Item Card 3 -->
-<article class="group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest flex flex-col justify-between hover:border-on-surface transition-all">
-<div>
-<!-- Image Stage 1:1 -->
-<div class="relative aspect-square bg-[#F5F8FB] overflow-hidden flex items-center justify-center p-6 border-b border-outline-variant">
-<span class="absolute top-4 left-4 z-10 bg-surface-container-lowest border border-outline-variant text-primary-container font-label-caps text-label-caps uppercase px-2.5 py-1 rounded-full">
-              Có sẵn hôm nay
-            </span>
-<button aria-label="Yêu thích" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant flex items-center justify-center text-on-surface hover:text-error transition-colors">
-<span class="material-symbols-outlined text-xl">favorite</span>
-</button>
-<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="Matte black wireless Sony WH-1000XM4 over-ear noise-cancelling headphones resting gracefully on a clean white and pale-blue display block. Crisp high-key lighting highlighting subtle copper hardware accents and plush leather earcups. Clean high-contrast editorial equipment catalogue aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByvAOOI2rcmlZL9rHc2VtmBkP4sTKoZ5A9wbbslWKkMRf0k5mJuhUOYXQn7FLTl0LnhSjG57TWz01Xxn3sZO_RClLN1FAp3PE3HeDlBUI2Nk2zuwSiwAbRZJbUA55IJmNHUo5qmdTsZi6poXjaE3s3aAr1oKM-OOiTCPhzYSFrpIkchvpKAc6X4wyCir56QwtAOs-w7DaLpFx387DA-yicwg65Q3C02eYPHv9EPGlDI0F43F0qfN88y_pb9yfVU25nEO6BLSyTMNo"/>
-</div>
-<!-- Card Content -->
-<div class="p-5">
-<p class="font-label-caps text-label-caps uppercase text-outline mb-1">
-              Thiết bị · Cách 150m
-            </p>
-<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface font-bold tracking-tight">
-              Tai nghe Sony WH-1000XM4
-            </h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-              Quốc Bảo · Ký túc xá khu B
-            </p>
-</div>
-</div>
-<div class="px-5 pb-5 pt-0">
-<div class="w-full border-t border-outline-variant pt-3 flex items-center justify-between">
-<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-wider">
-              MƯỢN TỰ DO
-            </span>
-<button class="bg-surface-container-low hover:bg-on-surface hover:text-white text-on-surface font-label-caps text-label-caps uppercase px-4 py-2 rounded-full border border-outline-variant transition-colors">
-              Gửi yêu cầu
-            </button>
-</div>
-</div>
-</article>
-<!-- Item Card 4 -->
-<article class="group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest flex flex-col justify-between hover:border-on-surface transition-all">
-<div>
-<!-- Image Stage 1:1 -->
-<div class="relative aspect-square bg-[#F5F8FB] overflow-hidden flex items-center justify-center p-6 border-b border-outline-variant">
-<span class="absolute top-4 left-4 z-10 bg-surface-container-lowest border border-outline-variant text-primary-container font-label-caps text-label-caps uppercase px-2.5 py-1 rounded-full">
-              Có sẵn hôm nay
-            </span>
-<button aria-label="Yêu thích" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant flex items-center justify-center text-on-surface hover:text-error transition-colors">
-<span class="material-symbols-outlined text-xl">favorite</span>
-</button>
-<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="A neat stack of official Cambridge IELTS Academic practice test textbooks volumes 15 through 19 shown on a pristine white architectural desktop. Crisp high-angle composition with soft natural sunlight reflecting off clean paper edges. Clear academic focus with modern editorial precision and vibrant blue book spines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtAxHEjbWBwCpneXQcka2UAhGYndwZCpG601fPfS-pKeTJKshvjDOcyVcQNF1Nac62JN3F3lRVEFRhzhRPSji37vrvT-T_teHCbPxgFCGmE9vsg7jw07cTRVFmzj17X778t_w8_fhN7SdbyhDhcz-NYnDWOqq0-zf5pmxG_MXfQKmFBGH1VBufCXybP1El3nnFO62iQoRh_EBYYODVV9Xh0lspBs7Uz35ElfcLQ6AcBoFC8neGgk_V_o6aSRVs-j4PAtjp3rKCrb0"/>
-</div>
-<!-- Card Content -->
-<div class="p-5">
-<p class="font-label-caps text-label-caps uppercase text-outline mb-1">
-              Học tập · Cách 400m
-            </p>
-<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface font-bold tracking-tight">
-              Bộ sách IELTS Cambridge 15–19
-            </h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-              Phương Anh · Sinh viên năm 4
-            </p>
-</div>
-</div>
-<div class="px-5 pb-5 pt-0">
-<div class="w-full border-t border-outline-variant pt-3 flex items-center justify-between">
-<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-wider">
-              MƯỢN TỰ DO
-            </span>
-<button class="bg-surface-container-low hover:bg-on-surface hover:text-white text-on-surface font-label-caps text-label-caps uppercase px-4 py-2 rounded-full border border-outline-variant transition-colors">
-              Gửi yêu cầu
-            </button>
-</div>
-</div>
-</article>
-<!-- Item Card 5 -->
-<article class="group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest flex flex-col justify-between hover:border-on-surface transition-all">
-<div>
-<!-- Image Stage 1:1 -->
-<div class="relative aspect-square bg-[#F5F8FB] overflow-hidden flex items-center justify-center p-6 border-b border-outline-variant">
-<span class="absolute top-4 left-4 z-10 bg-surface-container-lowest border border-outline-variant text-primary-container font-label-caps text-label-caps uppercase px-2.5 py-1 rounded-full">
-              Có sẵn hôm nay
-            </span>
-<button aria-label="Yêu thích" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant flex items-center justify-center text-on-surface hover:text-error transition-colors">
-<span class="material-symbols-outlined text-xl">favorite</span>
-</button>
-<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="An architectural drafting kit with a professional A3 T-square ruler, clear acrylic triangular scales, and precision drafting compasses arranged geometrically on an off-white drafting surface. High-contrast modern industrial aesthetic, clean lines, and minimal athletic editorial lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWBDQH7TzgUPchRMppmnCJ82v3UP7rlpfuyhH_tQJorv0BwauDHyU4xGEipFlyRyk36HL19o1jBBEMacZZykv6_rXtJP4p2opHivlpL-QcaaQHJL0cEqYenYMtzWDPw5oGo8JfTJ7BIAWMkVlqeDBA9NfYaGiuu-L26CM5Kw50vZUT403i78O8KUlokGh1zExiPMo4ET1TCmgsh3XugBxAb8IwK2E_peN-HPB3nQ7SCEI0cbuzmKiPLVvb_Zg1VHYlhjuEuGNiMlo"/>
-</div>
-<!-- Card Content -->
-<div class="p-5">
-<p class="font-label-caps text-label-caps uppercase text-outline mb-1">
-              Đồ án · Cách 600m
-            </p>
-<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface font-bold tracking-tight">
-              Bộ thước vẽ kỹ thuật A3
-            </h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-              Đức Huy · Khoa Kiến trúc
-            </p>
-</div>
-</div>
-<div class="px-5 pb-5 pt-0">
-<div class="w-full border-t border-outline-variant pt-3 flex items-center justify-between">
-<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-wider">
-              MƯỢN TỰ DO
-            </span>
-<button class="bg-surface-container-low hover:bg-on-surface hover:text-white text-on-surface font-label-caps text-label-caps uppercase px-4 py-2 rounded-full border border-outline-variant transition-colors">
-              Gửi yêu cầu
-            </button>
-</div>
-</div>
-</article>
-<!-- Item Card 6 -->
-<article class="group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest flex flex-col justify-between hover:border-on-surface transition-all">
-<div>
-<!-- Image Stage 1:1 -->
-<div class="relative aspect-square bg-[#F5F8FB] overflow-hidden flex items-center justify-center p-6 border-b border-outline-variant">
-<span class="absolute top-4 left-4 z-10 bg-surface-container-lowest border border-outline-variant text-primary-container font-label-caps text-label-caps uppercase px-2.5 py-1 rounded-full">
-              Có sẵn hôm nay
-            </span>
-<button aria-label="Yêu thích" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant flex items-center justify-center text-on-surface hover:text-error transition-colors">
-<span class="material-symbols-outlined text-xl">favorite</span>
-</button>
-<img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" data-alt="A modern minimalist handheld garment clothes steamer in clean chalk white with subtle cobalt accents standing upright on a pale gray plinth. Soft commercial product lighting showcasing clean ergonomics, water tank silhouette, and premium vapor nozzle. Crisp, uncluttered aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHCpHwOBFjr6eVDne009tCIWV2w-VJpwFRKEO08ccnRJ59sIhx9zFpxzeG6VJrzyWPZqkC3Uyw7NRurIyEeXkJui5bXaMsJFp89IBxKjy6rPPWc2dYn-xl9x48aRcT4QWNv4q1_3uhzNEDYVCcwciqBRiDdpUHWhew5gAVW3duuVPLgh3_9Zp4Ra44-nTiRTNuQYHL92U_5xm08wzad2UdEEfEP6cUXetM83lCDW9O2_EcD9yZ26-OG_2htBQth6CWtC_E9R-CXc8"/>
-</div>
-<!-- Card Content -->
-<div class="p-5">
-<p class="font-label-caps text-label-caps uppercase text-outline mb-1">
-              Đời sống · Cách 200m
-            </p>
-<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface font-bold tracking-tight">
-              Bàn ủi hơi nước cầm tay
-            </h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-              Mai Linh · Tòa nhà H2
-            </p>
-</div>
-</div>
-<div class="px-5 pb-5 pt-0">
-<div class="w-full border-t border-outline-variant pt-3 flex items-center justify-between">
-<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-wider">
-              MƯỢN TỰ DO
-            </span>
-<button class="bg-surface-container-low hover:bg-on-surface hover:text-white text-on-surface font-label-caps text-label-caps uppercase px-4 py-2 rounded-full border border-outline-variant transition-colors">
-              Gửi yêu cầu
-            </button>
-</div>
-</div>
-</article>
-</div>
-</section>
-<!-- 6. Two Large Editorial Photographic Feature Tiles Side-by-Side -->
-<section class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin py-space-xl">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<!-- Feature Tile 1: Mùa Thi -->
-<div class="relative h-[480px] rounded-2xl overflow-hidden border border-outline-variant flex items-end p-8 md:p-12 group">
-<img class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" data-alt="Two focused Vietnamese college students studying collaboratively at a wide minimalist blond wood table inside an architectural library with tall windows and abundant natural daylight. Open textbooks, highlighters, and coffee tumblers neatly organized. Clean editorial athletic lifestyle photography, sharp details, candid energy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnRxJbVuEBKkOVVhuJq21B7boowwK0WvuLAQlJtAW5T4u2puB43IsShpbuYj5NZ9Q_nH8k5YnhLYvdumI6rZGaL9IowXI-cjVlT4Wqm75JVwwIJAVUvaz4lJOyTADoeYxGD-T4L6u0SxFTPw3v5AzFYOnnXqebgFNZQqf188BeidNmXFVMDq9-A5jeQXdl5autgkP_7LXppnYLKOvVbR1Yb2OVk24-Kz5UeEqeNhqtM9cdihy-GgwWgcdpURk1gL64cADbyL0NkMs"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-<div class="relative z-10 text-white">
-<span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary-fixed mb-2 block">
-            TUYỂN TẬP ĐẶC BIỆT
+<span class="text-xs font-semibold text-neutral-400 mt-6 pt-3 border-t border-black/[0.04] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+            Peer Verified
           </span>
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase font-bold tracking-tight mb-4">
-            MÙA THI — SÁCH &amp; GIÁO TRÌNH
-          </h2>
-<p class="font-body-md text-body-md text-surface-variant max-w-md mb-6">
-            Mượn ngay đề thi cũ, giáo trình chuyên ngành và ghi chép học tập từ các thủ khoa khóa trên.
-          </p>
-<button class="bg-white text-on-surface font-label-lg text-label-lg px-7 py-3 rounded-full hover:opacity-90 active:scale-[0.98] transition-all">
-            Khám phá bộ sưu tập
-          </button>
 </div>
+<!-- Feature Card 2 -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-black/[0.04] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.03)] hover:border-black/10 transition-all flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-purple-50/80 text-[#0D0E12] flex items-center justify-center mb-5 border border-purple-100/50">
+<span class="material-symbols-outlined text-[22px]">calendar_today</span>
 </div>
-<!-- Feature Tile 2: Sáng Tạo -->
-<div class="relative h-[480px] rounded-2xl overflow-hidden border border-outline-variant flex items-end p-8 md:p-12 group">
-<img class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" data-alt="A dynamic student filmmaker holding a professional mirrorless camera rig and shotgun microphone while recording an outdoor student project against an architectural campus concrete amphitheater. Bright crisp daytime lighting, intense energetic focus, athletic documentary aesthetic with vivid sky blues and graphite grays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOI9Uwz50YsRvLuYQ-euzWO2m2IpbFFb0F5FkmMw1VNeL_COJb4H5WLTOtY6ndfrJs0FGK_Snq3XlAb7Sz51C50txPBQcAAh5Y003blJ_Ow9K2Vcg9qCW_BXZa5hkk0DXwR-h-LsIGZJdnXyjxVBlWBpICy9gZXBfpM-wKo1NJ55vhXk8lNURArtMZT7_5LBWoWcqbq38VO_3IynGzfbmnow3GTeVltWuOBHc-fYOiSuWQOOLco35XZ2Y6cZwtGUTb7zJdtdAUyMc"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-<div class="relative z-10 text-white">
-<span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary-fixed mb-2 block">
-            THIẾT BỊ ĐỒ ÁN &amp; MEDIA
+<h3 class="text-base font-bold text-[#0D0E12] mb-2">Easy Loan Requests</h3>
+<p class="text-sm text-[#555A68] leading-relaxed">
+              Find what you need, choose your borrow dates, and send a request in just a few clicks with verified campus profiles.
+            </p>
+</div>
+<span class="text-xs font-semibold text-neutral-400 mt-6 pt-3 border-t border-black/[0.04] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+            Instant Reservation
           </span>
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase font-bold tracking-tight mb-4">
-            SÁNG TẠO — MÁY ẢNH &amp; THIẾT BỊ
+</div>
+<!-- Feature Card 3 -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-black/[0.04] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.03)] hover:border-black/10 transition-all flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-emerald-50/80 text-[#0D0E12] flex items-center justify-center mb-5 border border-emerald-100/50">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+</div>
+<h3 class="text-base font-bold text-[#0D0E12] mb-2">Trusted Community</h3>
+<p class="text-sm text-[#555A68] leading-relaxed">
+              Connect with verified lenders through transparent profiles, student badges, reviews, and community trust ratings.
+            </p>
+</div>
+<span class="text-xs font-semibold text-neutral-400 mt-6 pt-3 border-t border-black/[0.04] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            $5,000 Shield
+          </span>
+</div>
+<!-- Feature Card 4 -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-black/[0.04] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.03)] hover:border-black/10 transition-all flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-blue-50/80 text-[#0D0E12] flex items-center justify-center mb-5 border border-blue-100/50">
+<span class="material-symbols-outlined text-[22px]">published_with_changes</span>
+</div>
+<h3 class="text-base font-bold text-[#0D0E12] mb-2">Share &amp; Connect</h3>
+<p class="text-sm text-[#555A68] leading-relaxed">
+              Borrow useful items or list your own idle belongings to help peers while fostering a sustainable campus circular economy.
+            </p>
+</div>
+<span class="text-xs font-semibold text-neutral-400 mt-6 pt-3 border-t border-black/[0.04] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+            Zero Costs
+          </span>
+</div>
+</div>
+</div>
+</section>
+<!-- Curated Collections Section -->
+<section class="py-16" id="featured">
+<div class="max-w-[1440px] mx-auto px-8 md:px-14">
+<!-- Section Heading & Filter Pills -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-5">
+<div>
+<span class="text-xs font-bold text-neutral-400 uppercase tracking-widest">CURATED COLLECTIONS</span>
+<h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#0A0B0E] mt-1.5">
+            Find Your Next Borrow
           </h2>
-<p class="font-body-md text-body-md text-surface-variant max-w-md mb-6">
-            Ống kính, gimbal chống rung, micro thu âm và đèn LED quay phim luôn sẵn sàng cho dự án của bạn.
-          </p>
-<button class="bg-white text-on-surface font-label-lg text-label-lg px-7 py-3 rounded-full hover:opacity-90 active:scale-[0.98] transition-all">
-            Xem thiết bị
+<p class="text-[#555A68] text-sm mt-1">Explore popular items available to borrow now across campus hubs.</p>
+</div>
+<!-- Category Filter Pills -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1">
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap shadow-sm">
+            All Items
+          </button>
+<button class="bg-white/80 hover:bg-white text-[#555A68] hover:text-[#0D0E12] border border-black/5 text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all shadow-sm">
+            Cameras &amp; Media
+          </button>
+<button class="bg-white/80 hover:bg-white text-[#555A68] hover:text-[#0D0E12] border border-black/5 text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all shadow-sm">
+            Electronics &amp; Audio
+          </button>
+<button class="bg-white/80 hover:bg-white text-[#555A68] hover:text-[#0D0E12] border border-black/5 text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all shadow-sm">
+            Study &amp; Tech
+          </button>
+<button class="bg-white/80 hover:bg-white text-[#555A68] hover:text-[#0D0E12] border border-black/5 text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all shadow-sm">
+            Everyday Living
           </button>
 </div>
 </div>
-</div>
-</section>
-<!-- 7. Process Section "MỘT MÓN ĐỒ, THÊM NHIỀU KẾT NỐI" -->
-<section id="cach-hoat-dong" class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin py-space-xl border-t border-outline-variant">
-<div class="text-center max-w-2xl mx-auto mb-14">
-<span class="font-label-caps text-label-caps uppercase text-primary-container tracking-widest block mb-2">
-        QUY TRÌNH 3 BƯỚC ĐƠN GIẢN
-      </span>
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase tracking-tight text-on-surface">
-        MỘT MÓN ĐỒ, THÊM NHIỀU KẾT NỐI
-      </h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-3">
-        Không thủ tục rườm rà. Mọi giao dịch diễn ra minh bạch, an toàn giữa những người bạn cùng trường.
-      </p>
-</div>
-<!-- 3 Structured Cards with Oversized Numerals -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-<!-- Step 01 -->
-<div class="border border-outline-variant rounded-2xl p-8 bg-surface-container-lowest relative flex flex-col justify-between hover:border-on-surface transition-colors">
+<!-- 4-Column Grid (8 Items - No Daily Rental Fees!) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Item 1: Sony Alpha A7 IV -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
 <div>
-<div class="font-display-hero text-6xl text-[#2BA8F0] mb-6 select-none font-extrabold leading-none">
-            01
-          </div>
-<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide mb-3">
-            TÌM MÓN BẠN CẦN
-          </h3>
-<p class="font-body-md text-body-md text-on-surface-variant">
-            Tìm kiếm nhanh chóng vật dụng phù hợp quanh khu vực giảng đường và ký túc xá. Lọc theo khoảng cách và danh mục tiện lợi.
-          </p>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Sony Alpha A7 IV Mirrorless Kit" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuV-eCFBhqv8upEGd2q8vadKYeqKWCiW8YC3nw_bpiXmIaqfLORxWyQNoc8MbgM67FERtwJ0U5LNsLKnmVPQk0SVdgKzobbeTXvDDg8_hhcdFqfi6ODOdg7TW8cHvVpusbqpjJ_amcQrRtubbLEwrTwtPuFs7_e93VV-zJ0KIYoEtoCVdKKSbbK0ohg1MJGeB1bosXnggU-d8Ap1lEEWXMMAX0csAbYTCMnVSYxJKI0j3JE5BT_Q6f1c0K_ahztgWPZ5eWKj5O0pvS"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 5.0 (28)
+              </span>
 </div>
-<div class="mt-8 pt-4 border-t border-outline-variant flex items-center justify-between text-outline">
-<span class="font-label-caps text-label-caps uppercase">Thời gian: 1 phút</span>
-<span class="material-symbols-outlined text-lg">search</span>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Cameras &amp; Media</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">Sony Alpha A7 IV Mirrorless Kit</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">MV</span>
+              Marcus V. • Campus Hub
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 5 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
 </div>
 </div>
-<!-- Step 02 -->
-<div class="border border-outline-variant rounded-2xl p-8 bg-surface-container-lowest relative flex flex-col justify-between hover:border-on-surface transition-colors">
+<!-- Item 2: Apple MacBook Pro 16" -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
 <div>
-<div class="font-display-hero text-6xl text-[#2BA8F0] mb-6 select-none font-extrabold leading-none">
-            02
-          </div>
-<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide mb-3">
-            HẸN GẶP TRONG CAMPUS
-          </h3>
-<p class="font-body-md text-body-md text-on-surface-variant">
-            Nhắn tin trao đổi và nhận đồ trực tiếp tại điểm hẹn quen thuộc trong 5 phút. An tâm xác thực bằng thẻ sinh viên bạn bè.
-          </p>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Apple MacBook Pro 16 M3 Max" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYj29vyY8dn5AfiSqVGVwZwZgBdIdwQvy1VKqsoJMHx0jt0dXQGJtrwwBPt2tt2yPQR_eLvX7fhg8egxcryLRgHMtSpLRgCnu0jXJ7h_Cn7wvQ9TY-U6RwtlNDw9LG_oaYT1M2wjalGLgk55HtB_y2FAl0VLms3_2BrbcMGvSW2kpUgRx99ldAEHThgdOk6D2yrbu0STMTCMTc3_2MmWcl-Mr-KlcFtfke_BuYCSTOlTQK9hPldBjxhLVUtBkf0CqWziNiM5aLVLpC"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 4.9 (19)
+              </span>
 </div>
-<div class="mt-8 pt-4 border-t border-outline-variant flex items-center justify-between text-outline">
-<span class="font-label-caps text-label-caps uppercase">Gặp mặt: 5 phút</span>
-<span class="material-symbols-outlined text-lg">handshake</span>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Electronics &amp; Audio</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">Apple MacBook Pro 16" M3 Max</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">ER</span>
+              Elena R. • Engineering Hub
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 7 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
 </div>
 </div>
-<!-- Step 03 -->
-<div class="border border-outline-variant rounded-2xl p-8 bg-surface-container-lowest relative flex flex-col justify-between hover:border-on-surface transition-colors">
+<!-- Item 3: XGIMI Horizon Pro 4K -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
 <div>
-<div class="font-display-hero text-6xl text-[#2BA8F0] mb-6 select-none font-extrabold leading-none">
-            03
-          </div>
-<h3 class="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide mb-3">
-            DÙNG XONG, SẺ CHIA
-          </h3>
-<p class="font-body-md text-body-md text-on-surface-variant">
-            Hoàn trả đúng hẹn và sẵn sàng chia sẻ lại những đồ dùng bạn ít dùng đến cho các bạn sinh viên khóa sau cần dùng.
-          </p>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="XGIMI Horizon Pro 4K Projector" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaRM60ER5xovuW0hh5e3qqYIHHEN6aAoQWJp5Q-RfuTvsARnu9CBkKVHqZc_ksY9pWokck_iQrPnVtt5lGbPwpSCIBlm88x-49aDwGemDmA4VpDwqKTFLpRVIw0LiZ25JI8RXaRv2Q0PpfWgP263y9XqXpVOw7KLA-SMroJh2o_JfgIDr5nCsCIs-mMREbm7BKDUAtqwan7mT3gNGMgtXdbpZvePy84zXL4ALabXZJukSKpfwS12XHYVJuWtWExrJfE4Oxq6oOnu_h"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 4.8 (14)
+              </span>
 </div>
-<div class="mt-8 pt-4 border-t border-outline-variant flex items-center justify-between text-outline">
-<span class="font-label-caps text-label-caps uppercase">Cộng đồng xanh</span>
-<span class="material-symbols-outlined text-lg">autorenew</span>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Cameras &amp; Media</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">XGIMI Horizon Pro 4K Projector</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">LC</span>
+              Liam C. • South Campus Dorms
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 3 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+<!-- Item 4: Casio FX-991CW -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Casio FX-991CW Scientific Graphing Calculator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIxNUkGxbfrMpBJzBIsBkZgmS8ot9MMPXAc8K59OjwrQh3qrQnxoj92QPnTODCmXuxQG_9wtxB95Syhzeb6ekcsHMp9D1UCqRZH9QDgb-Dhv7rKU4WgdIpOukFjKPBClVIcvXcUarg0GiN3vUr_K1IP5Fdiq73VIiZ8drxfS1YbxcqQbfR57ll4c0oafhDR-MxyDl7JTxACA-fxcQC6LN5qw9DlgxBW0xMbJx-RUNz_52Da0bcoW7v7MJl5X7rX1mEv-FATmivpXI0"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 5.0 (36)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Study &amp; Tech</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">Casio FX-991CW Graphing Calculator</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">MP</span>
+              Maya P. • Math &amp; Stats Library
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 14 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+<!-- Item 5: DeWalt 20V Cordless Drill -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="DeWalt 20V MAX Cordless Drill Set" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHv4PzB24x_rbS3utxfsX7Ia4rrLl073mLzscWhXvC5ciXvOLm2HP4PGub23s1IoFdnZ72vgFVvX73QWSWzAjI3zb11Xc4fVAnMZ5xO8rRIr8peXKrPz5Te_yBnD1UNQakhShHQsv__adnlymnwVqs856TTUxEsOY6pWaVkjCfuLInUuE_YXzmwbJvazaXlx_zeADqJP8wdfkunYsLqdI4H8E8ryfeWDxJav3LzXAvZ57LqnWvaYxx-XZVSAvIWSiS1N4bqlHJgxoJ"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 4.9 (12)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Everyday Living</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">DeWalt 20V MAX Cordless Drill Set</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">DC</span>
+              David C. • Architecture Studio
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 4 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+<!-- Item 6: DJI Air 3 Drone -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="DJI Air 3 Fly More Combo 4K Drone" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3h8GE5BO_xRUZjGcsu4jjEtMca0NeNHMBQeQobDLhnqT7A4GTjLA471nCa3LjE_ZC2BGmcfILUOlIIx5xvaFKbUh4s5NOi1rNscmq55UtKvymh_JWhA-6EVRmowGzCqWvLZca31kvhmDwO-d3pGvwPAwcutVHMLaBegEA2h738vdat2uGbtM0vdDYwn28-fixirtTJC622_e8mWI4RbpDPTYrnJXB580Xv8NFLTgwTk6NZxrUS8mZH7NZMsqhu3BxwrkK-ShdF51n"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 5.0 (22)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Cameras &amp; Media</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">DJI Air 3 Fly More Combo 4K</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">SJ</span>
+              Sarah J. • North Quad
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 3 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+<!-- Item 7: Sennheiser EW 100 G4 Mic -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Sennheiser EW 100 G4 Wireless Mic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCK4C4HUaaeteRaNY_vhu1AqS8RxdRQvnnVfUcyO-WWvZNFHMEo6EEod70unQsXwqjmG_ijiVY0I-mKFW3q1N5RLZX1nyO2NJo7n7m7joPpmb1TQHPSuVDhchOylekG9bSet6Cupj60kKard1PXImRpKgweGuY9h2IQYcF6FyRZneRT1xOTKXcf75MlN7F_fKaFamXCO1zHglCBmoFpYgK2zCVlWhNcBSwspz38Pcbco1OPObuYXy5vSLEGr-_lZgeql6tu9jGPhHm8"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 4.8 (17)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Electronics &amp; Audio</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">Sennheiser EW 100 G4 Wireless Mic</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">AM</span>
+              Alex M. • Music Hall
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 5 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
+</div>
+</div>
+<!-- Item 8: Stewart Calculus Bundle -->
+<div class="bg-white/70 backdrop-blur-md rounded-2xl p-4 border border-black/[0.04] shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="h-48 rounded-xl overflow-hidden relative mb-3 bg-neutral-100">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Stewart Calculus 9th Ed Bundle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3ksOQOz3C39CzOfsG7HQ-QVshDFytWz9IfBH8Q2MmyXT1aDx8KkawPEIhjtK7jnzDxO6o9GHRtY2zadBsKVGwtXVQ0E8MgL6BwCHo0wJUJ55kIsUSAxkHLOsEfPNd7ftGrPIymb0BTv2PZNQozj0foFbARmFKp-Y8kldrOxBfIpRSVnrkNM9bMgTIv-5voyV3pWMPD1M0Cc6MBXz4AV6KH9_l2-gFywP1Pj5inLLxgH6YBCEcqoxFastx0Uga-ShewoNt1i5qnv5e"/>
+<span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-emerald-700 border border-black/5">
+                Available Now
+              </span>
+<span class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ★ 4.9 (45)
+              </span>
+</div>
+<span class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-1">Study &amp; Tech</span>
+<h3 class="text-sm font-bold text-[#0D0E12] group-hover:text-black line-clamp-1">Stewart Calculus 9th Ed Bundle</h3>
+<p class="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-neutral-200 text-[10px] font-bold flex items-center justify-center text-neutral-700">CT</span>
+              Chloe T. • Science Commons
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-black/[0.04] flex items-center justify-between">
+<span class="text-xs font-medium text-neutral-500">Up to 30 days</span>
+<button class="bg-[#0D0E12] text-white text-xs font-medium px-4 py-2 rounded-full hover:bg-black/85 transition-all">
+              Borrow
+            </button>
 </div>
 </div>
 </div>
-</section>
-<!-- 8. Full-Width Sky Blue (#2BA8F0) Call-To-Action Banner -->
-<section class="w-full bg-[#2BA8F0] text-white py-20 px-margin-mobile md:px-margin border-y border-outline-variant" id="cong-dong">
-<div class="max-w-[1440px] mx-auto text-center flex flex-col items-center">
-<span class="font-label-caps text-label-caps uppercase tracking-widest bg-white/20 px-4 py-1.5 rounded-full mb-6">
-        GIA NHẬP MẠNG LƯỚI KHUÔN VIÊN TRƯỜNG
-      </span>
-<h2 class="font-display-hero text-display-hero-mobile md:text-display-hero uppercase tracking-tight text-white max-w-4xl leading-tight">
-        MÓN ĐỒ CỦA BẠN,<br/>NIỀM VUI CỦA AI ĐÓ
-      </h2>
-<p class="font-body-lg text-body-lg text-white/90 max-w-2xl mt-4 mb-10">
-        Đăng món đồ bạn ít dùng lên UniLend và giúp đỡ bạn bè cùng trường ngay hôm nay. Miễn phí, tiện lợi và văn minh.
-      </p>
-<button class="bg-surface-container-lowest text-on-surface font-label-lg text-label-lg px-10 py-4 rounded-full hover:bg-surface-container transition-all active:scale-[0.98] font-bold">
-        Đăng món đồ đầu tiên
-      </button>
-</div>
-</section>
-<!-- 9. Editorial Footer mapped directly from Shared Components JSON -->
-<footer class="bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant dark:border-outline docked full-width bottom">
-<div class="w-full max-w-[1440px] mx-auto px-margin-mobile md:px-margin py-space-2xl">
-<!-- Top Grid -->
-<div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-outline-variant dark:border-outline">
-<!-- Brand Statement Column -->
-<div class="md:col-span-5">
-<a class="font-headline-sm text-headline-sm font-bold uppercase text-on-surface dark:text-inverse-on-surface block mb-4" href="#">
-            UNILEND
-          </a>
-<p class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant max-w-sm mb-6">
-            Mạng lưới chia sẻ đồ dùng của sinh viên. Mượn điều bạn cần. Chia sẻ điều bạn có. Kết nối trường học thông minh hơn, tiết kiệm hơn.
-          </p>
-<div class="inline-flex items-center gap-2 bg-surface-container border border-outline-variant px-3 py-1.5 rounded-full font-label-caps text-label-caps text-on-surface">
-<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            Hệ sinh thái dành riêng cho sinh viên
-          </div>
-</div>
-<!-- Links Columns mapped from JSON links array -->
-<div class="md:col-span-2">
-<h4 class="font-headline-sm text-headline-sm uppercase text-on-surface dark:text-inverse-on-surface mb-4">
-            Khám phá
-          </h4>
-<ul class="space-y-3 font-body-sm text-body-sm">
-<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Về UniLend</a></li>
-<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Quy định an toàn</a></li>
-<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Đồ dùng học tập</a></li>
-<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Thiết bị quay chụp</a></li>
-</ul>
-</div>
-<div class="md:col-span-2">
-<h4 class="font-headline-sm text-headline-sm uppercase text-on-surface dark:text-inverse-on-surface mb-4">
-            Cách hoạt động
-          </h4>
-<ul class="space-y-3 font-body-sm text-body-sm">
-<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Quy trình mượn đồ</a></li>
-<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Xác thực sinh viên</a></li>
-<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Điểm tín nhiệm</a></li>
-<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Trung tâm hỗ trợ</a></li>
-</ul>
-</div>
-<div class="md:col-span-3">
-<h4 class="font-headline-sm text-headline-sm uppercase text-on-surface dark:text-inverse-on-surface mb-4">
-            Cộng đồng
-          </h4>
-<ul class="space-y-3 font-body-sm text-body-sm mb-6">
-<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Điều khoản &amp; Dịch vụ</a></li>
-<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Bảo mật khuôn viên</a></li>
-<li><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Đại sứ sinh viên</a></li>
-</ul>
-<!-- Return to top anchor button -->
-<button class="inline-flex items-center gap-2 border border-outline-variant rounded-full px-4 py-2 font-label-caps text-label-caps uppercase text-on-surface hover:border-on-surface transition-colors" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-<span>Về đầu trang</span>
-<span class="material-symbols-outlined text-base">arrow_upward</span>
+<!-- Load More Action -->
+<div class="mt-12 text-center">
+<button class="bg-white/80 hover:bg-white text-[#0D0E12] border border-black/10 text-xs font-semibold px-8 py-3 rounded-full transition-all shadow-sm inline-flex items-center gap-2">
+<span>Explore 420+ More Campus Items</span>
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
 </button>
 </div>
 </div>
-<!-- Bottom Legal Row from JSON: "© 2026 UniLend Vietnam. Mượn điều bạn cần. Chia sẻ điều bạn có." -->
-<div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">© 2026 UniLend Vietnam. Mượn điều bạn cần. Chia sẻ điều bạn có.</p>
-<div class="flex items-center gap-6 font-label-caps text-label-caps uppercase text-outline">
-<span>Khuôn viên trường</span>
-<span>·</span>
-<span>Ký túc xá</span>
-<span>·</span>
-<span>Giảng đường</span>
+</section>
+<!-- Impact / Turn Idle Gear Section -->
+<section class="py-16" id="impact">
+<div class="max-w-[1440px] mx-auto px-8 md:px-14">
+<div class="bg-white/75 backdrop-blur-md rounded-3xl border border-black/[0.06] p-8 lg:p-12 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.03)]">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+<!-- Banner Left: Call to Action for Lenders -->
+<div class="lg:col-span-6 flex flex-col items-start pr-0 lg:pr-6">
+<span class="px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-100 text-xs font-semibold mb-4">
+              Community Commons
+            </span>
+<h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#0A0B0E] mb-4">
+              Turn Your Idle Gear into Community Value
+            </h2>
+<p class="text-[#555A68] text-base leading-relaxed mb-8">
+              Lend textbooks, cameras, audio equipment, and specialty tools to fellow students and neighbors safely without worrying about damage or hassle.
+            </p>
+<div class="flex flex-wrap items-center gap-4">
+<button class="bg-[#0D0E12] text-white rounded-full px-7 py-3.5 text-sm font-medium hover:bg-black/85 transition-all shadow-sm flex items-center gap-2">
+<span>List an Item for Free</span>
+<span class="material-symbols-outlined text-[18px]">add_task</span>
+</button>
+<a class="text-sm font-semibold text-[#0D0E12] hover:text-neutral-600 px-3 py-3 underline underline-offset-4" href="#">
+                Learn About Guarantees
+              </a>
 </div>
+</div>
+<!-- Banner Right: 4 Credibility Metric Tiles -->
+<div class="lg:col-span-6 grid grid-cols-2 gap-4">
+<!-- Metric 1 -->
+<div class="p-6 rounded-2xl bg-white/90 border border-black/[0.04] shadow-sm flex flex-col">
+<span class="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">Verified Members</span>
+<span class="text-3xl font-extrabold text-[#0D0E12] tracking-tight">14,200+</span>
+<span class="text-xs text-neutral-500 mt-1">Across 18 regional campuses</span>
+</div>
+<!-- Metric 2 -->
+<div class="p-6 rounded-2xl bg-white/90 border border-black/[0.04] shadow-sm flex flex-col">
+<span class="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">Community Items</span>
+<span class="text-3xl font-extrabold text-[#0D0E12] tracking-tight">4,800+</span>
+<span class="text-xs text-neutral-500 mt-1">Shared freely in circulation</span>
+</div>
+<!-- Metric 3 -->
+<div class="p-6 rounded-2xl bg-white/90 border border-black/[0.04] shadow-sm flex flex-col">
+<span class="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">Return Integrity</span>
+<span class="text-3xl font-extrabold text-[#0D0E12] tracking-tight">99.8%</span>
+<span class="text-xs text-neutral-500 mt-1">Safe on-time return rate</span>
+</div>
+<!-- Metric 4 -->
+<div class="p-6 rounded-2xl bg-white/90 border border-black/[0.04] shadow-sm flex flex-col">
+<span class="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">UniLend Shield</span>
+<span class="text-3xl font-extrabold text-[#0D0E12] tracking-tight">$5,000</span>
+<span class="text-xs text-neutral-500 mt-1">Protection guarantee per loan</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Minimal Footer -->
+<footer class="mt-auto border-t border-black/[0.06] bg-white/30 backdrop-blur-sm" id="contact">
+<div class="max-w-[1440px] mx-auto px-8 md:px-14 py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
+<!-- Brand & Copyright -->
+<div class="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+<a class="font-extrabold tracking-tight text-[#0D0E12] flex items-center gap-1.5 text-sm" href="#">
+<span class="w-2 h-2 rounded-full bg-[#0D0E12] inline-block"></span>
+          UNILEND.™
+        </a>
+<span class="hidden sm:inline text-neutral-300">•</span>
+<p>© 2025 UNILEND.™ Technologies Inc. All rights reserved.</p>
+</div>
+<!-- Navigation Links -->
+<div class="flex flex-wrap items-center justify-center gap-6 font-medium">
+<a class="hover:text-[#0D0E12] transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-[#0D0E12] transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-[#0D0E12] transition-colors" href="#">Security</a>
+<a class="hover:text-[#0D0E12] transition-colors" href="#">Community Guidelines</a>
+<a class="hover:text-[#0D0E12] transition-colors" href="#">Borrower Guarantee</a>
 </div>
 </div>
 </footer>

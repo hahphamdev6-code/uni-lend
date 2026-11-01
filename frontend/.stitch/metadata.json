@@ -1,31 +1,91 @@
 {
-  "name": "projects/4503406842118902723",
-  "projectId": "4503406842118902723",
-  "title": "UniLend — Sky Athletic",
+  "name": "projects/11673829852560038577",
+  "projectId": "11673829852560038577",
+  "title": "UniLend Web",
   "visibility": "PRIVATE",
-  "projectType": "PROJECT_DESIGN",
+  "projectType": "TEXT_TO_UI_PRO",
   "origin": "STITCH",
   "deviceType": "DESKTOP",
-  "designTheme": {
-    "colorMode": "LIGHT",
-    "font": "BARLOW_CONDENSED",
-    "headlineFont": "BARLOW_CONDENSED",
-    "bodyFont": "BE_VIETNAM_PRO",
-    "roundness": "ROUND_FULL",
-    "customColor": "#0568b5"
-  },
-  "designSystem": "assets/6ccb26aec0da4d568fe7535ebbeb0a78",
+  "Last Sync Time": "2026-10-27T14:27:00.000Z",
+  "designSystem": "assets/b86ae35881ea4b26b8ae9f3ab381776f",
   "screens": {
     "home": {
-      "id": "c7ffc0a5d571490c92e84426e805a81a",
-      "sourceScreen": "projects/4503406842118902723/screens/c7ffc0a5d571490c92e84426e805a81a",
-      "x": 0,
-      "y": 0,
-      "width": 1280,
-      "height": 4829
+      "id": "0da7504ec3ca47b8ae5b0a73a39e9bd4",
+      "title": "UniLend - Community Borrowing & Lending Homepage",
+      "sourceScreen": "projects/11673829852560038577/screens/0da7504ec3ca47b8ae5b0a73a39e9bd4",
+      "width": 2560,
+      "height": 6192
+    },
+    "login": {
+      "id": "a21958fb7ca7458d86a4583b8d4bd856",
+      "title": "UniLend - Sign In (Welcome Back)",
+      "sourceScreen": "projects/11673829852560038577/screens/a21958fb7ca7458d86a4583b8d4bd856",
+      "width": 2560,
+      "height": 2048
+    },
+    "register": {
+      "id": "011d329dcd9b4598952abce7318f7c45",
+      "title": "UniLend - Create Your Account",
+      "sourceScreen": "projects/11673829852560038577/screens/011d329dcd9b4598952abce7318f7c45",
+      "width": 2560,
+      "height": 2118
+    },
+    "listings": {
+      "id": "b7e3e48e2b9c4882acf1f708b3ce1802",
+      "authenticatedId": "7841f75f1ac5448cb59efe24dfa3e0cb",
+      "title": "UniLend - Rental Listings",
+      "sourceScreen": "projects/11673829852560038577/screens/b7e3e48e2b9c4882acf1f708b3ce1802",
+      "width": 2560,
+      "height": 4204
+    },
+    "profile": {
+      "id": "7f38d6decf8945ad92a19d130110dc6a",
+      "title": "UniLend - Student Profile & Dashboard",
+      "sourceScreen": "projects/11673829852560038577/screens/7f38d6decf8945ad92a19d130110dc6a",
+      "width": 2560,
+      "height": 3856
+    },
+    "completeRentalRequest": {
+      "id": "08960f9cabfb4c409c35bca834459a71",
+      "title": "UniLend - Complete Rental Request",
+      "sourceScreen": "projects/11673829852560038577/screens/08960f9cabfb4c409c35bca834459a71",
+      "width": 2560,
+      "height": 4940
+    },
+    "rentalRequestConfirmation": {
+      "id": "4d02749696a144bca368ec705918c404",
+      "title": "UniLend - Rental Request Confirmation",
+      "sourceScreen": "projects/11673829852560038577/screens/4d02749696a144bca368ec705918c404",
+      "width": 2560,
+      "height": 2976
+    },
+    "myRentals": {
+      "id": "20a3c24dce304371807f686903552e3e",
+      "title": "UniLend - My Rentals",
+      "sourceScreen": "projects/11673829852560038577/screens/20a3c24dce304371807f686903552e3e",
+      "width": 2560,
+      "height": 3582
+    },
+    "returnYourItem": {
+      "id": "ce3663b6d6d74d059fcf0d5b9475b041",
+      "title": "UniLend - Return Your Item",
+      "sourceScreen": "projects/11673829852560038577/screens/ce3663b6d6d74d059fcf0d5b9475b041",
+      "width": 2560,
+      "height": 5670
+    },
+    "ownerRentalManagement": {
+      "id": "269f17ff27234fe0934fed15b6b24444",
+      "title": "UniLend - Owner Rental Management",
+      "sourceScreen": "projects/11673829852560038577/screens/269f17ff27234fe0934fed15b6b24444",
+      "width": 2560,
+      "height": 5398
+    },
+    "createRentalListing": {
+      "id": "03f838ddab0d46608c9575f052eb6110",
+      "title": "UniLend - Create Rental Listing",
+      "sourceScreen": "projects/11673829852560038577/screens/03f838ddab0d46608c9575f052eb6110",
+      "width": 2560,
+      "height": 5724
     }
-  },
-  "metadata": {
-    "userRole": "OWNER"
   }
 }

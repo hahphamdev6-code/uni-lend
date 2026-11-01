@@ -1,0 +1,347 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Rental Request Sent - UNILEND.™</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#5a00c6",
+            "surface-dim": "#cbdbf5",
+            "on-primary-fixed": "#131b2e",
+            "surface-container-highest": "#d3e4fe",
+            "inverse-on-surface": "#eaf1ff",
+            "primary-fixed": "#dae2fd",
+            "surface-variant": "#d3e4fe",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "on-surface-variant": "#45464d",
+            "on-tertiary-fixed": "#40000c",
+            "background": "#f8f9ff",
+            "on-primary": "#ffffff",
+            "outline-variant": "#c6c6cd",
+            "on-primary-fixed-variant": "#3f465c",
+            "secondary-container": "#8a4cfc",
+            "secondary-fixed": "#eaddff",
+            "secondary": "#712ae2",
+            "tertiary-fixed-dim": "#ffb3b6",
+            "on-secondary": "#ffffff",
+            "surface-container-high": "#dce9ff",
+            "inverse-primary": "#bec6e0",
+            "on-tertiary-container": "#f83256",
+            "on-tertiary": "#ffffff",
+            "error-container": "#ffdad6",
+            "on-primary-container": "#7c839b",
+            "secondary-fixed-dim": "#d2bbff",
+            "primary-fixed-dim": "#bec6e0",
+            "surface": "#f8f9ff",
+            "on-secondary-fixed": "#25005a",
+            "tertiary": "#000000",
+            "on-tertiary-fixed-variant": "#920028",
+            "on-secondary-container": "#fffbff",
+            "on-surface": "#0b1c30",
+            "inverse-surface": "#213145",
+            "tertiary-container": "#40000c",
+            "surface-container": "#e5eeff",
+            "surface-tint": "#565e74",
+            "surface-container-lowest": "#ffffff",
+            "primary-container": "#131b2e",
+            "outline": "#76777d",
+            "on-background": "#0b1c30",
+            "tertiary-fixed": "#ffdada",
+            "on-error-container": "#93000a",
+            "surface-container-low": "#eff4ff",
+            "primary": "#000000",
+            "surface-bright": "#f8f9ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1.5rem",
+            "space-3xl": "6rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1rem",
+            "margin": "2rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "gutter-mobile": "1rem",
+            "gutter-desktop": "2rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "margin-desktop": "3rem",
+            "space-2xl": "4rem"
+          },
+          "fontFamily": {
+            "title-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "title-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "label-numeric": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "title-md": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "headline-sm": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-md": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-md": ["11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-lg": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "label-numeric": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col relative selection:bg-secondary-fixed selection:text-primary" style="background-color: rgb(250, 250, 253);">
+<!-- Ambient Chromatic Swell -->
+
+<!-- TopNavBar (Shared Component Anchor) -->
+<header class="docked full-width top-0 sticky z-50 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 shadow-sm transition-all duration-150 ease-out active:scale-[0.99]">
+<div class="max-w-[1360px] mx-auto px-6 md:px-12 w-full flex items-center justify-between h-16">
+<!-- Brand Logo -->
+<a class="text-title-lg font-title-lg font-bold tracking-tight text-primary dark:text-primary flex items-center gap-1.5 focus:outline-none" href="#">
+<span class="">UNILEND.™</span>
+</a>
+<!-- Desktop Nav Links -->
+<nav class="hidden md:flex items-center gap-8"><a class="text-label-lg font-label-lg text-on-surface-variant font-medium pb-1 hover:text-primary transition-colors duration-150" href="#">Home</a>
+<a class="text-label-lg font-label-lg text-on-surface-variant font-medium pb-1 hover:text-primary transition-colors duration-150" href="#">Categories</a>
+<a class="text-label-lg font-label-lg text-on-surface-variant font-medium pb-1 hover:text-primary transition-colors duration-150" href="#">Borrow</a>
+<a class="text-label-lg font-label-lg text-on-surface-variant font-medium pb-1 hover:text-primary transition-colors duration-150" href="#">Explore</a>
+<a class="text-label-lg font-label-lg text-on-surface-variant font-medium pb-1 hover:text-primary transition-colors duration-150" href="#">Contact us</a></nav>
+<!-- Trailing Action Cluster -->
+<div class="flex items-center gap-3"><button class="rounded-full border border-black/10 bg-white/70 text-sm font-medium text-[#0D0E12] px-5 py-2 hover:bg-white transition-all shadow-sm">Login</button>
+<button class="rounded-full bg-[#0D0E12] text-white text-sm font-medium px-5 py-2 hover:bg-black/90 transition-all shadow-sm">Join</button></div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="relative z-10 flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-12 md:py-16">
+<div class="w-full max-w-[700px] mx-auto space-y-6">
+<!-- Breadcrumb / Back Link -->
+<div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant px-1">
+<a class="inline-flex items-center gap-1.5 hover:text-primary transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-sm leading-none" data-icon="arrow_back">arrow_back</span>
+<span class="">Back to Rental Listings</span>
+</a>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-high/60 border border-outline-variant/40 text-on-surface text-label-md font-label-md">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+          Inquiry Active
+        </span>
+</div>
+<!-- Hero Confirmation Card -->
+<div class="bg-surface-container-lowest/90 backdrop-blur-xl border border-outline-variant/40 rounded-2xl md:rounded-3xl p-6 md:p-10 shadow-[0_4px_24px_-4px_rgba(15,23,42,0.05)]">
+<!-- Header & Status Pill -->
+<div class="text-center space-y-4">
+<div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-700 shadow-sm mx-auto">
+<span class="material-symbols-outlined text-3xl font-light" data-icon="check_circle">check_circle</span>
+</div>
+<div class="space-y-2">
+<h1 class="text-headline-md md:text-headline-lg font-headline-lg text-primary tracking-tight">
+              Your Rental Request Has Been Sent
+            </h1>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-xl mx-auto leading-relaxed">
+              Marcus Vance has been notified and typically responds within <span class="font-semibold text-primary">18 minutes</span>. No immediate payment has been captured; your reservation will be locked once approved.
+            </p>
+</div>
+<!-- Reference Tag -->
+<div class="pt-1">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/30 text-label-md font-label-md text-on-surface">
+<span class="text-on-surface-variant font-normal">Reference ID:</span>
+<span class="font-bold tracking-wider text-primary">#UL-849204</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors ml-0.5" title="Copy ID">
+<span class="material-symbols-outlined text-[14px]" data-icon="content_copy">content_copy</span>
+</button>
+</span>
+</div>
+</div>
+<!-- 3-Step Progress Architecture -->
+<div class="my-8 pt-4 border-t border-outline-variant/20">
+<div class="grid grid-cols-3 gap-2 relative">
+<!-- Step 1: Request Sent (Completed) -->
+<div class="flex flex-col items-center text-center space-y-2 group">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-base" data-icon="check" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="space-y-0.5">
+<p class="text-label-lg font-label-lg text-primary">Request Sent</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Today, 2:45 PM</p>
+</div>
+</div>
+<!-- Step 2: Awaiting Owner Approval (Active Pulse) -->
+<div class="flex flex-col items-center text-center space-y-2">
+<div class="relative w-8 h-8 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center shadow-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-ping absolute opacity-60"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+</div>
+<div class="space-y-0.5">
+<div class="inline-flex items-center gap-1">
+<p class="text-label-lg font-label-lg text-primary">Owner Review</p>
+</div>
+<p class="text-body-sm font-body-sm text-secondary font-medium">In Progress</p>
+</div>
+</div>
+<!-- Step 3: Confirmed (Upcoming) -->
+<div class="flex flex-col items-center text-center space-y-2 opacity-50">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant/50 text-on-surface-variant flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+</div>
+<div class="space-y-0.5">
+<p class="text-label-lg font-label-lg text-on-surface">Confirmed</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Handover Ready</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Rental Summary Specification Card -->
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-5 space-y-4">
+<!-- Product Snippet -->
+<div class="flex items-center gap-4 pb-4 border-b border-outline-variant/20">
+<div class="w-20 h-20 rounded-lg overflow-hidden bg-surface-container flex-shrink-0 border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="Modern professional mirrorless digital camera with premium 24-70mm lens mounted on an architectural matte concrete studio plinth. The lighting is crisp, gallery-style softbox light with clean natural shadows and pristine contrast. The aesthetic matches high-end editorial consumer electronics photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7t7KRmwgf5LfKBqw2AGYIKrbURyMkZdmWXAH4OFu7ciref-fyMrgo1FlDVSE7H5yVm736u6acwcyEUl9wzHfhn1-CvVLm4quoAypl0nm6inCCvDIPo7wXv4P2A33CaDy0fIPYHSbyBhzIIVLObZf70qtG-U_W-blNaRrq0cKy_i2YIBOSei92j0zIqD2WQPobx8ZY9QUqDhlqzwync43DddAv93JjKA7qZOWlCTPfCHOjwyZfa_H4Tw">
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2 mb-1">
+<span class="text-label-md font-label-md uppercase tracking-wider text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">Electronics &amp; Cameras</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-amber-500 text-sm leading-none" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+                  5.0
+                </span>
+</div>
+<h3 class="text-title-md font-title-md text-primary truncate">Sony Alpha A7 IV Mirrorless Camera Kit</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Lender: <span class="font-medium text-primary">Marcus Vance</span></p>
+</div>
+</div>
+<!-- Key Breakdown Metadata Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-body-sm font-body-sm pt-1">
+<div class="space-y-1">
+<span class="text-label-md font-label-md text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="calendar_month">calendar_month</span>
+                Requested Dates
+              </span>
+<p class="text-body-md font-body-md font-semibold text-primary">Oct 24, 2025 – Oct 27, 2025</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Duration: 3 full rental days</p>
+</div>
+<div class="space-y-1">
+<span class="text-label-md font-label-md text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="location_on">location_on</span>
+                Handover Method
+              </span>
+<p class="text-body-md font-body-md font-semibold text-primary">Local Pickup</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Mission District, San Francisco</p>
+</div>
+<div class="space-y-1 pt-2 sm:pt-0 sm:border-t-0 border-t border-outline-variant/15">
+<span class="text-label-md font-label-md text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="payments">payments</span>
+                Estimated Total
+              </span>
+<div class="flex items-baseline gap-2">
+<p class="text-title-lg font-title-lg font-bold text-primary">$155.50</p>
+<span class="text-label-md font-label-md text-on-surface-variant font-normal">(Rate + Fee + Waiver)</span>
+</div>
+</div>
+<div class="space-y-1 pt-2 sm:pt-0 sm:border-t-0 border-t border-outline-variant/15">
+<span class="text-label-md font-label-md text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="shield">shield</span>
+                Security Deposit
+              </span>
+<p class="text-body-md font-body-md font-medium text-primary">$150.00</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Refundable hold once confirmed</p>
+</div>
+</div>
+<!-- Trust & Protection Notice -->
+<div class="mt-4 p-3.5 rounded-lg bg-surface-container-low/70 border border-outline-variant/30 flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-xl leading-none mt-0.5" data-icon="verified_user">verified_user</span>
+<div class="text-body-sm font-body-sm leading-snug">
+<span class="font-semibold text-primary">Protected by UniLend Shield.</span>
+<span class="text-on-surface-variant ml-1">Up to $5,000 equipment coverage. Free cancellation up to 24 hours prior to handover schedule.</span>
+</div>
+</div>
+</div>
+<!-- Inline Messaging Teaser -->
+<div class="mt-6 flex items-center justify-between p-4 rounded-xl bg-surface-container-lowest/70 border border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-sm">
+              MV
+            </div>
+<div>
+<p class="text-body-md font-body-md font-semibold text-primary leading-tight">Have questions before handover?</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-tight">Coordinate pickup timing or ask about camera kit extras.</p>
+</div>
+</div>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-2 text-label-lg font-label-lg font-semibold text-primary hover:text-secondary hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="chat">chat</span>
+<span class="">Message Marcus</span>
+</button>
+</div>
+<!-- Action Cluster -->
+<div class="mt-8 pt-6 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center gap-3">
+<button class="w-full sm:flex-1 h-12 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg hover:bg-slate-800 transition-all duration-150 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm">
+<span class="">View Rental Details</span>
+<span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<a class="w-full sm:w-auto h-12 px-6 rounded-lg border border-outline-variant/50 bg-white hover:bg-surface-container-low text-primary font-label-lg text-label-lg flex items-center justify-center transition-colors" href="#">
+            Continue Exploring
+          </a>
+</div>
+</div>
+<!-- Quick Guidance & Help Footnote -->
+<div class="text-center text-body-sm font-body-sm text-on-surface-variant">
+<span class="">Need immediate assistance? Visit our </span>
+<a class="text-primary font-medium hover:underline" href="#">Help &amp; Safety Center</a>
+<span class=""> or reference transaction #UL-849204.</span>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component Anchor) -->
+<footer class="docked full-width bottom bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/30">
+<div class="max-w-[1360px] mx-auto px-6 md:px-12 py-10 w-full flex flex-col md:flex-row items-center justify-between gap-4">
+<!-- Brand & Copyright -->
+<div class="flex items-center gap-3">
+<span class="text-title-md font-title-md font-bold text-primary dark:text-primary">UNILEND.™</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">© 2025 UniLend Inc. All rights reserved.</span>
+</div>
+<!-- Legal Links -->
+<nav class="flex flex-wrap items-center gap-6 text-label-md font-label-md text-on-surface-variant">
+<a class="hover:text-primary transition-colors duration-150" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors duration-150" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors duration-150" href="#">Security</a>
+<a class="hover:text-primary transition-colors duration-150" href="#">Cookie Preferences</a>
+</nav>
+</div>
+</footer>
+
+
+
+
+
+
+
+
+</body></html>

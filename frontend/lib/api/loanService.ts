@@ -45,6 +45,11 @@ export const loanService = {
     return response.data.data;
   },
 
+  async cancel(id: number): Promise<Loan> {
+    const response = await apiClient.patch<ApiResponse<Loan>>(`/loan-requests/${id}/cancel`);
+    return response.data.data;
+  },
+
   async markReturned(id: number): Promise<Loan> {
     const response = await apiClient.patch<ApiResponse<Loan>>(`/loan-requests/${id}/return`);
     return response.data.data;

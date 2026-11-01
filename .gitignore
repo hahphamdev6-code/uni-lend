@@ -2,9 +2,6 @@
 frontend/node_modules/
 frontend/.next/
 frontend/out/
-frontend-web/node_modules/
-frontend-web/.next/
-frontend-web/out/
 
 # Backend
 backend/target/

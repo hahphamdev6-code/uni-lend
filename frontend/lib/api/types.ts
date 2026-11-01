@@ -53,6 +53,9 @@ export interface Item {
   owner: {
     id: number;
     fullName: string;
+    email?: string | null;
+    university?: string | null;
+    avatarUrl?: string | null;
   };
   category: Category | null;
   createdAt: string;
@@ -89,10 +92,16 @@ export interface Loan {
   borrower: {
     id: number;
     fullName: string;
+    email?: string | null;
+    university?: string | null;
+    avatarUrl?: string | null;
   };
   owner: {
     id: number;
     fullName: string;
+    email?: string | null;
+    university?: string | null;
+    avatarUrl?: string | null;
   };
   status: LoanStatus;
   borrowFrom: string | null;

@@ -27,7 +27,10 @@ public record LoanRequestResponse(
     public record ItemSummary(Long id, String title) {
     }
 
-    public record UserSummary(Long id, String fullName) {
+    public record UserSummary(Long id, String fullName, String email, String university, String avatarUrl) {
+        public UserSummary(Long id, String fullName) {
+            this(id, fullName, null, null, null);
+        }
     }
 
     public static LoanRequestResponse from(LoanRequest loan) {
@@ -48,8 +51,20 @@ public record LoanRequestResponse(
                 loan.getRespondedAt(),
                 loan.getReturnedAt(),
                 new ItemSummary(item.getId(), item.getTitle()),
-                new UserSummary(borrower.getId(), borrower.getFullName()),
-                new UserSummary(owner.getId(), owner.getFullName()),
+                new UserSummary(
+                        borrower.getId(),
+                        borrower.getFullName(),
+                        borrower.getEmail(),
+                        borrower.getUniversity(),
+                        borrower.getAvatarUrl()
+                ),
+                new UserSummary(
+                        owner.getId(),
+                        owner.getFullName(),
+                        owner.getEmail(),
+                        owner.getUniversity(),
+                        owner.getAvatarUrl()
+                ),
                 hasReviewed,
                 canReview
         );

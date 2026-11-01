@@ -1,7 +1,1 @@
-"use client";
-
-import { PersonalManagement } from "../../components/personal-management";
-
-export default function MyPage() {
-  return <PersonalManagement />;
-}
+export { default } from "../my-rentals/page";
