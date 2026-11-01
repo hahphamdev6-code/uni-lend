@@ -1,0 +1,31 @@
+.git
+.gitignore
+target/
+uploads/
+
+# Environment files, including local and production credentials.
+.env
+.env.*
+*.env
+
+# Private key material and common backup/archive formats.
+**/secrets/
+**/backup/
+**/backups/
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.bak
+*.backup
+*.dump
+*.sql.gz
+**/*backup*.sql
+**/*dump*.sql
+*.tar
+*.tar.gz
+*.zip
+
+*.log
+.DS_Store
