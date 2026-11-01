@@ -173,10 +173,109 @@
   color: #fff;
   font-size: 14px;
   font-weight: 650;
+  border: none;
+  cursor: pointer;
 }
 
 .button:hover {
   background: var(--green-dark);
+}
+
+.button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.buttonSecondary {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.secondaryActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.borrowForm {
+  margin-top: 26px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.borrowHeading {
+  margin-bottom: 18px;
+}
+
+.borrowHeading h2 {
+  margin: 0 0 4px;
+  font-size: 22px;
+}
+
+.borrowHeading span {
+  color: #526a7e;
+  font-size: 14px;
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: #203548;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f8fbff;
+  padding: 10px 12px;
+  color: var(--ink);
+  font: inherit;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.formAlert {
+  margin: 0 0 12px;
+  color: #a44f34;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.infoNotice {
+  margin-top: 24px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #eef7ef;
+  color: #33734b;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .state,

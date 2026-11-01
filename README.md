@@ -63,6 +63,18 @@ Backend runs at:
 http://localhost:8080
 ```
 
+### Demo data
+
+The project seeds safe demo accounts and sample listings automatically when the
+local database is empty. Credentials are intentionally fictional and designed for
+local development only:
+
+```text
+Admin: admin@demo.unilend.local / DemoAdmin123!
+Owner: owner@demo.unilend.local / DemoOwner123!
+Borrower: borrower@demo.unilend.local / DemoBorrower123!
+```
+
 The backend requires a MySQL connection and a Base64-encoded `JWT_SECRET` of at
 least 32 random bytes. On Windows, generate a key in PowerShell with:
 

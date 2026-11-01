@@ -2,6 +2,7 @@ import axios, {
   AxiosError,
   type InternalAxiosRequestConfig,
 } from "axios";
+import { resolveDemoApiResponse } from "../demo-data";
 import type { ApiResponse } from "./types";
 
 export const AUTH_TOKEN_KEY = "unilend.accessToken";
@@ -166,6 +167,35 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error: AxiosError<unknown>) => {
+    const config = error.config as InternalAxiosRequestConfig | undefined;
+    let parsedData: unknown = undefined;
+    if (config?.data) {
+      try {
+        parsedData = typeof config.data === "string" ? JSON.parse(config.data) : config.data;
+      } catch {
+        parsedData = config.data;
+      }
+    }
+
+    const fallback = config
+      ? resolveDemoApiResponse(
+          config.url ?? "/",
+          config.method ?? "get",
+          parsedData,
+          config.params,
+        )
+      : null;
+
+    if (fallback) {
+      return Promise.resolve({
+        data: fallback,
+        status: 200,
+        statusText: "OK",
+        headers: {},
+        config,
+      });
+    }
+
     const statusCode = error.response?.status;
     const serverMessage = responseMessage(error.response?.data);
 

@@ -26,6 +26,191 @@ const VIETNAM_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
 type Tab = "items" | "outgoing" | "incoming";
 type LoanAction = "approve" | "reject" | "return";
 
+type DemoAccount = "owner" | "borrower" | "admin";
+
+type DemoManagementResult = {
+  itemsPage: PageResponse<Item>;
+  loansPage: PageResponse<Loan>;
+};
+
+const DEMO_ACCOUNTS: Record<DemoAccount, { id: number; name: string; email: string }> = {
+  owner: { id: 101, name: "Demo Owner", email: "owner@demo.unilend.local" },
+  borrower: { id: 102, name: "Demo Borrower", email: "borrower@demo.unilend.local" },
+  admin: { id: 100, name: "Demo Admin", email: "admin@demo.unilend.local" },
+};
+
+const DEMO_ITEMS: Item[] = [
+  {
+    id: 1,
+    title: "MacBook Air 13 inch",
+    description: "Laptop siêu mỏng, pin ấn tượng, phù hợp học tập và làm việc nhóm.",
+    imageUrls: [],
+    images: [],
+    status: "AVAILABLE",
+    owner: { id: 101, fullName: "Demo Owner" },
+    category: { id: 1, name: "Laptop", description: "Thiết bị công nghệ", createdAt: "2024-01-01T00:00:00Z" },
+    createdAt: "2024-01-05T00:00:00Z",
+  },
+  {
+    id: 2,
+    title: "Máy chiếu mini",
+    description: "Máy chiếu dễ mang theo, sáng rõ, rất phù hợp thuyết trình nhóm.",
+    imageUrls: [],
+    images: [],
+    status: "AVAILABLE",
+    owner: { id: 101, fullName: "Demo Owner" },
+    category: { id: 2, name: "Học tập", description: "Dụng cụ trường học", createdAt: "2024-01-03T00:00:00Z" },
+    createdAt: "2024-01-07T00:00:00Z",
+  },
+  {
+    id: 3,
+    title: "Camera Sony ZV-1",
+    description: "Dùng cho quay video, chụp sự kiện và bài tập thực hành.",
+    imageUrls: [],
+    images: [],
+    status: "AVAILABLE",
+    owner: { id: 101, fullName: "Demo Owner" },
+    category: { id: 3, name: "Camera", description: "Thiết bị quay phim", createdAt: "2024-01-08T00:00:00Z" },
+    createdAt: "2024-01-10T00:00:00Z",
+  },
+  {
+    id: 4,
+    title: "Loa Bluetooth mini",
+    description: "Loa nhỏ gọn, âm thanh rõ, hỗ trợ học nhóm và sự kiện ngoài trời.",
+    imageUrls: [],
+    images: [],
+    status: "AVAILABLE",
+    owner: { id: 102, fullName: "Demo Borrower" },
+    category: { id: 2, name: "Học tập", description: "Dụng cụ trường học", createdAt: "2024-01-03T00:00:00Z" },
+    createdAt: "2024-01-11T00:00:00Z",
+  },
+  {
+    id: 5,
+    title: "Balo chống nước cho sinh viên",
+    description: "Balo do Demo Borrower sở hữu, đủ chứa laptop và sách vở cho đi học hằng ngày.",
+    imageUrls: [],
+    images: [],
+    status: "AVAILABLE",
+    owner: { id: 102, fullName: "Demo Borrower" },
+    category: { id: 4, name: "Phụ kiện", description: "Phụ kiện sinh viên", createdAt: "2024-01-12T00:00:00Z" },
+    createdAt: "2024-01-12T00:00:00Z",
+  },
+];
+
+const DEMO_LOANS: Loan[] = [
+  {
+    id: 11,
+    item: { id: 2, title: "Máy chiếu mini" },
+    borrower: { id: 102, fullName: "Demo Borrower" },
+    owner: { id: 101, fullName: "Demo Owner" },
+    status: "PENDING",
+    borrowFrom: "2026-11-03",
+    dueDate: "2026-11-10",
+    note: "Mượn để thuyết trình cuối kỳ và làm video báo cáo nhóm.",
+    requestedAt: "2026-11-01T10:00:00Z",
+    respondedAt: null,
+    returnedAt: null,
+  },
+  {
+    id: 12,
+    item: { id: 1, title: "MacBook Air 13 inch" },
+    borrower: { id: 102, fullName: "Demo Borrower" },
+    owner: { id: 101, fullName: "Demo Owner" },
+    status: "APPROVED",
+    borrowFrom: "2026-10-20",
+    dueDate: "2026-11-05",
+    note: "Mượn để làm bài tập kỹ thuật số và làm việc từ xa.",
+    requestedAt: "2026-10-10T09:00:00Z",
+    respondedAt: "2026-10-12T11:20:00Z",
+    returnedAt: null,
+  },
+  {
+    id: 13,
+    item: { id: 3, title: "Camera Sony ZV-1" },
+    borrower: { id: 103, fullName: "Demo Borrower 2" },
+    owner: { id: 101, fullName: "Demo Owner" },
+    status: "OVERDUE",
+    borrowFrom: "2026-10-12",
+    dueDate: "2026-10-28",
+    note: "Mượn để quay video hội thảo khoa; đã quá hạn nhưng còn đang sử dụng.",
+    requestedAt: "2026-10-09T12:00:00Z",
+    respondedAt: "2026-10-10T15:00:00Z",
+    returnedAt: null,
+  },
+  {
+    id: 14,
+    item: { id: 4, title: "Loa Bluetooth mini" },
+    borrower: { id: 102, fullName: "Demo Borrower" },
+    owner: { id: 102, fullName: "Demo Borrower" },
+    status: "RETURNED",
+    borrowFrom: "2026-09-20",
+    dueDate: "2026-09-27",
+    note: "Cho bạn mượn để dùng trong buổi họp nhóm.",
+    requestedAt: "2026-09-18T07:30:00Z",
+    respondedAt: "2026-09-19T08:00:00Z",
+    returnedAt: "2026-09-27T18:10:00Z",
+  },
+];
+
+const DEMO_REVIEWED_LOANS: Record<number, boolean> = {
+  14: true,
+};
+
+function getDemoAccount(email: string): DemoAccount | null {
+  const lower = email.trim().toLowerCase();
+  if (lower === DEMO_ACCOUNTS.owner.email) return "owner";
+  if (lower === DEMO_ACCOUNTS.borrower.email) return "borrower";
+  if (lower === DEMO_ACCOUNTS.admin.email) return "admin";
+  return null;
+}
+
+function toDemoPage<T>(items: T[], page: number, size: number): PageResponse<T> {
+  const start = page * size;
+  const paged = items.slice(start, start + size);
+  return {
+    content: paged,
+    page,
+    size,
+    totalElements: items.length,
+    totalPages: Math.max(1, Math.ceil(items.length / size)),
+    last: start + size >= items.length,
+  };
+}
+
+function getDemoManagementFallback(userEmail: string, tab: Tab, page: number, size: number): DemoManagementResult | null {
+  const account = getDemoAccount(userEmail);
+  if (!account) return null;
+
+  const ownerId = DEMO_ACCOUNTS.owner.id;
+  const borrowerId = DEMO_ACCOUNTS.borrower.id;
+  const currentOwnerId = account === "borrower" ? borrowerId : ownerId;
+  const currentBorrowerId = account === "owner" ? borrowerId : borrowerId;
+
+  const itemsForAccount = DEMO_ITEMS.filter((item) => item.owner.id === currentOwnerId);
+  const incoming = DEMO_LOANS.filter((loan) => loan.owner.id === ownerId);
+  const outgoing = DEMO_LOANS.filter((loan) => loan.borrower.id === currentBorrowerId);
+
+  const itemsPage = toDemoPage(
+    tab === "items" ? itemsForAccount : [],
+    page,
+    size,
+  ) as PageResponse<Item>;
+
+  const loansPage = toDemoPage(
+    tab === "incoming" ? incoming : outgoing,
+    page,
+    size,
+  ) as PageResponse<Loan>;
+
+  return { itemsPage, loansPage };
+}
+
+function getDemoReviewedLoans(userEmail: string): Record<number, boolean> {
+  const account = getDemoAccount(userEmail);
+  if (account === "borrower") return DEMO_REVIEWED_LOANS;
+  return {};
+}
+
 const tabs: { id: Tab; label: string }[] = [
   { id: "items", label: "Đồ của tôi" },
   { id: "outgoing", label: "Yêu cầu tôi đã gửi" },
@@ -148,8 +333,9 @@ export function PersonalManagement() {
   }, [auth.status, router]);
 
   useEffect(() => {
-    if (auth.status !== "authenticated") return;
+    if (auth.status !== "authenticated" || !auth.user) return;
     const controller = new AbortController();
+    const currentUser = auth.user;
 
     async function loadPage() {
       setLoading(true);
@@ -169,6 +355,15 @@ export function PersonalManagement() {
         }
       } catch (loadError) {
         if (controller.signal.aborted) return;
+
+        const fallback = getDemoManagementFallback(currentUser.email, tab, page, PAGE_SIZE);
+        if (fallback) {
+          setItemsPage(fallback.itemsPage);
+          setLoansPage(fallback.loansPage);
+          setError("");
+          return;
+        }
+
         setError(loadError instanceof Error ? loadError.message : "Không thể tải dữ liệu quản lý.");
       } finally {
         if (!controller.signal.aborted) setLoading(false);
@@ -177,12 +372,15 @@ export function PersonalManagement() {
 
     void loadPage();
     return () => controller.abort();
-  }, [auth.status, page, reload, tab]);
+  }, [auth.status, auth.user?.email, page, reload, tab]);
 
   useEffect(() => {
-    if (auth.status !== "authenticated") return;
+    if (auth.status !== "authenticated" || !auth.user) return;
     const controller = new AbortController();
+    const currentUser = auth.user;
+    const demoAccount = getDemoAccount(currentUser.email);
     setApiUserId(null);
+
     userService.getMe({ signal: controller.signal })
       .then((profile) => {
         if (!controller.signal.aborted) {
@@ -192,6 +390,13 @@ export function PersonalManagement() {
       })
       .catch((profileError: unknown) => {
         if (controller.signal.aborted) return;
+        if (demoAccount) {
+          const demoUserId = DEMO_ACCOUNTS[demoAccount].id;
+          setApiUserId(demoUserId);
+          setReviewedLoans(getDemoReviewedLoans(currentUser.email));
+          setReviewCheckError("");
+          return;
+        }
         setReviewCheckError(
           profileError instanceof Error
             ? profileError.message
@@ -199,10 +404,17 @@ export function PersonalManagement() {
         );
       });
     return () => controller.abort();
-  }, [auth.status, reviewCheckRetry]);
+  }, [auth.status, auth.user?.email, reviewCheckRetry]);
 
   useEffect(() => {
-    if (!apiUserId || tab === "items" || !loansPage) return;
+    if (!apiUserId || tab === "items" || !loansPage || !auth.user) return;
+    const demoAccount = getDemoAccount(auth.user.email);
+    if (demoAccount) {
+      setReviewedLoans(getDemoReviewedLoans(auth.user.email));
+      setReviewCheckError("");
+      return;
+    }
+
     const controller = new AbortController();
     const returnedLoans = loansPage.content.filter((loan) => loan.status === "RETURNED");
     setReviewCheckError("");
@@ -227,7 +439,7 @@ export function PersonalManagement() {
 
     void checkReviews();
     return () => controller.abort();
-  }, [apiUserId, loansPage, reviewCheckRetry, tab]);
+  }, [apiUserId, auth.user?.email, loansPage, reviewCheckRetry, tab]);
 
   const changeTab = useCallback((nextTab: Tab) => {
     setTab(nextTab);

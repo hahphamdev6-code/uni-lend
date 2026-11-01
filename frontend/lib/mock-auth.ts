@@ -14,6 +14,33 @@ const USERS_KEY = "unilend.mock.users";
 const SESSION_KEY = "unilend.mock.session";
 const AUTH_CHANGE_EVENT = "unilend:auth-change";
 
+const DEMO_USERS: StoredUser[] = [
+  {
+    id: "demo-admin",
+    fullName: "Demo Admin",
+    email: "admin@demo.unilend.local",
+    password: "DemoAdmin123!",
+    createdAt: new Date().toISOString(),
+    roles: ["ADMIN"] as UserRole[],
+  },
+  {
+    id: "demo-owner",
+    fullName: "Demo Owner",
+    email: "owner@demo.unilend.local",
+    password: "DemoOwner123!",
+    createdAt: new Date().toISOString(),
+    roles: ["USER"] as UserRole[],
+  },
+  {
+    id: "demo-borrower",
+    fullName: "Demo Borrower",
+    email: "borrower@demo.unilend.local",
+    password: "DemoBorrower123!",
+    createdAt: new Date().toISOString(),
+    roles: ["USER"] as UserRole[],
+  },
+];
+
 function isStoredUser(value: unknown): value is StoredUser {
   if (typeof value !== "object" || value === null) return false;
 
@@ -42,14 +69,56 @@ export class MockAuthError extends Error {
   }
 }
 
+function syncDemoUsers(users: StoredUser[]): StoredUser[] {
+  const normalized: StoredUser[] = users.map((user): StoredUser => ({
+    ...user,
+    email: user.email.trim().toLowerCase(),
+    roles: Array.isArray(user.roles) ? (user.roles as UserRole[]) : (["USER"] as UserRole[]),
+  }));
+
+  const merged: StoredUser[] = [...normalized];
+  const existingByEmail = new Map(merged.map((user) => [user.email.toLowerCase(), user]));
+
+  for (const demoUser of DEMO_USERS) {
+    const key = demoUser.email.toLowerCase();
+    if (!existingByEmail.has(key)) {
+      merged.push(demoUser);
+      existingByEmail.set(key, demoUser);
+    } else {
+      const current = existingByEmail.get(key)!;
+      if (current.password !== demoUser.password || current.fullName !== demoUser.fullName) {
+        const updated = { ...current, ...demoUser, id: current.id || demoUser.id, email: key };
+        const index = merged.findIndex((user) => user.email.toLowerCase() === key);
+        if (index >= 0) merged[index] = updated;
+      }
+    }
+  }
+
+  return merged;
+}
+
+function seedDemoUsers(): StoredUser[] {
+  const users = syncDemoUsers([]);
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  return users;
+}
+
 function readUsers(): StoredUser[] {
   const value = localStorage.getItem(USERS_KEY);
-  if (!value) return [];
+  if (!value) return seedDemoUsers();
 
   try {
     const users: unknown = JSON.parse(value);
-    if (!Array.isArray(users) || !users.every(isStoredUser)) throw new Error("Invalid user list");
-    return users;
+    if (!Array.isArray(users) || !users.every(isStoredUser)) {
+      const rehydrated = seedDemoUsers();
+      return rehydrated;
+    }
+
+    const synced = syncDemoUsers(users);
+    if (JSON.stringify(synced) !== value) {
+      localStorage.setItem(USERS_KEY, JSON.stringify(synced));
+    }
+    return synced;
   } catch {
     throw new MockAuthError("Không thể đọc dữ liệu tài khoản trên trình duyệt. Vui lòng xóa dữ liệu UniLend và thử lại.");
   }
@@ -75,9 +144,9 @@ export function registerUser(input: {
   password: string;
 }): void {
   const users = readUsers();
-  const email = input.email.trim().toLocaleLowerCase("vi");
+  const email = input.email.trim().toLowerCase();
 
-  if (users.some((user) => user.email === email)) {
+  if (users.some((user) => user.email.toLowerCase() === email)) {
     throw new MockAuthError("Email này đã được đăng ký. Hãy đăng nhập hoặc dùng email khác.");
   }
 
@@ -87,15 +156,17 @@ export function registerUser(input: {
     email,
     password: input.password,
     createdAt: new Date().toISOString(),
-    roles: ["USER"],
+    roles: ["USER"] as UserRole[],
   };
 
-  localStorage.setItem(USERS_KEY, JSON.stringify([...users, user]));
+  const nextUsers = [...users, user];
+  localStorage.setItem(USERS_KEY, JSON.stringify(nextUsers));
 }
 
 export function loginUser(emailInput: string, password: string): UserProfile {
-  const email = emailInput.trim().toLocaleLowerCase("vi");
-  const user = readUsers().find((candidate) => candidate.email === email && candidate.password === password);
+  const email = emailInput.trim().toLowerCase();
+  const users = readUsers();
+  const user = users.find((candidate) => candidate.email.toLowerCase() === email && candidate.password === password);
 
   if (!user) {
     throw new MockAuthError("Email hoặc mật khẩu chưa chính xác.");
@@ -155,10 +226,10 @@ export function updateCurrentUser(input: { fullName: string; email: string }): U
   }
 
   const fullName = input.fullName.trim();
-  const email = input.email.trim().toLocaleLowerCase("vi");
+  const email = input.email.trim().toLowerCase();
   const users = readUsers();
 
-  if (users.some((user) => user.id !== currentUser.id && user.email === email)) {
+  if (users.some((user) => user.id !== currentUser.id && user.email.toLowerCase() === email)) {
     throw new MockAuthError("Email này đã được sử dụng bởi một tài khoản khác.");
   }
 

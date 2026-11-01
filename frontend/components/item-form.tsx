@@ -60,13 +60,15 @@ export function ItemForm({ itemId }: { itemId: number | null }) {
   }, []);
 
   useEffect(() => {
-    if (!editing || itemId === null || !Number.isSafeInteger(itemId) || itemId < 1) return;
+    if (!editing || itemId == null) return;
+    const safeItemId = itemId;
+    if (!Number.isSafeInteger(safeItemId) || safeItemId < 1) return;
     const controller = new AbortController();
 
     async function loadItem() {
       setLoadError("");
       try {
-        const result = await itemService.getById(itemId, { signal: controller.signal });
+        const result = await itemService.getById(safeItemId, { signal: controller.signal });
         setItem(result);
         setTitle(result.title);
         setDescription(result.description ?? "");
